@@ -1,0 +1,114 @@
+{
+  "openapi": "3.0.0",
+  "info": {
+    "title": "Upload to S3",
+    "version": "1.0.0",
+    "description": "This endpoint handles the S3 upload process for custom applications using a variable URL."
+  },
+  "servers": [
+    {
+      "url": "https://",
+      "description": "The S3 upload URL provided by the custom app creation endpoint. This is a variable URL that changes for each upload request."
+    }
+  ],
+  "paths": {
+    "/{post_url}": {
+      "post": {
+        "summary": "Upload to S3",
+        "description": "This endpoint handles the S3 upload process for custom applications using a variable URL.",
+        "parameters": [
+          {
+            "name": "post_url",
+            "in": "path",
+            "required": true,
+            "description": "The S3 upload URL provided by the custom app creation endpoint. This is a variable URL that changes for each upload request.",
+            "schema": {
+              "type": "string"
+            },
+            "example": "https://s3.amazonaws.com/bucket-name/upload-path"
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "multipart/form-data": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "key": {
+                    "type": "string",
+                    "description": "Value provided by the custom app creation endpoint"
+                  },
+                  "x-amz-algorithm": {
+                    "type": "string",
+                    "description": "AWS signature algorithm"
+                  },
+                  "x-amz-credential": {
+                    "type": "string",
+                    "description": "AWS credentials"
+                  },
+                  "x-amz-date": {
+                    "type": "string",
+                    "description": "AWS request date"
+                  },
+                  "x-amz-security-token": {
+                    "type": "string",
+                    "description": "AWS security token"
+                  },
+                  "policy": {
+                    "type": "string",
+                    "description": "AWS policy"
+                  },
+                  "x-amz-signature": {
+                    "type": "string",
+                    "description": "AWS signature"
+                  },
+                  "file": {
+                    "type": "string",
+                    "format": "binary",
+                    "description": "The application file to upload"
+                  }
+                },
+                "required": [
+                  "key",
+                  "file"
+                ]
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "File uploaded successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "success": {
+                      "type": "boolean",
+                      "example": true
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "File uploaded successfully"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request - invalid parameters or file"
+          },
+          "403": {
+            "description": "Forbidden - invalid S3 credentials or permissions"
+          },
+          "500": {
+            "description": "Internal server error"
+          }
+        }
+      }
+    }
+  }
+}

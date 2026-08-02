@@ -1,0 +1,84 @@
+generated: '2026-08-01'
+method: searched
+source: >-
+  openapi/kandji-endpoint-management-openapi.json + https://www.iru.com/security +
+  https://trust.iru.com/ + https://docs.iru.com/en/endpoint/api/iru-api-overview + live
+  /.well-known/ probes (2026-08-01)
+standards:
+- id: openapi-3.0
+  conforms: true
+  evidence: >-
+    Provider publishes OpenAPI 3.0.0 at https://docs.iru.com/openapi/iru-endpoint-openapi.json (94
+    paths, 121 operations) and a second document for the S3 library-item upload contract.
+- id: http-bearer-auth
+  conforms: true
+  evidence: components.securitySchemes.BearerAuth = {type http, scheme bearer}; applied globally via root security[].
+- id: oauth2
+  conforms: false
+  evidence: >-
+    No oauth2 securityScheme in either spec; the API Overview documents tenant-level bearer tokens
+    created in Access, not an OAuth authorization flow. /.well-known/oauth-authorization-server 404
+    on every host.
+- id: oidc-discovery
+  conforms: false
+  evidence: /.well-known/openid-configuration returned 404 on www.iru.com, kandji.com, api.kandji.io, api-docs.kandji.io, support.kandji.io.
+- id: rfc9457-problem-details
+  conforms: false
+  evidence: >-
+    Error responses use a bespoke envelope {"error": "<message>"} with content-type application/json
+    (components.schemas.Error), not application/problem+json. See errors/kandji-problem-types.yml.
+- id: rfc9116-security-txt
+  conforms: false
+  evidence: >-
+    /.well-known/security.txt 404 on every Iru host. The one 200 (status.kandji.io) is Atlassian's
+    Statuspage document, not Iru's. A responsible-disclosure policy IS published, just not as
+    security.txt — see security/kandji-vulnerability-disclosure.yml.
+- id: rfc8594-sunset-header
+  conforms: false
+  evidence: No Sunset/Deprecation header support or deprecation policy documented; no operation in the spec carries deprecated:true.
+- id: mcp
+  conforms: true
+  evidence: >-
+    First-party hosted MCP server documented at
+    https://docs.iru.com/en/endpoint/integrations/ai-assistants/iru-mcp (http transport, per-tenant
+    URL, X-API-Key + X-MCP-Profile headers). Live endpoint pattern returned HTTP 401 to an
+    anonymous tools/list, confirming it is deployed and gated.
+- id: a2a-agent-card
+  conforms: false
+  evidence: /.well-known/agent-card.json and /.well-known/agent.json both 404 on all five probed hosts.
+- id: llms-txt
+  conforms: true
+  evidence: >-
+    Two llms.txt documents published — https://www.iru.com/llms.txt (site) and
+    https://docs.iru.com/llms.txt (docs, 423 entries, and it is what surfaced the OpenAPI URLs).
+- id: asyncapi
+  conforms: false
+  evidence: >-
+    No event/streaming surface. Iru ships outbound notifications only through its Slack and
+    Microsoft Teams integrations (UI-configured channel alerts); no webhook subscription API, no
+    event catalog, no AsyncAPI document. Not penalized — there is genuinely no event surface.
+- id: graphql
+  conforms: false
+  evidence: No GraphQL endpoint documented or discovered.
+- id: postman-collection-v2.1
+  conforms: true
+  evidence: >-
+    Public Postman documenter at https://api-docs.kandji.io/ (published collection TzCTZkBe, owner
+    15284493); collection JSON saved verbatim to
+    collections/kandji-endpoint-management.postman_collection.json (134 requests, 20 folders).
+- id: soc2-type-ii
+  conforms: true
+  evidence: "https://www.iru.com/security lists SOC 2 Type II."
+- id: iso-27001
+  conforms: true
+  evidence: "https://www.iru.com/security lists ISO 27001."
+- id: gdpr
+  conforms: true
+  evidence: >-
+    Data Processing Addendum (https://www.iru.com/legal/data-processing-addendum), sub-processor
+    list (https://www.iru.com/legal/service-providers) and a privacy-rights request form published.
+- id: coordinated-vulnerability-disclosure
+  conforms: true
+  evidence: >-
+    Published Responsible Disclosure Policy with safe-harbour language, vdp@iru.com reporting
+    channel, 3-business-day acknowledgement and a 90-day coordinated disclosure window.

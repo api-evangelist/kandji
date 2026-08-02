@@ -1,0 +1,121 @@
+generated: '2026-08-01'
+method: derived
+source: >-
+  Derived by reading the Iru MCP documentation
+  (https://docs.iru.com/en/endpoint/integrations/ai-assistants/iru-mcp) against the
+  provider-published OpenAPI 3.0.0 at openapi/kandji-endpoint-management-openapi.json (121
+  operations / 94 paths). operationIds are the API Evangelist deterministic ids assigned in
+  overlays/kandji-endpoint-management-overlay.yaml — the source spec declares none.
+purpose: >-
+  Bind the agent-facing MCP tool surface to the machine-readable REST core so a tool inherits a real
+  inputSchema from its backing operation instead of a guessed one.
+surfaces:
+  rest_openapi: openapi/kandji-endpoint-management-openapi.json
+  rest_base_url: https://{subdomain}.api.kandji.io  # US; EU is {subdomain}.api.eu.kandji.io
+  graphql: null                                     # Iru publishes no GraphQL surface
+  mcp: https://YOUR_TENANT.connect.iru.com/mcp-server/connector/kandji/tools
+  mcp_gated: true
+  rest_gated: true
+  note: >-
+    Both surfaces are tenant-scoped and token-gated. Iru states the MCP server "exposes the Iru
+    Enterprise API surface, structured as MCP tools" and that MCP permissions are selected from the
+    SAME per-endpoint permission grid as the REST token — so the MCP tool set is, by the provider's
+    own description, a projection of the REST operations below rather than a divergent surface.
+
+crosswalk: []
+crosswalk_status: >-
+  EMPTY BY DESIGN — NOT A GAP TO PAPER OVER. Iru publishes no MCP tool list anywhere: not in the
+  docs, not in either llms.txt, not in a registry entry. A live tools/list probe on 2026-08-01
+  returned HTTP 401 {"detail":"Unauthorized"} against the documented tenant endpoint pattern, so the
+  real tool names and inputSchemas require an authenticated tenant token to enumerate. Naming tools
+  here would be fabrication, so no rows are asserted. What CAN be stated from the provider's own
+  documentation is the binding RULE, recorded in `binding_rule` below, plus the complete REST
+  surface those tools are drawn from, recorded in `rest_only` below.
+binding_rule:
+  statement: >-
+    Every MCP tool is backed by an Iru Enterprise API operation and is gated by that operation's
+    entry in the API permission grid. Therefore each tool's real input contract is the corresponding
+    operation's parameters + requestBody in openapi/kandji-endpoint-management-openapi.json.
+  source: https://docs.iru.com/en/endpoint/integrations/ai-assistants/iru-mcp
+  confidence: high
+mcp_only: []
+mcp_only_status: >-
+  Unknown until tools/list can be enumerated with a tenant token. Iru documents no server-side
+  composite tool, and no non-REST data core (no GraphQL), so an MCP-only tool would have to be a
+  composite the provider has not published.
+
+# Complete REST surface available to be projected as MCP tools, grouped by capability.
+# operationIds are the overlay-assigned ids; the (method, path) pairs are verbatim from the spec.
+rest_only:
+- capability: Device Information
+  operations: [listDevices, getDevice, updateDevice, deleteDevice, getDeviceDetails, getDeviceActivity,
+    getDeviceApps, getDeviceCommands, getDeviceLibraryItems, getDeviceParameters, getDeviceStatus]
+  count: 11
+- capability: Device Actions
+  operations: [lockDevice, eraseDevice, restartDevice, shutdown, clearPasscode, unlockAccount,
+    deleteDeviceUser, enableLostMode, disableLostMode, playLostModeSound, getDeviceLostModeDetails,
+    cancelLostMode, renewMDMProfile, reinstallAgent, remoteDesktop, sendBlankpush, dailyCheckIn,
+    setName, updateInventory, updateLocation]
+  count: 20
+  note: >-
+    This is the destructive/high-consequence cluster Iru's own MCP guidance singles out for explicit
+    human approval. See agentic-access/ for the per-operation execution contract.
+- capability: Device Secrets
+  operations: [getFileVaultRecoveryKey, getActivationLockBypassCode, getRecoveryLockPassword, getUnlockPin]
+  count: 4
+  note: Reads of credential material; treat as high-sensitivity regardless of HTTP method.
+- capability: Device Notes
+  operations: [getDeviceNotes, createDeviceNote, retrieveDeviceNote, updateDeviceNote, deleteDeviceNote]
+  count: 5
+- capability: Blueprints
+  operations: [listBlueprints, createBlueprint, getBlueprint, updateBlueprint, deleteBlueprint,
+    getBlueprintTemplates, assignLibraryItem, listLibraryItems, getManualEnrollmentProfile]
+  count: 9
+- capability: Library Items
+  operations: [listCustomApps, createCustomApp, getCustomApp, updateCustomApp, deleteCustomApp,
+    uploadCustomApp, listInHouseApps, createInHouseApp, getInHouseApp, updateInHouseApp,
+    deleteInHouseApp, uploadInHouseApp, uploadInHouseAppStatus, listCustomProfiles,
+    createCustomProfile, getCustomProfile, updateCustomProfile, deleteCustomProfile,
+    listCustomScripts, createCustomScript, getCustomScript, updateCustomScript, deleteCustomScript,
+    getLibraryItemActivity, getLibraryItemStatuses]
+  count: 25
+- capability: Prism (inventory reporting)
+  operations: [activationLock, applicationFirewall, applications, cellular, certificates, count,
+    desktopAndScreensaver, deviceInformation, filevault, gatekeeperAndXProtect, installedProfiles,
+    kernelExtensions, launchAgentsAndDaemons, localUsers, startupSettings, systemExtensions,
+    transparencyDatabase, requestCategoryExport, getCategoryExport]
+  count: 19
+- capability: Automated Device Enrollment
+  operations: [listADEIntegrations, createADEIntegration, getADEIntegration, updateADEIntegration,
+    deleteADEIntegration, renewADEIntegration, downloadADEPublicKey, listADEDevices, getADEDevice,
+    updateADEDevice, listDevicesAssociatedToADEToken]
+  count: 11
+- capability: Vulnerabilities
+  operations: [listVulnerabilities, getVulnerabilityDescription, listAffectedDevices,
+    listAffectedSoftware, listDetections]
+  count: 5
+- capability: Threats (EDR)
+  operations: [getThreatDetails, getBehavioralDetections]
+  count: 2
+- capability: Tags
+  operations: [getTags, createTag, updateTag, deleteTag]
+  count: 4
+- capability: Users
+  operations: [listUsers, getUser, deleteUser]
+  count: 3
+- capability: Audit Log
+  operations: [listAuditEvents]
+  count: 1
+- capability: Self Service
+  operations: [listSelfServiceCategories]
+  count: 1
+- capability: Settings
+  operations: [licensing]
+  count: 1
+coverage:
+  tools_named: 0
+  tools_bound: 0
+  mcp_only: unknown
+  rest_operations_total: 121
+  rest_operations_with_a_named_tool: 0
+  reason: MCP tools/list is authentication-gated (HTTP 401 observed 2026-08-01)

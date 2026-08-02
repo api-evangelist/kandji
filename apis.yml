@@ -1,23 +1,222 @@
 aid: kandji
 name: Iru
-description: 'Iru is a company surfaced via the API Evangelist harvest backlog (source: secondary-market)
-  and added to the network as a stub for full-pipeline profiling.'
+x-former-name: Kandji
+description: >-
+  Iru (formerly Kandji) is a San Francisco based endpoint management and security company whose
+  AI-powered platform unifies workforce identity and access, cross-platform endpoint management for
+  macOS, iOS, iPadOS, tvOS, visionOS, Windows and Android, endpoint detection and response,
+  vulnerability management, compliance automation and a customer-facing trust center behind a single
+  agent. The company rebranded from Kandji to Iru on 22 October 2025; the product surface, the
+  developer documentation and the API hostnames still carry the kandji.io domain. The Iru Endpoint
+  Management API is a tenant-scoped REST API published as OpenAPI 3.0.0 and as a public Postman
+  collection, covering devices and device actions, Blueprints, Library Items, Prism inventory
+  reporting, Automated Device Enrollment, tags, users, threats and vulnerabilities, and it also backs
+  a hosted, tenant-scoped Model Context Protocol server for AI assistants.
+image: https://www.iru.com/hubfs/assets/favicons/og-image.png
 url: https://raw.githubusercontent.com/api-evangelist/kandji/refs/heads/main/apis.yml
 x-type: company
 x-source: harvest:secondary-market
-x-tier: stub
-x-tier-reason: harvest
-specificationVersion: '0.20'
+x-tier: profiled
+x-tier-reason: enrichment-pipeline
+x-name-discrepancy: >-
+  The harvest backlog recorded this company as "Iru" against slug "kandji". Both are correct at
+  different points in time: the authoritative current legal and brand name is Iru, Inc. (iru.com,
+  confirmed on the live site and in the Platform Services Agreement), and Kandji is the former name
+  retained in the slug, in the api.kandji.io API hostnames, in the api-docs.kandji.io reference, in
+  the status.kandji.io status page, in the kandji-inc GitHub organization and in the io.kandji macOS
+  logging subsystems. kandji.com does not redirect to iru.com (it answered HTTP 405 to a HEAD probe
+  on 2026-08-01); the live company site is www.iru.com. The Forge Global secondary-market listing at
+  forgeglobal.com/kandji_stock/ is still filed under the Kandji name and returned HTTP 403 to
+  automated fetches. Slug retained as `kandji` for catalog continuity.
+specificationVersion: '0.21'
 created: '2026-08-01'
 modified: '2026-08-01'
 tags:
 - Company
-apis: []
+- device-management
+- mobile-device-management
+- apple-management
+- endpoint-security
+- endpoint-detection-response
+- vulnerability-management
+- compliance-automation
+- workforce-identity
+- it-operations
+- mcp
+- agent-native
+apis:
+- name: Iru Endpoint Management API
+  description: >-
+    Tenant-scoped REST API for the Iru (formerly Kandji) endpoint platform. 121 operations across 94
+    paths covering device inventory and details, 18 device actions (lock, erase, restart, shutdown,
+    lost mode, clear passcode, renew MDM profile and more), device secrets (FileVault recovery key,
+    bypass code, unlock PIN, recovery password), Blueprints and Blueprint library-item assignment,
+    Library Items (custom apps, in-house IPA apps, custom profiles, custom scripts, Self Service
+    categories), Prism inventory reporting and export, Automated Device Enrollment integrations,
+    tags, users, audit events, behavioral detections, threat details and vulnerability management.
+    Authentication is a tenant-level bearer token created in Access with per-endpoint permissions.
+  humanURL: https://api-docs.kandji.io/
+  baseURL: https://your-subdomain.api.kandji.io
+  tags:
+  - device-management
+  - mobile-device-management
+  - apple-management
+  - endpoint-security
+  - vulnerability-management
+  - it-operations
+  properties:
+  - type: OpenAPI
+    url: openapi/kandji-endpoint-management-openapi.json
+  - type: Documentation
+    url: https://docs.iru.com/en/endpoint/api/iru-api-overview
+  - type: APIReference
+    url: https://api-docs.kandji.io/
+  - type: Postman
+    url: https://api-docs.kandji.io/
+  - type: PostmanCollection
+    url: collections/kandji-endpoint-management.postman_collection.json
+  - type: Authentication
+    url: authentication/kandji-authentication.yml
+  - type: Conventions
+    url: conventions/kandji-conventions.yml
+  - type: ErrorCatalog
+    url: errors/kandji-problem-types.yml
+  - type: DataModel
+    url: data-model/kandji-data-model.yml
+  - type: RateLimits
+    url: rate-limits/kandji-rate-limits.yml
+  - type: Overlay
+    url: overlays/kandji-endpoint-management-overlay.yaml
+- name: Iru Library Item Upload API
+  description: >-
+    Single-operation S3 pre-signed upload contract returned by the Custom App and IPA App creation
+    endpoints of the Iru Endpoint Management API. The upload URL is variable per request; the
+    provider publishes it as a separate OpenAPI document.
+  humanURL: https://api-docs.kandji.io/
+  baseURL: https://your-subdomain.api.kandji.io
+  tags:
+  - device-management
+  - file-upload
+  properties:
+  - type: OpenAPI
+    url: openapi/kandji-upload-to-s3-openapi.json
+  - type: APIReference
+    url: https://api-docs.kandji.io/
+- name: Iru MCP Server
+  description: >-
+    Hosted, tenant-scoped Model Context Protocol server that exposes the Iru Enterprise API surface
+    as MCP tools for Claude Desktop, Cursor, OpenAI Codex and other MCP clients. Enabled per API
+    token with the "Enable MCP" switch in Access; authenticated with an X-API-Key header carrying an
+    sk_live: prefixed key plus an X-MCP-Profile header, and constrained by the same per-endpoint API
+    permissions and the same 10,000 requests/hour tenant rate limit as REST.
+  humanURL: https://docs.iru.com/en/endpoint/integrations/ai-assistants/iru-mcp
+  baseURL: https://your-tenant.connect.iru.com/mcp-server/connector/kandji/tools
+  tags:
+  - mcp
+  - agent-native
+  - device-management
+  - endpoint-security
+  properties:
+  - type: MCPServer
+    url: mcp/kandji-mcp.yml
+  - type: ToolCrosswalk
+    url: mcp/kandji-tool-crosswalk.yml
+  - type: Documentation
+    url: https://docs.iru.com/en/endpoint/integrations/ai-assistants/iru-mcp
+common:
+- type: AgenticAccess
+  url: agentic-access/kandji-agentic-access.yml
+- type: TrustCenter
+  url: security/kandji-trust-center.yml
+- type: DomainSecurity
+  url: security/kandji-domain-security.yml
+- type: Website
+  url: https://www.iru.com/
+- type: DeveloperPortal
+  url: https://docs.iru.com/
+- type: Documentation
+  url: https://docs.iru.com/en/endpoint/api/iru-api-overview
+- type: APIReference
+  url: https://api-docs.kandji.io/
+- type: GettingStarted
+  url: https://docs.iru.com/en/endpoint/getting-started/getting-started
+- type: Support
+  url: https://support.kandji.io/
+- type: Blog
+  url: https://www.iru.com/blog
+- type: GitHubOrganization
+  url: https://github.com/kandji-inc
+- type: Pricing
+  url: https://www.iru.com/pricing
+- type: SignUp
+  url: https://www.iru.com/request-demo
+- type: Login
+  url: https://www.iru.com/login
+- type: TermsOfService
+  url: https://www.iru.com/legal/terms
+- type: PrivacyPolicy
+  url: https://www.iru.com/legal/privacy
+- type: Postman
+  url: https://api-docs.kandji.io/
+- type: StatusPage
+  url: https://status.kandji.io
+- type: ChangeLog
+  url: https://www.iru.com/updates/
+- type: ChangeLogRSS
+  url: https://updates.iru.com/feed-en
+- type: ChangeLog
+  url: changelog/kandji-changelog.yml
+- type: Security
+  url: https://www.iru.com/security/responsible-disclosure-policy
+- type: Compliance
+  url: https://www.iru.com/security
+- type: SecondaryMarketListing
+  url: https://forgeglobal.com/kandji_stock/
+- type: OpenAPI
+  url: openapi/kandji-endpoint-management-openapi.json
+- type: MCPServer
+  url: mcp/kandji-mcp.yml
+- type: ToolCrosswalk
+  url: mcp/kandji-tool-crosswalk.yml
+- type: Packages
+  url: packages/kandji-packages.yml
+- type: CLI
+  url: cli/kandji-cli.yml
+- type: LLMsTxt
+  url: llms/kandji-llms.txt
+- type: WellKnown
+  url: well-known/kandji-well-known.yml
+- type: Authentication
+  url: authentication/kandji-authentication.yml
+- type: Conventions
+  url: conventions/kandji-conventions.yml
+- type: RateLimits
+  url: rate-limits/kandji-rate-limits.yml
+- type: ErrorCatalog
+  url: errors/kandji-problem-types.yml
+- type: DataModel
+  url: data-model/kandji-data-model.yml
+- type: Lifecycle
+  url: lifecycle/kandji-lifecycle.yml
+- type: ReleaseStages
+  url: https://docs.iru.com/en/iru/platform-overview/iru-release-stages
+- type: Conformance
+  url: conformance/kandji-conformance.yml
+- type: VulnerabilityDisclosure
+  url: security/kandji-vulnerability-disclosure.yml
+- type: AgentSkill
+  url: skills/_index.yml
+- type: Overlay
+  url: overlays/kandji-endpoint-management-overlay.yaml
 maintainers:
 - FN: Kin Lane
   email: kin@apievangelist.com
 - FN: APIs.json
   email: info@apis.io
-common:
-- type: Website
-  url: https://forgeglobal.com/kandji_stock/
+- FN: Iru, Inc.
+  url: https://www.iru.com/
+x-enrichment:
+  date: '2026-08-01'
+  status: enriched
+  artifacts_added: 30
+  pass: local-v1

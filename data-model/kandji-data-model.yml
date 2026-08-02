@@ -1,0 +1,148 @@
+generated: '2026-08-01'
+method: derived
+source: >-
+  openapi/kandji-endpoint-management-openapi.json — derived from path structure, path/query id
+  parameters and the provider's own resource grouping in
+  collections/kandji-endpoint-management.postman_collection.json
+caveat: >-
+  The published OpenAPI declares exactly ONE component schema (`Error`). Every request and response
+  body is inlined or unmodelled, so there are no $ref edges to walk. This entity graph is therefore
+  derived from the URL hierarchy and from id-reference parameters (device_id, blueprint_id,
+  library_item_id, ade_token_id, note_id, tag_id, user_id, cve_id), not from schema references.
+  Cardinalities marked `inferred` come from path nesting; none are invented from outside the spec.
+id_conventions:
+  style: opaque
+  prefixes: none
+  note: >-
+    No documented id prefixes. Ids are tenant-scoped path parameters; the spec gives no format
+    (uuid vs integer) for most of them.
+entities:
+- name: Device
+  primary_key: device_id
+  collection: /api/v1/devices
+  operations: [listDevices, getDevice, updateDevice, deleteDevice, getDeviceDetails, getDeviceStatus]
+  description: An enrolled endpoint (Mac, iPhone, iPad, Apple TV, Vision Pro, Windows, Android).
+- name: DeviceDetail
+  parent: Device
+  collection: /api/v1/devices/{device_id}/details
+  description: Expanded inventory/status record for a device.
+- name: DeviceCommand
+  parent: Device
+  collection: /api/v1/devices/{device_id}/commands
+  description: MDM commands dispatched to a device; the polling surface for device actions.
+- name: DeviceActivity
+  parent: Device
+  collection: /api/v1/devices/{device_id}/activity
+- name: DeviceApp
+  parent: Device
+  collection: /api/v1/devices/{device_id}/apps
+- name: DeviceParameter
+  parent: Device
+  collection: /api/v1/devices/{device_id}/parameters
+  description: Blueprint Parameter evaluation results for a device.
+- name: DeviceNote
+  primary_key: note_id
+  parent: Device
+  collection: /api/v1/devices/{device_id}/notes
+  operations: [getDeviceNotes, createDeviceNote, retrieveDeviceNote, updateDeviceNote, deleteDeviceNote]
+- name: DeviceSecret
+  parent: Device
+  collection: /api/v1/devices/{device_id}/secrets/*
+  variants: [filevaultkey, bypasscode, recoverypassword, unlockpin]
+  sensitivity: high
+- name: LostModeDetail
+  parent: Device
+  collection: /api/v1/devices/{device_id}/details/lostmode
+- name: Blueprint
+  primary_key: blueprint_id
+  collection: /api/v1/blueprints
+  operations: [listBlueprints, createBlueprint, getBlueprint, updateBlueprint, deleteBlueprint]
+  description: The assignment container that binds Library Items and Parameters to devices.
+- name: BlueprintTemplate
+  collection: /api/v1/blueprints/templates/
+- name: LibraryItem
+  primary_key: library_item_id
+  collection: /api/v1/library/*
+  subtypes: [CustomApp, InHouseApp (IPA), CustomProfile, CustomScript]
+  operations: [listCustomApps, createCustomApp, listInHouseApps, listCustomProfiles, listCustomScripts]
+  description: A managed payload (app, profile, script) assigned to devices through a Blueprint.
+- name: LibraryItemStatus
+  parent: LibraryItem
+  collection: /api/v1/library/library-items/{library_item_id}/status
+- name: LibraryItemActivity
+  parent: LibraryItem
+  collection: /api/v1/library/library-items/{library_item_id}/activity
+- name: PendingUpload
+  primary_key: pending_upload_id
+  collection: /api/v1/library/ipa-apps/upload/{pending_upload_id}/status
+  description: In-flight IPA binary upload; completed against the pre-signed S3 contract.
+- name: SelfServiceCategory
+  collection: /api/v1/self-service/categories
+- name: ADEIntegration
+  primary_key: ade_token_id
+  collection: /api/v1/integrations/apple/ade
+  description: An Automated Device Enrollment (Apple Business/School Manager) token integration.
+- name: ADEDevice
+  parent: ADEIntegration
+  collection: /api/v1/integrations/apple/ade/devices
+  description: A device known to an ADE token, before or independent of enrollment.
+- name: PrismCategory
+  collection: /api/v1/prism/*
+  variants: [activation_lock, application_firewall, apps, cellular, certificates,
+    desktop_and_screensaver, device_information, filevault, gatekeeper_and_xprotect,
+    installed_profiles, kernel_extensions, launch_agents_and_daemons, local_users, startup_settings,
+    system_extensions, transparency_database]
+  description: Per-category fleet inventory reporting views, each keyed back to Device.
+- name: PrismExport
+  primary_key: export_id
+  collection: /api/v1/prism/export
+  description: Asynchronous export job over a Prism category.
+- name: Tag
+  primary_key: tag_id
+  collection: /api/v1/tags
+- name: User
+  primary_key: user_id
+  collection: /api/v1/users
+  description: Directory user record (from the User Directory integration), distinct from local device users.
+- name: Vulnerability
+  primary_key: cve_id
+  collection: /api/v1/vulnerability-management/vulnerabilities
+- name: VulnerabilityDetection
+  collection: /api/v1/vulnerability-management/detections
+- name: Threat
+  collection: /api/v1/threat-details
+- name: BehavioralDetection
+  collection: /api/v1/behavioral-detections
+- name: AuditEvent
+  collection: /api/v1/audit/events
+- name: LicensingSetting
+  collection: /api/v1/settings/licensing
+relationships:
+- {from: Device, to: Blueprint, kind: belongs_to, via: blueprint_id, evidence: 'blueprint_id query facet on device and Prism listings', confidence: high}
+- {from: Blueprint, to: Device, kind: has_many, via: blueprint_id, evidence: 'blueprint_ids filter present on 16 operations', confidence: high}
+- {from: Blueprint, to: LibraryItem, kind: has_many, via: assign-library-item, evidence: 'POST /blueprints/{blueprint_id}/assign-library-item and GET /blueprints/{blueprint_id}/list-library-items', confidence: high}
+- {from: Device, to: LibraryItem, kind: has_many, via: 'device library-items', evidence: 'GET /devices/{device_id}/library-items', confidence: high}
+- {from: Device, to: DeviceNote, kind: has_many, via: note_id, evidence: nested collection, confidence: high}
+- {from: Device, to: DeviceCommand, kind: has_many, via: device_id, evidence: nested collection, confidence: high}
+- {from: Device, to: DeviceSecret, kind: has_one, via: device_id, evidence: 'four singleton secret endpoints per device', confidence: high}
+- {from: Device, to: DeviceActivity, kind: has_many, via: device_id, evidence: nested collection, confidence: high}
+- {from: Device, to: DeviceApp, kind: has_many, via: device_id, evidence: nested collection, confidence: high}
+- {from: Device, to: DeviceParameter, kind: has_many, via: device_id, evidence: nested collection, confidence: high}
+- {from: Device, to: LostModeDetail, kind: has_one, via: device_id, evidence: 'GET/DELETE /devices/{device_id}/details/lostmode', confidence: high}
+- {from: ADEIntegration, to: ADEDevice, kind: has_many, via: ade_token_id, evidence: 'GET /integrations/apple/ade/{ade_token_id}/devices', confidence: high}
+- {from: ADEDevice, to: Device, kind: has_one, via: device_id, kind_note: becomes a Device on enrollment, evidence: 'shared device_id path parameter across ADE and device surfaces', confidence: medium}
+- {from: LibraryItem, to: LibraryItemStatus, kind: has_many, via: library_item_id, evidence: nested collection, confidence: high}
+- {from: LibraryItem, to: LibraryItemActivity, kind: has_many, via: library_item_id, evidence: nested collection, confidence: high}
+- {from: LibraryItem, to: PendingUpload, kind: has_one, via: pending_upload_id, evidence: 'IPA upload status endpoint', confidence: medium}
+- {from: LibraryItem, to: SelfServiceCategory, kind: belongs_to, via: category, evidence: 'Self Service folder in the provider Postman collection groups categories under Library items', confidence: low}
+- {from: PrismCategory, to: Device, kind: belongs_to, via: device_id, evidence: 'device_id query parameter on Prism category views', confidence: high}
+- {from: PrismExport, to: PrismCategory, kind: belongs_to, via: export_id, evidence: 'POST /prism/export then GET /prism/export/{export_id}', confidence: high}
+- {from: Tag, to: Device, kind: has_many, via: tag, evidence: 'Tags are a first-class tenant resource applied to devices and threats per the docs', confidence: medium}
+- {from: Vulnerability, to: Device, kind: has_many, via: cve_id, evidence: 'GET /vulnerability-management/vulnerabilities/{cve_id}/devices', confidence: high}
+- {from: Vulnerability, to: Software, kind: has_many, via: cve_id, evidence: 'GET /vulnerability-management/vulnerabilities/{cve_id}/software', confidence: high}
+- {from: Threat, to: Device, kind: belongs_to, via: device_id, evidence: 'device_id query parameter on threat-details', confidence: medium}
+- {from: User, to: Device, kind: has_many, via: user_id, evidence: 'user_id query facet on device listings', confidence: medium}
+hub_entity: Device
+notes: >-
+  Device is the hub: 41 of 121 operations take device_id in the path, and Blueprint / LibraryItem /
+  Prism / Vulnerability / Threat / Tag / User all resolve back to it.

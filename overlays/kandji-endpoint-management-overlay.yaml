@@ -1,0 +1,658 @@
+overlay: 1.0.0
+info:
+  title: API Evangelist enhancements for the Iru Endpoint Management API
+  version: 1.0.0
+extends: openapi/kandji-endpoint-management-openapi.json
+x-generated: '2026-08-01'
+x-method: generated
+x-rationale: The provider-published OpenAPI 3.0.0 carries summaries and descriptions on every operation but declares
+  NO operationId and NO tags on any of its 121 operations. This overlay adds a deterministic operationId derived
+  from each operation summary, and a tag taken from the provider's own grouping in its public Postman collection
+  (collections/kandji-endpoint-management.postman_collection.json). Nothing in the original spec is mutated; no
+  operation, parameter, schema or response is invented.
+x-tags:
+- Audit Log
+- Automated Device Enrollment
+- Blueprints
+- Device Actions
+- Device Information
+- Device Notes
+- Device Secrets
+- Library Items
+- Self Service
+- Prism
+- Settings
+- Tags
+- Threats
+- Vulnerabilities
+- Users
+actions:
+- target: $.info
+  update:
+    x-apievangelist-provider: kandji
+    x-apievangelist-provider-name: Iru (formerly Kandji)
+    x-apievangelist-source: https://docs.iru.com/openapi/iru-endpoint-openapi.json
+    x-apievangelist-harvested: '2026-08-01'
+- target: $
+  update:
+    tags:
+    - name: Audit Log
+    - name: Automated Device Enrollment
+    - name: Blueprints
+    - name: Device Actions
+    - name: Device Information
+    - name: Device Notes
+    - name: Device Secrets
+    - name: Library Items
+    - name: Self Service
+    - name: Prism
+    - name: Settings
+    - name: Tags
+    - name: Threats
+    - name: Vulnerabilities
+    - name: Users
+- target: $.paths['/api/v1/audit/events'].get
+  update:
+    operationId: listAuditEvents
+    tags:
+    - Audit Log
+- target: $.paths['/api/v1/integrations/apple/ade/public_key/'].get
+  update:
+    operationId: downloadADEPublicKey
+    tags:
+    - Automated Device Enrollment
+- target: $.paths['/api/v1/integrations/apple/ade/'].post
+  update:
+    operationId: createADEIntegration
+    tags:
+    - Automated Device Enrollment
+- target: $.paths['/api/v1/integrations/apple/ade/{ade_token_id}/renew'].post
+  update:
+    operationId: renewADEIntegration
+    tags:
+    - Automated Device Enrollment
+- target: $.paths['/api/v1/integrations/apple/ade/{ade_token_id}'].patch
+  update:
+    operationId: updateADEIntegration
+    tags:
+    - Automated Device Enrollment
+- target: $.paths['/api/v1/integrations/apple/ade/{ade_token_id}'].get
+  update:
+    operationId: getADEIntegration
+    tags:
+    - Automated Device Enrollment
+- target: $.paths['/api/v1/integrations/apple/ade/{ade_token_id}'].delete
+  update:
+    operationId: deleteADEIntegration
+    tags:
+    - Automated Device Enrollment
+- target: $.paths['/api/v1/integrations/apple/ade'].get
+  update:
+    operationId: listADEIntegrations
+    tags:
+    - Automated Device Enrollment
+- target: $.paths['/api/v1/integrations/apple/ade/{ade_token_id}/devices'].get
+  update:
+    operationId: listDevicesAssociatedToADEToken
+    tags:
+    - Automated Device Enrollment
+- target: $.paths['/api/v1/integrations/apple/ade/devices'].get
+  update:
+    operationId: listADEDevices
+    tags:
+    - Automated Device Enrollment
+- target: $.paths['/api/v1/integrations/apple/ade/devices/{device_id}'].get
+  update:
+    operationId: getADEDevice
+    tags:
+    - Automated Device Enrollment
+- target: $.paths['/api/v1/integrations/apple/ade/devices/{device_id}'].patch
+  update:
+    operationId: updateADEDevice
+    tags:
+    - Automated Device Enrollment
+- target: $.paths['/api/v1/blueprints'].get
+  update:
+    operationId: listBlueprints
+    tags:
+    - Blueprints
+- target: $.paths['/api/v1/blueprints'].post
+  update:
+    operationId: createBlueprint
+    tags:
+    - Blueprints
+- target: $.paths['/api/v1/blueprints/{blueprint_id}/ota-enrollment-profile'].get
+  update:
+    operationId: getManualEnrollmentProfile
+    tags:
+    - Blueprints
+- target: $.paths['/api/v1/blueprints/templates/'].get
+  update:
+    operationId: getBlueprintTemplates
+    tags:
+    - Blueprints
+- target: $.paths['/api/v1/devices/{device_id}/action/enablelostmode'].post
+  update:
+    operationId: enableLostMode
+    tags:
+    - Device Actions
+- target: $.paths['/api/v1/devices/{device_id}/action/disablelostmode'].post
+  update:
+    operationId: disableLostMode
+    tags:
+    - Device Actions
+- target: $.paths['/api/v1/devices/{device_id}/action/playlostmodesound'].post
+  update:
+    operationId: playLostModeSound
+    tags:
+    - Device Actions
+- target: $.paths['/api/v1/devices/{device_id}/action/updatelocation'].post
+  update:
+    operationId: updateLocation
+    tags:
+    - Device Actions
+- target: $.paths['/api/v1/devices/{device_id}/action/clearpasscode'].post
+  update:
+    operationId: clearPasscode
+    tags:
+    - Device Actions
+- target: $.paths['/api/v1/devices/{device_id}'].get
+  update:
+    operationId: getDevice
+    tags:
+    - Device Information
+- target: $.paths['/api/v1/devices/{device_id}'].patch
+  update:
+    operationId: updateDevice
+    tags:
+    - Device Information
+- target: $.paths['/api/v1/devices/{device_id}'].delete
+  update:
+    operationId: deleteDevice
+    tags:
+    - Device Information
+- target: $.paths['/api/v1/devices/{device_id}/action/erase'].post
+  update:
+    operationId: eraseDevice
+    tags:
+    - Device Actions
+- target: $.paths['/api/v1/devices/{device_id}/commands'].get
+  update:
+    operationId: getDeviceCommands
+    tags:
+    - Device Information
+- target: $.paths['/api/v1/devices/{device_id}/action/lock'].post
+  update:
+    operationId: lockDevice
+    tags:
+    - Device Actions
+- target: $.paths['/api/v1/devices/{device_id}/action/reinstallagent'].post
+  update:
+    operationId: reinstallAgent
+    tags:
+    - Device Actions
+- target: $.paths['/api/v1/devices/{device_id}/action/remotedesktop'].post
+  update:
+    operationId: remoteDesktop
+    tags:
+    - Device Actions
+- target: $.paths['/api/v1/devices/{device_id}/action/renewmdmprofile'].post
+  update:
+    operationId: renewMDMProfile
+    tags:
+    - Device Actions
+- target: $.paths['/api/v1/devices/{device_id}/action/restart'].post
+  update:
+    operationId: restartDevice
+    tags:
+    - Device Actions
+- target: $.paths['/api/v1/devices/{device_id}/action/blankpush'].post
+  update:
+    operationId: sendBlankpush
+    tags:
+    - Device Actions
+- target: $.paths['/api/v1/devices/{device_id}/action/setname'].post
+  update:
+    operationId: setName
+    tags:
+    - Device Actions
+- target: $.paths['/api/v1/devices/{device_id}/action/shutdown'].post
+  update:
+    operationId: shutdown
+    tags:
+    - Device Actions
+- target: $.paths['/api/v1/devices/{device_id}/action/updateinventory'].post
+  update:
+    operationId: updateInventory
+    tags:
+    - Device Actions
+- target: $.paths['/api/v1/devices/{device_id}/action/unlockaccount'].post
+  update:
+    operationId: unlockAccount
+    tags:
+    - Device Actions
+- target: $.paths['/api/v1/devices/{device_id}/notes'].get
+  update:
+    operationId: getDeviceNotes
+    tags:
+    - Device Notes
+- target: $.paths['/api/v1/devices/{device_id}/notes'].post
+  update:
+    operationId: createDeviceNote
+    tags:
+    - Device Notes
+- target: $.paths['/api/v1/devices/{device_id}/notes/{note_id}'].get
+  update:
+    operationId: retrieveDeviceNote
+    tags:
+    - Device Notes
+- target: $.paths['/api/v1/devices/{device_id}/notes/{note_id}'].patch
+  update:
+    operationId: updateDeviceNote
+    tags:
+    - Device Notes
+- target: $.paths['/api/v1/devices/{device_id}/notes/{note_id}'].delete
+  update:
+    operationId: deleteDeviceNote
+    tags:
+    - Device Notes
+- target: $.paths['/api/v1/devices'].get
+  update:
+    operationId: listDevices
+    tags:
+    - Device Information
+- target: $.paths['/api/v1/devices/{device_id}/details'].get
+  update:
+    operationId: getDeviceDetails
+    tags:
+    - Device Information
+- target: $.paths['/api/v1/devices/{device_id}/details/lostmode'].get
+  update:
+    operationId: getDeviceLostModeDetails
+    tags:
+    - Device Actions
+- target: $.paths['/api/v1/devices/{device_id}/details/lostmode'].delete
+  update:
+    operationId: cancelLostMode
+    tags:
+    - Device Actions
+- target: $.paths['/api/v1/devices/{device_id}/activity'].get
+  update:
+    operationId: getDeviceActivity
+    tags:
+    - Device Information
+- target: $.paths['/api/v1/devices/{device_id}/apps'].get
+  update:
+    operationId: getDeviceApps
+    tags:
+    - Device Information
+- target: $.paths['/api/v1/devices/{device_id}/library-items'].get
+  update:
+    operationId: getDeviceLibraryItems
+    tags:
+    - Device Information
+- target: $.paths['/api/v1/devices/{device_id}/parameters'].get
+  update:
+    operationId: getDeviceParameters
+    tags:
+    - Device Information
+- target: $.paths['/api/v1/devices/{device_id}/status'].get
+  update:
+    operationId: getDeviceStatus
+    tags:
+    - Device Information
+- target: $.paths['/api/v1/devices/{device_id}/secrets/bypasscode'].get
+  update:
+    operationId: getActivationLockBypassCode
+    tags:
+    - Device Secrets
+- target: $.paths['/api/v1/devices/{device_id}/secrets/filevaultkey'].get
+  update:
+    operationId: getFileVaultRecoveryKey
+    tags:
+    - Device Secrets
+- target: $.paths['/api/v1/devices/{device_id}/secrets/unlockpin'].get
+  update:
+    operationId: getUnlockPin
+    tags:
+    - Device Secrets
+- target: $.paths['/api/v1/devices/{device_id}/secrets/recoverypassword'].get
+  update:
+    operationId: getRecoveryLockPassword
+    tags:
+    - Device Secrets
+- target: $.paths['/api/v1/library/custom-apps'].get
+  update:
+    operationId: listCustomApps
+    tags:
+    - Library Items
+- target: $.paths['/api/v1/library/custom-apps'].post
+  update:
+    operationId: createCustomApp
+    tags:
+    - Library Items
+- target: $.paths['/api/v1/library/custom-apps/{library_item_id}'].get
+  update:
+    operationId: getCustomApp
+    tags:
+    - Library Items
+- target: $.paths['/api/v1/library/custom-apps/{library_item_id}'].patch
+  update:
+    operationId: updateCustomApp
+    tags:
+    - Library Items
+- target: $.paths['/api/v1/library/custom-apps/{library_item_id}'].delete
+  update:
+    operationId: deleteCustomApp
+    tags:
+    - Library Items
+- target: $.paths['/api/v1/library/custom-apps/upload'].post
+  update:
+    operationId: uploadCustomApp
+    tags:
+    - Library Items
+- target: $.paths['/api/v1/library/ipa-apps'].get
+  update:
+    operationId: listInHouseApps
+    tags:
+    - Library Items
+- target: $.paths['/api/v1/library/ipa-apps'].post
+  update:
+    operationId: createInHouseApp
+    tags:
+    - Library Items
+- target: $.paths['/api/v1/library/ipa-apps/{library_item_id}'].get
+  update:
+    operationId: getInHouseApp
+    tags:
+    - Library Items
+- target: $.paths['/api/v1/library/ipa-apps/{library_item_id}'].patch
+  update:
+    operationId: updateInHouseApp
+    tags:
+    - Library Items
+- target: $.paths['/api/v1/library/ipa-apps/{library_item_id}'].delete
+  update:
+    operationId: deleteInHouseApp
+    tags:
+    - Library Items
+- target: $.paths['/api/v1/library/ipa-apps/upload'].post
+  update:
+    operationId: uploadInHouseApp
+    tags:
+    - Library Items
+- target: $.paths['/api/v1/library/ipa-apps/upload/{pending_upload_id}/status'].get
+  update:
+    operationId: uploadInHouseAppStatus
+    tags:
+    - Library Items
+- target: $.paths['/api/v1/library/custom-profiles'].get
+  update:
+    operationId: listCustomProfiles
+    tags:
+    - Library Items
+- target: $.paths['/api/v1/library/custom-profiles'].post
+  update:
+    operationId: createCustomProfile
+    tags:
+    - Library Items
+- target: $.paths['/api/v1/library/custom-profiles/{library_item_id}'].get
+  update:
+    operationId: getCustomProfile
+    tags:
+    - Library Items
+- target: $.paths['/api/v1/library/custom-profiles/{library_item_id}'].patch
+  update:
+    operationId: updateCustomProfile
+    tags:
+    - Library Items
+- target: $.paths['/api/v1/library/custom-profiles/{library_item_id}'].delete
+  update:
+    operationId: deleteCustomProfile
+    tags:
+    - Library Items
+- target: $.paths['/api/v1/library/custom-scripts'].get
+  update:
+    operationId: listCustomScripts
+    tags:
+    - Library Items
+- target: $.paths['/api/v1/library/custom-scripts'].post
+  update:
+    operationId: createCustomScript
+    tags:
+    - Library Items
+- target: $.paths['/api/v1/library/custom-scripts/{library_item_id}'].get
+  update:
+    operationId: getCustomScript
+    tags:
+    - Library Items
+- target: $.paths['/api/v1/library/custom-scripts/{library_item_id}'].patch
+  update:
+    operationId: updateCustomScript
+    tags:
+    - Library Items
+- target: $.paths['/api/v1/library/custom-scripts/{library_item_id}'].delete
+  update:
+    operationId: deleteCustomScript
+    tags:
+    - Library Items
+- target: $.paths['/api/v1/self-service/categories'].get
+  update:
+    operationId: listSelfServiceCategories
+    tags:
+    - Self Service
+- target: $.paths['/api/v1/library/library-items/{library_item_id}/activity'].get
+  update:
+    operationId: getLibraryItemActivity
+    tags:
+    - Library Items
+- target: $.paths['/api/v1/library/library-items/{library_item_id}/status'].get
+  update:
+    operationId: getLibraryItemStatuses
+    tags:
+    - Library Items
+- target: $.paths['/api/v1/prism/activation_lock'].get
+  update:
+    operationId: activationLock
+    tags:
+    - Prism
+- target: $.paths['/api/v1/prism/apps'].get
+  update:
+    operationId: applications
+    tags:
+    - Prism
+- target: $.paths['/api/v1/prism/application_firewall'].get
+  update:
+    operationId: applicationFirewall
+    tags:
+    - Prism
+- target: $.paths['/api/v1/prism/cellular'].get
+  update:
+    operationId: cellular
+    tags:
+    - Prism
+- target: $.paths['/api/v1/prism/certificates'].get
+  update:
+    operationId: certificates
+    tags:
+    - Prism
+- target: $.paths['/api/v1/prism/desktop_and_screensaver'].get
+  update:
+    operationId: desktopAndScreensaver
+    tags:
+    - Prism
+- target: $.paths['/api/v1/prism/device_information'].get
+  update:
+    operationId: deviceInformation
+    tags:
+    - Prism
+- target: $.paths['/api/v1/prism/filevault'].get
+  update:
+    operationId: filevault
+    tags:
+    - Prism
+- target: $.paths['/api/v1/prism/gatekeeper_and_xprotect'].get
+  update:
+    operationId: gatekeeperAndXProtect
+    tags:
+    - Prism
+- target: $.paths['/api/v1/prism/installed_profiles'].get
+  update:
+    operationId: installedProfiles
+    tags:
+    - Prism
+- target: $.paths['/api/v1/prism/kernel_extensions'].get
+  update:
+    operationId: kernelExtensions
+    tags:
+    - Prism
+- target: $.paths['/api/v1/prism/launch_agents_and_daemons'].get
+  update:
+    operationId: launchAgentsAndDaemons
+    tags:
+    - Prism
+- target: $.paths['/api/v1/prism/local_users'].get
+  update:
+    operationId: localUsers
+    tags:
+    - Prism
+- target: $.paths['/api/v1/prism/startup_settings'].get
+  update:
+    operationId: startupSettings
+    tags:
+    - Prism
+- target: $.paths['/api/v1/prism/system_extensions'].get
+  update:
+    operationId: systemExtensions
+    tags:
+    - Prism
+- target: $.paths['/api/v1/prism/transparency_database'].get
+  update:
+    operationId: transparencyDatabase
+    tags:
+    - Prism
+- target: $.paths['/api/v1/prism/export'].post
+  update:
+    operationId: requestCategoryExport
+    tags:
+    - Prism
+- target: $.paths['/api/v1/prism/export/{export_id}'].get
+  update:
+    operationId: getCategoryExport
+    tags:
+    - Prism
+- target: $.paths['/api/v1/prism/count'].get
+  update:
+    operationId: count
+    tags:
+    - Prism
+- target: $.paths['/api/v1/settings/licensing'].get
+  update:
+    operationId: licensing
+    tags:
+    - Settings
+- target: $.paths['/api/v1/tags'].get
+  update:
+    operationId: getTags
+    tags:
+    - Tags
+- target: $.paths['/api/v1/tags'].post
+  update:
+    operationId: createTag
+    tags:
+    - Tags
+- target: $.paths['/api/v1/tags/{tag_id}'].patch
+  update:
+    operationId: updateTag
+    tags:
+    - Tags
+- target: $.paths['/api/v1/tags/{tag_id}'].delete
+  update:
+    operationId: deleteTag
+    tags:
+    - Tags
+- target: $.paths['/api/v1/threat-details'].get
+  update:
+    operationId: getThreatDetails
+    tags:
+    - Threats
+- target: $.paths['/api/v1/behavioral-detections'].get
+  update:
+    operationId: getBehavioralDetections
+    tags:
+    - Threats
+- target: $.paths['/api/v1/vulnerability-management/detections'].get
+  update:
+    operationId: listDetections
+    tags:
+    - Vulnerabilities
+- target: $.paths['/api/v1/vulnerability-management/vulnerabilities'].get
+  update:
+    operationId: listVulnerabilities
+    tags:
+    - Vulnerabilities
+- target: $.paths['/api/v1/blueprints/{blueprint_id}'].patch
+  update:
+    operationId: updateBlueprint
+    tags:
+    - Blueprints
+- target: $.paths['/api/v1/blueprints/{blueprint_id}'].get
+  update:
+    operationId: getBlueprint
+    tags:
+    - Blueprints
+- target: $.paths['/api/v1/blueprints/{blueprint_id}'].delete
+  update:
+    operationId: deleteBlueprint
+    tags:
+    - Blueprints
+- target: $.paths['/api/v1/devices/{device_id}/action/deleteuser'].post
+  update:
+    operationId: deleteDeviceUser
+    tags:
+    - Device Actions
+- target: $.paths['/api/v1/users'].get
+  update:
+    operationId: listUsers
+    tags:
+    - Users
+- target: $.paths['/api/v1/users/{user_id}'].get
+  update:
+    operationId: getUser
+    tags:
+    - Users
+- target: $.paths['/api/v1/users/{user_id}'].delete
+  update:
+    operationId: deleteUser
+    tags:
+    - Users
+- target: $.paths['/api/v1/blueprints/{blueprint_id}/assign-library-item'].post
+  update:
+    operationId: assignLibraryItem
+    tags:
+    - Blueprints
+- target: $.paths['/api/v1/blueprints/{blueprint_id}/list-library-items'].get
+  update:
+    operationId: listLibraryItems
+    tags:
+    - Blueprints
+- target: $.paths['/api/v1/vulnerability-management/vulnerabilities/{cve_id}'].get
+  update:
+    operationId: getVulnerabilityDescription
+    tags:
+    - Vulnerabilities
+- target: $.paths['/api/v1/vulnerability-management/vulnerabilities/{cve_id}/devices'].get
+  update:
+    operationId: listAffectedDevices
+    tags:
+    - Vulnerabilities
+- target: $.paths['/api/v1/vulnerability-management/vulnerabilities/{cve_id}/software'].get
+  update:
+    operationId: listAffectedSoftware
+    tags:
+    - Vulnerabilities
+- target: $.paths['/api/v1/devices/{device_id}/action/dailycheckin'].post
+  update:
+    operationId: dailyCheckIn
+    tags:
+    - Device Actions

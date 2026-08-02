@@ -1,0 +1,115 @@
+generated: '2026-08-01'
+method: searched
+source: https://updates.iru.com/feed-en
+url: https://www.iru.com/updates/
+rss: https://updates.iru.com/feed-en
+scheme:
+  style: dated-product-updates
+  versioned_entries: false
+  api_specific: false
+  notes: >-
+    Iru publishes a dated, RSS-backed product-updates feed covering the whole platform, not an API
+    changelog. Entries are per feature/app, not per API version, and carry no semver. Across the 50
+    entries in the feed on 2026-08-01 there is no announcement of an API endpoint being added,
+    changed or removed, and no breaking-change notice. The Endpoint Management API itself remains
+    at /api/v1 with OpenAPI info.version 1.0.0.
+subscription:
+  email: true
+  categories: [Agent, Auto Apps, Vulnerability Management, Endpoint Security, Device Management]
+  rss: https://updates.iru.com/feed-en
+window_captured:
+  feed_items: 50
+  newest: '2026-07-29'
+  oldest_in_window: see feed
+entries:
+- date: '2026-07-29'
+  title: 'Auto App: Screen Studio'
+  category: Auto Apps
+  breaking: false
+  url: https://www.iru.com/updates/auto-app-screen-studio-758f12f6-72e0-4d03-84f1-fe6766c6d7d7
+- date: '2026-07-29'
+  title: 'Auto App: Glean'
+  category: Auto Apps
+  breaking: false
+  url: https://www.iru.com/updates/auto-app-glean-89937e08-50fe-44cf-87f0-e89311128a64
+- date: '2026-07-29'
+  title: 'Auto App: Elgato Stream Deck'
+  category: Auto Apps
+  breaking: false
+  url: https://www.iru.com/updates/auto-app-elgato-stream-deck-a9e77483-26a3-4837-80b1-bc2df507b0bd
+- date: '2026-07-29'
+  title: 'Auto App: AltTab'
+  category: Auto Apps
+  breaking: false
+  url: https://www.iru.com/updates/auto-app-alttab-d852c8c8-3e8a-4610-a4c5-e24724c582a0
+- date: '2026-07-29'
+  title: New Windows Auto Apps
+  category: Auto Apps
+  breaking: false
+  url: https://www.iru.com/updates/windows-auto-apps-f76ea095-9d35-4c46-b1f0-22faf16654f7
+- date: '2026-07-29'
+  title: Iru Agent for Mac Release 5.1.22 (5390)
+  category: Endpoint Agent
+  version: 5.1.22 (5390)
+  breaking: false
+  url: https://www.iru.com/updates/iru-agent-for-mac-release-5.1.22-5390
+- date: '2026-07-28'
+  title: 'Managed OS for Apple: New embedded delay option'
+  category: Endpoint Management
+  breaking: false
+  url: https://www.iru.com/updates/managed-os-for-apple-new-embedded-delay-option
+- date: '2026-07-28'
+  title: Support for Australia ServiceNow release
+  category: Endpoint Management
+  breaking: false
+  url: https://www.iru.com/updates/support-for-australia-servicenow-release
+- date: '2026-07-27'
+  title: New Apple Beta Enrollment Assignment Rule
+  category: Endpoint Management
+  breaking: false
+  url: https://www.iru.com/updates/new-apple-beta-enrollment-assignment-rule
+- date: '2026-07-27'
+  title: Managed OS for macOS
+  category: Endpoint Management
+  breaking: false
+  url: https://www.iru.com/updates/managed-os-for-macos-295f3d6d-7e2c-4cce-a97f-c8a97a47e446
+- date: '2026-07-27'
+  title: Managed OS for iOS, iPadOS, and tvOS
+  category: Endpoint Management
+  breaking: false
+  url: https://www.iru.com/updates/managed-os-for-ios-ipados-and-tvos-52b1985d-d91a-4faa-8617-b2ef3f354c9a
+- date: '2026-07-24'
+  title: What's New in Iru | July 24th
+  category: Product Updates
+  breaking: false
+  url: https://www.iru.com/updates/whats-new-in-iru-july-24th
+- date: '2026-07-22'
+  title: Restrictions improvements for Apple beta releases
+  category: Endpoint Management
+  breaking: false
+  url: https://www.iru.com/updates/restrictions-improvements-for-apple-beta-releases
+- date: '2026-07-22'
+  title: Request AppleCare enhanced logging from iOS and iPadOS devices testing Apple betas
+  category: Endpoint Management
+  breaking: false
+  url: https://www.iru.com/updates/request-applecare-enhanced-logging-from-ios-and-ipados-devices-testing-apple-betas
+- date: '2026-07-22'
+  title: Vulnerability Management Enhancements
+  category: Vulnerability Management
+  breaking: false
+  url: https://www.iru.com/updates/bulk-device-exclusion-in-vulnerability-management
+- date: '2026-07-22'
+  title: 'ADE customization for Mac: Managed profile delivery'
+  category: Endpoint Management
+  breaking: false
+  url: https://www.iru.com/updates/ade-customization-for-mac-managed-profile-delivery
+- date: '2026-07-22'
+  title: Public IP address now reported for Apple devices
+  category: Endpoint Management
+  breaking: false
+  url: https://www.iru.com/updates/public-ip-address-now-reported-for-apple-devices
+gaps:
+- No API-specific changelog; API consumers have no feed that announces endpoint or schema changes.
+- No breaking-change or deprecation notices in the captured window.
+see_also:
+  lifecycle: lifecycle/kandji-lifecycle.yml

@@ -1,0 +1,118 @@
+generated: '2026-08-01'
+method: searched
+source: >-
+  https://docs.iru.com/en/endpoint/api/iru-api-overview + https://api-docs.kandji.io/ (collection
+  description) + derived from openapi/kandji-endpoint-management-openapi.json
+summary: >-
+  Cross-cutting request/response semantics for the Iru (formerly Kandji) Endpoint Management API.
+  Tenant-scoped bearer auth, limit/offset pagination, a one-field error envelope, a hard per-tenant
+  hourly rate limit, and — importantly for agents — NO idempotency contract of any kind on an API
+  whose write surface includes erase, lock and shutdown.
+authentication:
+  style: http_bearer
+  header: 'Authorization: Bearer <token>'
+  token_scope: tenant
+  token_issuance: Web App > Account Menu > Access > API tokens > Add Token
+  permissions: >-
+    Per-endpoint permission grid selected at token creation (or edited later), grouped by category
+    (e.g. Blueprints Management). A token can be created with no permissions and configured later.
+  one_time_display: true
+  revocation: 'Access > API tokens; revocation is total (kills REST and MCP access for that token)'
+  see: authentication/kandji-authentication.yml
+hosts:
+  pattern_us: https://{subdomain}.api.kandji.io
+  pattern_eu: https://{subdomain}.api.eu.kandji.io
+  discovery: 'The tenant hostname is shown as "Your organization''s API URL" on the Access > API tokens page.'
+  note: Region is chosen by hostname, not by a header or a path segment.
+http_methods:
+  supported: [GET, POST, PATCH, DELETE]
+  note: >-
+    PUT is not used anywhere in the spec; partial updates are PATCH. Documented verbatim in the
+    collection description.
+pagination:
+  primary_style: limit-offset
+  params:
+  - {name: limit, in: query, operations: 26}
+  - {name: offset, in: query, operations: 25}
+  secondary_styles:
+  - {style: page-size, params: [page, size], operations: 8, note: used by newer surfaces}
+  - {style: cursor, params: [cursor], operations: 2, note: Prism/export surfaces}
+  response_envelope_documented: false
+  note: >-
+    Three different pagination idioms coexist in one v1 API. There is no single documented response
+    envelope for page metadata; agents must inspect the response body per operation.
+filtering_and_sorting:
+  sort_param: sort_by            # 22 operations
+  filter_param: filter           # 20 operations
+  common_facets: [blueprint_ids, device_families, device_family, os, model, serial_number,
+    asset_tag, device_name, mac_address, filevault_enabled, profile_status, status, classification,
+    date_range, start_date, end_date, term, id__in]
+idempotency:
+  documented: false
+  header: null
+  notes: >-
+    NO idempotency-key header, parameter or retry contract is documented or present in the spec.
+    This matters more here than on a typical CRUD API: the write surface includes 20 device actions
+    (erase, lock, restart, shutdown, clear passcode, delete user, enable lost mode ...) that are
+    dispatched as MDM commands. A retried POST after a timeout has no defined de-duplication
+    semantics. Agents must treat every device action as at-most-once and confirm outcome via
+    getDeviceCommands / getDeviceActivity rather than retrying blind.
+    NO `type: Idempotency` pointer is emitted in apis.yml — there is no idempotency contract to point at.
+request_tracing:
+  request_id_header: null
+  notes: >-
+    No request-id / correlation header documented or declared in the spec. The gateway does emit a
+    request_id in its own 404 body for unrouted paths (observed: {"message":"no Route matched with
+    those values","request_id":"..."}) but that is Kong's envelope, not the API's.
+versioning:
+  style: uri-path
+  current: v1
+  see: lifecycle/kandji-lifecycle.yml
+error_envelope:
+  shape: '{"error": "<message>"}'
+  content_type: application/json
+  rfc9457: false
+  statuses_declared: [400, 401, 404]
+  see: errors/kandji-problem-types.yml
+rate_limiting:
+  limit: 10000 requests per hour
+  scope: tenant (shared by every API token AND the MCP server)
+  response_code_declared: false
+  headers_documented: false
+  see: rate-limits/kandji-rate-limits.yml
+long_running_operations:
+  pattern: request-then-poll
+  examples:
+  - {request: requestCategoryExport, poll: getCategoryExport, resource: Prism export}
+  - {request: uploadInHouseApp, poll: uploadInHouseAppStatus, resource: in-house IPA upload}
+  - {request: 'device action POST', poll: getDeviceCommands, resource: MDM command dispatch}
+  note: >-
+    Library-item binary upload is a two-step: the create/upload operation returns a pre-signed S3
+    URL, which is described by its own OpenAPI document (openapi/kandji-upload-to-s3-openapi.json).
+events_and_webhooks:
+  webhooks: false
+  asyncapi: false
+  notes: >-
+    There is no webhook subscription API and no event stream. Outbound notification is
+    UI-configured only, through the Slack and Microsoft Teams integrations, which post Iru Agent and
+    system alerts to channels. Nothing to model as AsyncAPI; no Webhooks pointer emitted.
+sandbox:
+  documented: false
+  notes: >-
+    No test mode, sandbox tenant, magic test identifiers or key-prefix separation is documented.
+    There is a 14-day free trial of Workforce Identity, Endpoint Management, Vulnerability
+    Management and EDR, but a trial tenant is a live tenant acting on real enrolled devices, not a
+    sandbox. No sandbox/ artifact is emitted.
+agent_guidance_published:
+  source: https://docs.iru.com/en/endpoint/integrations/ai-assistants/iru-mcp
+  statement: >-
+    For destructive operations (erase, delete, lock) Iru documents that the assistant should
+    summarize the impact and require explicit human approval before executing, unless the action is
+    on an MCP allowlist.
+cross_links:
+  authentication: authentication/kandji-authentication.yml
+  errors: errors/kandji-problem-types.yml
+  lifecycle: lifecycle/kandji-lifecycle.yml
+  rate_limits: rate-limits/kandji-rate-limits.yml
+  mcp: mcp/kandji-mcp.yml
+  data_model: data-model/kandji-data-model.yml

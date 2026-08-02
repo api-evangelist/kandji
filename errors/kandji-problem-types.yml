@@ -1,0 +1,78 @@
+generated: '2026-08-01'
+method: derived
+source: openapi/kandji-endpoint-management-openapi.json
+format: bespoke-json
+format_note: >-
+  NOT RFC 9457. Every error response in the Iru Endpoint Management API is application/json with a
+  single-field envelope {"error": "<message>"} (components.schemas.Error declares
+  {error: string}). There is no `type` URI, no `title`, no `detail`, no `instance`, and no
+  machine-readable application error code anywhere in the spec — the string message is the only
+  signal. Agents cannot branch on an error code; they must branch on HTTP status.
+envelope:
+  content_type: application/json
+  schema: '#/components/schemas/Error'
+  fields:
+  - name: error
+    type: string
+    description: Human-readable error message.
+coverage:
+  operations_total: 121
+  operations_with_400: 114
+  operations_with_401: 113
+  operations_with_404: 113
+  operations_with_403: 0
+  operations_with_429: 0
+  operations_with_5xx: 0
+  note: >-
+    No operation declares 403, 429 or any 5xx response, even though the API documents a hard rate
+    limit of 10,000 requests/hour per tenant (see rate-limits/kandji-rate-limits.yml) and a
+    per-endpoint permission model that must be able to deny. The throttle and authorization-denied
+    responses are undeclared in the contract — a real gap for agent error handling.
+problems:
+- status: 400
+  title: Bad Request
+  envelope_example: '{"error": "Bad Request"}'
+  meaning: >-
+    Malformed request, invalid query parameter or invalid body. Declared on 114 of 121 operations.
+  remediation: >-
+    Validate query parameters against the spec (limit/offset ranges, filter and sort_by values,
+    device_families and blueprint_ids membership) before retrying. Not retryable unchanged.
+  source_operation: openapi/kandji-endpoint-management-openapi.json (114 operations)
+- status: 401
+  title: Unauthorized
+  envelope_example: '{"error": "Unauthorized"}'
+  meaning: >-
+    Missing, malformed, revoked or wrong-tenant bearer token. Declared on 113 of 121 operations.
+  remediation: >-
+    Confirm the Authorization: Bearer <token> header is present, that the token was issued for this
+    tenant's API URL ({subdomain}.api.kandji.io or {subdomain}.api.eu.kandji.io), and that it has
+    not been revoked in Access. NOTE: the spec declares no 403 anywhere, so how a token that lacks
+    the required per-endpoint permission is surfaced (401 vs 403) is undocumented — do not assume.
+  source_operation: openapi/kandji-endpoint-management-openapi.json (113 operations)
+- status: 404
+  title: Not Found
+  envelope_example: '{"error": "Not Found"}'
+  meaning: >-
+    Resource id does not exist in this tenant, or the path is wrong. Declared on 113 of 121
+    operations.
+  remediation: >-
+    Re-resolve the id (device_id, blueprint_id, library_item_id, ade_token_id, note_id, tag_id,
+    user_id, cve_id) from its list operation. Ids are tenant-scoped; an id from another tenant 404s.
+  source_operation: openapi/kandji-endpoint-management-openapi.json (113 operations)
+undeclared_but_documented:
+- status: 429
+  title: Rate limit exceeded
+  documented_at: https://docs.iru.com/en/endpoint/api/iru-api-overview
+  note: >-
+    Iru documents a 10,000 requests/hour per-tenant limit shared across every API token and the MCP
+    server, but declares no 429 response and no rate-limit response headers in the OpenAPI. Treat a
+    429 as possible on every operation and back off.
+gaps:
+- No stable machine-readable error code — only an HTTP status and a free-text message.
+- No 403, 429 or 5xx responses declared anywhere in the spec.
+- No error examples beyond the one-word `example` values (Bad Request / Unauthorized / Not Found).
+- Authorization-denied behaviour is undocumented — the permission grid can deny, but no 403 is declared.
+see_also:
+  conventions: conventions/kandji-conventions.yml
+  rate_limits: rate-limits/kandji-rate-limits.yml
+  authentication: authentication/kandji-authentication.yml

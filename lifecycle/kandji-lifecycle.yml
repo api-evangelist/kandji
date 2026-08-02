@@ -1,0 +1,81 @@
+generated: '2026-08-01'
+method: searched
+source: >-
+  https://docs.iru.com/en/iru/platform-overview/iru-product-updates +
+  https://docs.iru.com/en/iru/platform-overview/iru-release-stages +
+  https://docs.iru.com/en/iru/iru-support/status-page + https://status.kandji.io +
+  openapi/kandji-endpoint-management-openapi.json
+versioning:
+  scheme: uri-path
+  current: v1
+  notes: >-
+    Every path in the published OpenAPI is prefixed /api/v1/. The spec's own info.version is 1.0.0.
+    No version negotiation header, no dated version train, no documented policy for how a v2 would
+    be introduced.
+  docs: https://api-docs.kandji.io/
+release_stages:
+  documented: true
+  url: https://docs.iru.com/en/iru/platform-overview/iru-release-stages
+  stages:
+  - id: early-access
+    label: Early Access (EA)
+    availability: invited customers only
+    support: email + portal; private documentation; recommended for test devices only
+  - id: preview
+    label: Preview
+    availability: all customers
+    support: chat + email + portal; labelled in the UI; implementation details may still change
+  - id: ga
+    label: Generally Available (GA)
+    availability: all customers
+    support: fully supported; production-ready
+  note: >-
+    This is a FORWARD lifecycle (how features arrive), not a deprecation lifecycle (how they leave).
+    Iru publishes no counterpart policy for retiring an API or a feature.
+changelog:
+  url: https://www.iru.com/updates/
+  rss: https://updates.iru.com/feed-en
+  email_subscription: true
+  email_categories: [Agent, Auto Apps, Vulnerability Management, Endpoint Security, Device Management]
+  see: changelog/kandji-changelog.yml
+  notes: >-
+    Product-wide changelog. It is not API-specific — no entry in the captured window announces an
+    API endpoint addition, removal or breaking change.
+deprecation:
+  policy_documented: false
+  sunset_header: false
+  notes: >-
+    No API deprecation or sunset policy located (docs, llms.txt index of 423 pages, and the release
+    stages article all searched). No RFC 8594 Sunset/Deprecation header support documented. No
+    operation in either OpenAPI document carries deprecated: true.
+  observed_deprecations:
+  - subject: kst (Kandji Sync Toolkit) Python package
+    superseded_by: iructl
+    evidence: 'PyPI summary: "Kandji Sync Toolkit, a utility for local management of Kandji resources (Deprecated, use iructl)."'
+    kind: tooling, not API
+sla:
+  documented: false
+  notes: >-
+    No public uptime SLA. Pricing is quote-based on annual commitments; any SLA would sit in the
+    Platform Services Agreement / order form rather than on a public page.
+status_page:
+  url: https://status.kandji.io
+  provider: Atlassian Statuspage
+  api: https://status.kandji.io/api/v2/summary.json
+  subscribable: true
+  observed: '2026-08-01 — page id hp2hjvh35tq0, components operational'
+  note: >-
+    Still on the kandji.io domain after the rebrand; status.iru.com resolves but does not serve a
+    Statuspage instance (its /api/v2/summary.json returned an S3 NoSuchKey error).
+rebrand:
+  from: Kandji
+  to: Iru, Inc.
+  date: '2025-10-22'
+  agent_rename_date: '2026-04-08'
+  agent_rename_note: >-
+    Apps were rebranded from "Kandji Agent" to "Iru Agent" on 2026-04-08; Iru explicitly asks
+    customers to update scripts, automations and utilities that reference the old app names. macOS
+    unified-logging subsystems still use the io.kandji.* prefix, and API hostnames still use
+    kandji.io.
+  affected_surfaces: [api.kandji.io, api-docs.kandji.io, status.kandji.io, support.kandji.io, github.com/kandji-inc, io.kandji.* log subsystems]
+deprecated_operations: []

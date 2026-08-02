@@ -1,0 +1,42 @@
+generated: '2026-08-01'
+method: generated
+source: >-
+  Packaged Agent Skills generated from the provider-published OpenAPI 3.0.0 at
+  openapi/kandji-endpoint-management-openapi.json. The source spec declares NO operationId, so each
+  step cites the verbatim METHOD + path from the spec and, in parentheses, the deterministic
+  operationId assigned in overlays/kandji-endpoint-management-overlay.yaml. Cross-cutting rules cite
+  ../authentication/, ../conventions/, ../errors/ and ../rate-limits/. No operation, parameter or
+  response is invented.
+provider_published_skills:
+  searched: true
+  found: false
+  note: >-
+    No AGENTS.md, skills/ directory or published agent skill located on iru.com, docs.iru.com, or in
+    the kandji-inc GitHub organization on 2026-08-01. Iru does publish narrative agent guidance in
+    its MCP article (destructive actions require explicit human approval), which every skill below
+    carries forward.
+skills:
+- file: kandji-find-a-device.md
+  name: Find a device and read its posture
+  api: openapi/kandji-endpoint-management-openapi.json
+  operations: [listDevices, getDevice, getDeviceDetails, getDeviceStatus, getDeviceApps, getDeviceParameters]
+- file: kandji-run-a-device-action.md
+  name: Run a device action safely
+  api: openapi/kandji-endpoint-management-openapi.json
+  operations: [listDevices, lockDevice, eraseDevice, restartDevice, shutdown, clearPasscode, enableLostMode, disableLostMode, getDeviceCommands, getDeviceActivity]
+- file: kandji-publish-a-custom-app.md
+  name: Publish a Custom App and assign it to a Blueprint
+  api: openapi/kandji-endpoint-management-openapi.json
+  operations: [uploadCustomApp, createCustomApp, listBlueprints, assignLibraryItem, getLibraryItemStatuses]
+- file: kandji-triage-vulnerabilities.md
+  name: Triage a CVE across the fleet
+  api: openapi/kandji-endpoint-management-openapi.json
+  operations: [listVulnerabilities, getVulnerabilityDescription, listAffectedDevices, listAffectedSoftware, listDetections]
+- file: kandji-export-fleet-inventory.md
+  name: Export fleet inventory from Prism
+  api: openapi/kandji-endpoint-management-openapi.json
+  operations: [count, deviceInformation, applications, filevault, requestCategoryExport, getCategoryExport]
+- file: kandji-renew-ade-token.md
+  name: Renew an Automated Device Enrollment token before it expires
+  api: openapi/kandji-endpoint-management-openapi.json
+  operations: [listADEIntegrations, getADEIntegration, downloadADEPublicKey, renewADEIntegration, listDevicesAssociatedToADEToken]

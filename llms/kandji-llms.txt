@@ -1,0 +1,102 @@
+# Iru
+
+> Unify identity & access, device management, endpoint security, and compliance automation with Iru's AI-powered platform. Collapse the stack. Get time back.
+
+Site: https://www.iru.com
+
+## Core Pages
+
+- [Legal Documents | Iru](https://www.iru.com/legal): Legal Documents | Iru
+- [Iru AI: The Agentic Operating Layer for IT & Security](https://www.iru.com/iru-ai): Iru AI unites specialized agents across identity, access, endpoint security & management, and compliance automation.
+- [Iru Platform Service Agreement | Iru](https://www.iru.com/terms-of-use): This Platform Services Agreement (“AGREEMENT”) is a legally binding contract between you, on behalf of the legal entity you represent (“LICENSEE”), and Iru, Inc. (“IRU”).
+- [See Iru in action: Request a Demo | Iru](https://www.iru.com/request-demo): Discover why thousands of teams choose Iru for Identity, Endpoint, and Compliance.
+- [Iru Pricing](https://www.iru.com/pricing): Explore all Iru products and pricing for each. Identity, Endpoint Management, and Compliance pricing...
+- [Iru Customer Referral Program | Iru](https://www.iru.com/referral-program): Iru Customer Referral Program | Iru
+- [__Contact_Us](https://www.iru.com/contact): __Contact_Us
+- [Iru Integrations and Partners | Iru](https://www.iru.com/integrations): Import users, sync device data, trigger workflows, and enrich asset systems with integrations including Okta, Google Workspace, ServiceNow, and more.
+- [Iru: Identity, Endpoint, & Compliance for IT & Security | Iru](https://www.iru.com): Unify identity & access, device management, endpoint security, and compliance automation with Iru's AI-powered platform. Collapse the stack. Get time back.
+- [Become an Iru Partner](https://www.iru.com/become-an-iru-partner): Join the Iru Partner Program and help customers secure users, apps, and devices with an AI powered platform that gives them time and control back.
+- [Register a Partner Opportunity](https://www.iru.com/deal-registration): Register a partner opportunity with Iru.
+- [Kandji MDM | Iru](https://www.iru.com/kandji-mdm): Apple MDM solutions built for Mac, iPad, Apple TV and iPhone device management. From deployment to maintenance to security, Kandji has thought of everything.
+- [Log in to your Iru account | Iru](https://www.iru.com/login): Enter your team's Iru URL to log into your account. Need an account? Book a demo...
+- [__Quote](https://www.iru.com/quote): __Quote
+- [Introducing Iru: Collapse the Stack!](https://www.iru.com/meet-iru): Iru collapses the stack. Built for the AI era, our platform brings together identity & access, endpoint security & management, and compliance automation.
+
+## Product Pages
+
+- [Adaptive Compliance Automation (Fully AI) | Iru](https://www.iru.com/products/compliance): Translate frameworks into tailored controls and tasks. Iru AI maps and validates evidence continuously so your team stays audit‑ready as you scale.
+- [Passwordless Workforce Identity & Access | Iru](https://www.iru.com/products/identity): Passwordless SSO with device‑bound passkeys, context‑aware policies, and lifecycle automation, stronger security with a better user experience.
+- [Compliance Trust Center: Share Security Posture & Speed Deals | Iru](https://www.iru.com/products/compliance/trust-center): Show your security posture to potential customers, build trust in your brand, and accelerate sales with an AI-powered public trust center.
+- [Endpoint Detection & Response (EDR) for Modern Teams | Iru](https://www.iru.com/products/endpoint/endpoint-detection-response): Prevent, detect, and contain attacks in real time through Iru's single, low-overhead agent across Mac and Windows.
+- [Unified Endpoint Management and Security | Iru](https://www.iru.com/products/endpoint): Provision devices, enforce policies, and stop threats with cross‑platform device management, EDR, and vulnerability management in one lightweight agent.
+- [Compliance Automation with Adaptive Evidence Mapping | Iru](https://www.iru.com/products/compliance/compliance-automation): See frameworks transform into tailored controls with assigned tasks. Iru AI continuously collects evidence, then validates and maps it to the right controls.
+- [Vulnerability Management with Autonomous Patching | Iru](https://www.iru.com/products/endpoint/vulnerability-management): Gain full visibility into software risks across Mac and Windows and automatically patch vulnerable apps.
+- [Meet Iru (Formerly Kandji)](https://www.iru.com/products/endpoint/kandji-now-iru): Deploy cross-platform device management, endpoint security, and compliance automation with Iru's AI-powered platform. Collapse the stack. Get time back.
+- [Automated Endpoint Management for Mac & Windows | Iru](https://www.iru.com/products/endpoint/endpoint-management): Automate onboarding, app updates, and policy enforcement so teams move faster on Apple, Windows, and Android.
+
+## Company
+
+- [Careers at Iru: Help rewrite how IT and security works | Iru](https://www.iru.com/company/careers): Join a team building from first principles. We’re uniting identity, endpoint, and compliance into one platform, and we’re hiring across roles.
+- [About Iru](https://www.iru.com/company/about): Replacing stitched-together point solutions with one AI-powered platform, Iru is changing the way IT & security teams operate to give them time and control back.
+
+## Legal & Compliance
+
+- [Privacy Rights Request Form | Iru](https://www.iru.com/legal/privacy-rights-request): If you are using the Iru service through a company account, please contact your employer directly with your requests. Do not submit your request here.
+- [Artificial Intelligence Acceptable Use Policy | Iru](https://www.iru.com/legal/ai-use-policy): Any violation of this Policy may be considered a breach of the Master Subscription Agreement or other governing agreements.
+- [Iru Sub-Processors | Iru](https://www.iru.com/legal/service-providers): The following is a list of sub-processors currently authorized by Iru, Inc. ("Iru") to process Personal Information and assist Iru in providing the relevant Services under the Iru Master Subscription Agreement
+- [Data Processing Addendum | Iru](https://www.iru.com/legal/data-processing-addendum): This Data Processing Addendum, including its Exhibits and Appendices (“DPA”) forms part of the Master Subscription Agreement available at...
+- [Platform Services Agreement | Iru](https://www.iru.com/legal/terms): THIS PLATFORM SERVICES AGREEMENT (“AGREEMENT”) IS A LEGALLY BINDING CONTRACT BETWEEN YOU, ON BEHALF OF THE LEGAL ENTITY YOU REPRESENT (“LICENSEE”), AND IRU, INC. (“IRU”).
+- [Accessibility Statement | Iru](https://www.iru.com/legal/accessibility): If you are having difficulty with access to our website even after utilizing any access features within this website and/or any third party or browser features, we invite you to contact us for further assistance.
+- [Third-Party Notices for Windows](https://www.iru.com/legal/third-party-notices): Third-Party Notices for Windows
+- [Iru Privacy Policy | Iru](https://www.iru.com/legal/privacy): This Privacy Policy describes how we collect, use, protect, and disclose personal information about you, and how you can exercise your privacy rights.
+- [Iru Patents | Iru](https://www.iru.com/legal/patents): Iru, Inc. products and categories of products may be covered by one or more patents in the U.S. and internationally, as is indicated below.
+
+## Other Pages
+
+- [What is an Apple VPP Token? | Iru](https://www.iru.com/definitions/what-is-an-apple-vpp-token): Find out what an Apple VPP Token is and how it facilitates app distribution across your organization. Get the details you need to optimize your app management.
+- [What Is Mac Address Randomization? | Iru](https://www.iru.com/definitions/mac-address-randomization): Learn about Mac Address Randomization and its importance in ensuring device privacy and security. Understand how this technology works by the experts at Kandji.
+- [What is Remediation? | Iru](https://www.iru.com/definitions/what-is-remediation): Remediation is the process of enforcing security controls that previously failed to work.
+- [What Is Apple Business Manager? | Iru](https://www.iru.com/definitions/what-is-apple-business-manager): Explore Apple Business Manager and its benefits for managing Apple devices in your organization. Learn how it can simplify your device management tasks.
+- [What is zero-touch deployment for Mac? | Iru](https://www.iru.com/definitions/what-is-zero-touch-deployment-for-mac): Learn about zero-touch deployment for Mac and how it simplifies device setup. Streamline your deployment process with minimal manual intervention.
+- [What is the MDM protocol?](https://www.iru.com/definitions/what-is-the-mdm-protocol): Learn about the MDM protocol and its role in mobile device management. Discover how it supports security, compliance, and efficient device oversight.
+- [What are third-party apps (custom apps)? | Iru](https://www.iru.com/definitions/what-are-third-party-apps-custom-apps): Explore the world of third-party and custom apps for Apple devices. Find out how they can enhance your workflow and meet your specific needs.
+- [How to Encrypt an iPhone | Iru](https://www.iru.com/definitions/iphone-encryption-guide): How to encrypt an iPhone? Explore this guide from the experts at Kandji to get complete instructions for enabling iPhone data protection encryption settings.
+- [What is Patch Management? Guide of Best Practices](https://www.iru.com/definitions/what-is-patch-management): Explore the essentials of Mac patch management and its role in maintaining security and performance. Ensure your Macs are up-to-date and secure.
+- [How do I achieve FedRAMP compliance for Mac? | Iru](https://www.iru.com/definitions/how-do-i-achieve-fedramp-compliance-for-mac): Learn the steps to achieve FedRAMP compliance for Mac devices. Our guide helps ensure your Macs meet federal security standards effectively.
+- [How do I bulk purchase apps for Apple devices? | Iru](https://www.iru.com/definitions/how-do-i-bulk-purchase-apps-for-apple-devices): Find out how to bulk purchase apps for your Apple devices effortlessly. Save time and streamline app management with our comprehensive guide.
+- [What are the CIS macOS benchmarks? | Iru](https://www.iru.com/definitions/what-are-the-cis-macos-benchmarks): Get to know the CIS macOS benchmarks and how they help secure your macOS environment. Follow our guide to implement best practices effectively.
+- [What is FedRAMP compliance? | Iru](https://www.iru.com/definitions/what-is-fedramp-compliance): FedRAMP is a government program that focuses on assessing, securing, and monitoring cloud-based services.
+- [What is Mobile Application Management (MAM)? | Iru](https://www.iru.com/definitions/what-is-mobile-application-management): Mobile application management (MAM) solutions allow IT admins to control and secure access to corporate applications on mobile devices.
+- [Introducing Iru: Collapse your IT stack](https://www.iru.com/newsroom/kandji-now-iru): Iru unites endpoint security and management, identity and access, and compliance automation.
+- [What is Federated Authentication?](https://www.iru.com/definitions/what-is-federated-authentication): Discover the concept of Federated Authentication and how it streamlines the login process while improving security. Learn about its benefits for your organization.
+- [How do I release a device from Apple Business Manager? | Iru](https://www.iru.com/definitions/how-do-i-release-a-device-from-apple-business-manager): Need to release a device from Apple Business Manager? Learn the straightforward process and manage your devices with ease.
+- [Application Management: Everything You Need to Know | Iru](https://www.iru.com/definitions/what-is-application-management): Application management refers to the systematic control and administration of software deployed on computers and other devices within an organization.
+- [Guide to Apple IT: Declarative Device Management](https://www.iru.com/definitions/what-is-declarative-device-management): The ultimate guide to Apple Declarative Device Management. Learn about the evolution of Apple MDM, benefits of DDM, and more from Kandji's experts.
+- [What Is Activation Lock? | Iru](https://www.iru.com/definitions/what-is-activation-lock): Learn from the experts at Kandji how to use Activation Lock to prevent others from using an iPhone, iPad or iOS devices if it is ever lost or stolen.
+- [What is Apple Device Enrollment Program (DEP)? | Iru](https://www.iru.com/definitions/what-is-apple-device-enrollment-program-dep): Apple's Device Enrollment Program (DEP) made it easier for businesses to deploy macOS, iOS, and tvOS devices.
+- [How do I achieve NIST compliance for Mac? | Iru](https://www.iru.com/definitions/how-do-i-achieve-nist-compliance-for-mac): Discover how to achieve NIST compliance for Mac systems. Our guide provides practical steps to ensure your devices meet necessary security requirements.
+- [What is Mac inventory management? | Iru](https://www.iru.com/definitions/what-is-mac-inventory-management): Mac inventory management helps businesses keep track of the status of their devices.
+- [What are Apple device parameters? | Iru](https://www.iru.com/definitions/what-are-apple-device-parameters): Understand the key parameters for Apple devices to manage them effectively. Get detailed information to optimize your device management strategies.
+- [What is NIST compliance? | Iru](https://www.iru.com/definitions/what-is-nist-compliance): Achieving NIST compliance can keep business systems and data safe from harm on many digital fronts.
+- [How can I manage Mac devices in an enterprise environment? | Iru](https://www.iru.com/definitions/how-can-i-manage-macs-in-an-enterprise-environment): Explore effective strategies for managing Mac devices in an enterprise environment. Optimize your IT operations with our expert tips and improve productivity.
+- [What are Managed Apple IDs? | Iru](https://www.iru.com/definitions/what-are-managed-apple-ids): Learn about Managed Apple IDs and how they simplify device management and enhance security for your organization. Discover the benefits of Managed Apple IDs.
+- [What is MDM (mobile device management)?](https://www.iru.com/definitions/what-is-mobile-device-management-mdm): Find out what mobile device management is and how it helps in configure, track, and secure devices in the workplace. From experts at Kandji
+- [Add Devices to Apple Business Manager | Iru](https://www.iru.com/definitions/how-to-add-devices-to-apple-business-manager): Adding devices to Apple Business Manager with Apple Configurator is an effective way to get iOS devices into management. Learn more from the experts at Kandji
+- [What is Enterprise Mobility Management (EMM)? | Iru](https://www.iru.com/definitions/what-is-enterprise-mobility-management-emm): EMM stands for “enterprise mobility management.” EMM tools can help integrate MDM with other enterprise systems.
+- [What is UEM (Unified Endpoint Management)?](https://www.iru.com/definitions/what-is-unified-endpoint-management-uem): UEM is an integrated approach to managing, securing, and monitoring all endpoint devices within an organization from one centralized console.
+- [Best Practices on How to Manage macOS Updates | Iru](https://www.iru.com/definitions/mac-os-update-management): Discover how to effectively manage Apple OS updates for your organization's devices. Learn how to deploy macOS updates efficiently using MDM for enhanced security.
+- [What is an MDM Server? | Iru](https://www.iru.com/definitions/what-is-an-mdm-server): Understand what an MDM server is and how it supports mobile device management. Learn its role in ensuring effective device oversight and security.
+- [Does Apple Business Manager cost anything? | Iru](https://www.iru.com/definitions/does-apple-business-manager-cost-anything): Apple Business Manager is highly recommended for any business purchasing Apple devices for their employees. Especially in tandem with an MDM solution.
+- [Apple Enterprise MDM Explained | Iru](https://www.iru.com/definitions/apple-enterprise-mdm): Apple enterprise MDM refers to the particular practices, protocols, and tools for managing fleets of Apple devices in very large organizations.
+- [What is an MDM Profile? | Iru](https://www.iru.com/definitions/what-is-an-mdm-profile): Learn about MDM profiles from the experts at Kandji. Discover how to create and remove profiles to enhance mobile device management.
+- [How do I achieve CIS compliance for Mac? | Iru](https://www.iru.com/definitions/how-do-i-achieve-cis-compliance-for-mac): Get actionable steps to achieve CIS compliance for Mac devices. Ensure your Macs meet security standards efficiently. Start your compliance journey now.
+- [How much does MDM cost for Apple Devices?| Iru](https://www.iru.com/definitions/how-much-does-mdm-cost): Curious about the cost of Mobile Device Management (MDM)? Get insights on pricing and find a solution that fits your needs.
+- [What is a macOS agent? | Iru](https://www.iru.com/definitions/what-is-a-macos-agent): Discover what a macOS agent is and how it facilitates efficient management of Mac devices. Learn how agents streamline operations and enhance security.
+- [What Is iCloud Private Relay and How Does it Work? | Iru](https://www.iru.com/definitions/what-is-icloud-private-relay-and-how-does-it-work): iCloud Private Relay keeps your internet activity private by hiding your IP address from the websites you visit.
+- [What is Apple Volume Purchase Program (VPP)? | Iru](https://www.iru.com/definitions/what-is-apple-volume-purchase-program-vpp): Apple Volume Purchase Program (VPP) was a tool that businesses could use to buy, distribute, and manage apps and books in bulk.
+
+
+---
+
+Generated by [FreshJuice llms.txt Generator](https://freshjuice.dev/tools/llmstxt-generator/)
+Total pages: 76

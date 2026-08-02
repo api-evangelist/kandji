@@ -1,0 +1,72 @@
+generated: '2026-08-01'
+method: searched
+source: >-
+  https://docs.iru.com/en/endpoint/agent/iru-agent-command-line-interface + PyPI/GitHub metadata for
+  kandji-inc/iructl
+summary: >-
+  Iru ships TWO distinct first-party command-line surfaces, and they are not the same product. The
+  `iru` binary is the on-device agent CLI installed on every managed Mac (and Windows) endpoint; it
+  talks to the local agent, not the REST API. `iructl` is the admin-side Python tool distributed on
+  PyPI that manages tenant resources against the Endpoint Management API.
+clis:
+- id: iru-agent-cli
+  name: Iru Agent Command Line Interface
+  binary: iru
+  audience: endpoint (runs locally on a managed device, requires sudo)
+  platforms: [macOS, Windows]
+  docs: https://docs.iru.com/en/endpoint/agent/iru-agent-command-line-interface
+  install: Installed with the Iru Agent; not separately distributed.
+  uses_rest_api: false
+  interactive_mode:
+    command: sudo iru
+    note: Running `sudo iru` with no subcommand opens a full-screen terminal user interface (TUI).
+  commands:
+  - {command: 'sudo iru', description: Open the interactive TUI menu of common agent actions.}
+  - {command: 'sudo iru run', description: 'Run the agent and check in immediately (normal cadence is every 15 minutes; runs offline without a connection).'}
+  - {command: 'sudo iru run --reset-daily', description: Run all Parameters including once-per-day Parameters.}
+  - {command: 'sudo iru update-mdm', description: Request the MDM server to initiate its daily MDM commands (Apps & Books validation, device queries).}
+  - {command: 'sudo iru collect-apps', description: Collect full application inventory from the Mac.}
+  - {command: 'sudo iru library', description: Check for Library Items to execute.}
+  - {command: 'sudo iru library --list', description: List all Library Items assigned to the computer.}
+  - {command: 'sudo iru library --state', description: Get the current state of the Iru Agent library manager.}
+  - {command: 'sudo iru library --item', description: 'Run a specific Library Item by name or id (-F to force execution).'}
+  - {command: 'sudo iru library --cancel', description: Cancel the running Library Item and clear the queue.}
+  - {command: 'sudo iru logs --last <seconds>', description: 'Print Iru Agent unified-log entries (--last is required; --no-format, --debug available).'}
+  - {command: 'sudo iru avert --list-quarantine', description: List EDR-quarantined files.}
+  - {command: 'sudo iru avert --delete-quarantine', description: Delete EDR-quarantined files.}
+  logging_subsystems:
+    prefix: io.kandji
+    note: >-
+      Unified-logging subsystem identifiers still use the pre-rebrand io.kandji prefix; use those
+      strings in `log show --predicate` and `log config --subsystem`.
+    subsystems: [io.kandji.beekeeper, io.kandji.cli, io.kandji.daemon, io.kandji.installer,
+      io.kandji.library-manager, io.kandji.menu, io.kandji.passport, io.kandji.parameter-agent,
+      io.kandji.self-service, io.kandji.liftoff]
+  rebrand_note: >-
+    As of 2026-04-08 the app was renamed from "Kandji Agent" to "Iru Agent"; Iru asks customers to
+    update scripts and automations that reference the old names.
+- id: iructl
+  name: Iru Control
+  binary: iructl
+  audience: administrator workstation / CI
+  language: python
+  registry: pypi
+  install: pip install iructl
+  package: https://pypi.org/project/iructl/
+  repository: https://github.com/kandji-inc/iructl
+  version_observed: 1.3.1
+  uses_rest_api: true
+  description: >-
+    First-party utility for local, version-controlled management of Iru resources — the admin-side
+    complement to the Endpoint Management API. Supersedes kst (Kandji Sync Toolkit), whose PyPI
+    entry is marked "(Deprecated, use iructl)".
+  command_surface_captured: false
+  command_surface_note: >-
+    The per-command surface is documented in the GitHub repository README rather than on
+    docs.iru.com; it is not transcribed here to avoid asserting commands that were not read
+    verbatim. See the repository for the authoritative command list.
+related_tools:
+- {name: irupkg, repository: 'https://github.com/kandji-inc/irupkg', description: Standalone tool for programmatic management of Iru Custom Apps.}
+- {name: IOTA, repository: 'https://github.com/kandji-inc/IOTA', description: AutoPkg processor for programmatic management of Iru Custom Apps.}
+see_also:
+  packages: packages/kandji-packages.yml

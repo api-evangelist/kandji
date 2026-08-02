@@ -1,0 +1,70 @@
+generated: '2026-08-01'
+method: probed
+source: live HTTPS probes, 2026-08-01
+summary: >-
+  No /.well-known/ discovery document is published on any Iru (formerly Kandji) host. All 35
+  probes (5 hosts x 7 paths) returned 404. The only 200 observed anywhere in the kandji.io zone was
+  /.well-known/security.txt on status.kandji.io — that is Atlassian's Statuspage security.txt (it is
+  PGP-signed by Atlassian and its Contact/Policy point at atlassian.com), NOT an Iru document, so it
+  is recorded here as a negative and is deliberately NOT saved as kandji-security.txt.
+hosts:
+- host: https://www.iru.com
+  documents:
+  - {path: /.well-known/security.txt, status: 404}
+  - {path: /.well-known/openid-configuration, status: 404}
+  - {path: /.well-known/oauth-authorization-server, status: 404}
+  - {path: /.well-known/api-catalog, status: 404}
+  - {path: /.well-known/ai-plugin.json, status: 404}
+  - {path: /.well-known/agent-card.json, status: 404}
+  - {path: /.well-known/agent.json, status: 404}
+- host: https://kandji.com
+  documents:
+  - {path: /.well-known/security.txt, status: 404}
+  - {path: /.well-known/openid-configuration, status: 404}
+  - {path: /.well-known/oauth-authorization-server, status: 404}
+  - {path: /.well-known/api-catalog, status: 404}
+  - {path: /.well-known/ai-plugin.json, status: 404}
+  - {path: /.well-known/agent-card.json, status: 404}
+  - {path: /.well-known/agent.json, status: 404}
+- host: https://api.kandji.io
+  documents:
+  - {path: /.well-known/security.txt, status: 404}
+  - {path: /.well-known/openid-configuration, status: 404}
+  - {path: /.well-known/oauth-authorization-server, status: 404}
+  - {path: /.well-known/oauth-protected-resource, status: 404}
+  - {path: /.well-known/api-catalog, status: 404}
+  - {path: /.well-known/ai-plugin.json, status: 404}
+  - {path: /.well-known/agent-card.json, status: 404}
+  - {path: /.well-known/agent.json, status: 404}
+- host: https://api-docs.kandji.io
+  documents:
+  - {path: /.well-known/security.txt, status: 404}
+  - {path: /.well-known/openid-configuration, status: 404}
+  - {path: /.well-known/oauth-authorization-server, status: 404}
+  - {path: /.well-known/api-catalog, status: 404}
+  - {path: /.well-known/ai-plugin.json, status: 404}
+  - {path: /.well-known/agent-card.json, status: 404}
+  - {path: /.well-known/agent.json, status: 404}
+- host: https://support.kandji.io
+  documents:
+  - {path: /.well-known/security.txt, status: 404}
+  - {path: /.well-known/openid-configuration, status: 404}
+  - {path: /.well-known/oauth-authorization-server, status: 404}
+  - {path: /.well-known/api-catalog, status: 404}
+  - {path: /.well-known/ai-plugin.json, status: 404}
+  - {path: /.well-known/agent-card.json, status: 404}
+  - {path: /.well-known/agent.json, status: 404}
+- host: https://status.kandji.io
+  documents:
+  - path: /.well-known/security.txt
+    status: 200
+    third_party: true
+    owner: Atlassian (Statuspage)
+    note: >-
+      PGP-signed Atlassian security.txt served by the Statuspage platform that hosts
+      status.kandji.io. Contact and Policy resolve to atlassian.com. Not an Iru artifact; not saved.
+excluded_llm_txt:
+  note: >-
+    llms.txt IS published (two of them) but is not a /.well-known/ document — see
+    llms/kandji-llms.txt (https://www.iru.com/llms.txt) and llms/kandji-docs-llms.txt
+    (https://docs.iru.com/llms.txt).

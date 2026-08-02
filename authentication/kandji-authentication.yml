@@ -1,0 +1,87 @@
+generated: '2026-08-01'
+method: searched
+source: >-
+  openapi/kandji-endpoint-management-openapi.json (derived) upgraded with
+  https://docs.iru.com/en/endpoint/api/iru-api-overview and
+  https://docs.iru.com/en/endpoint/integrations/ai-assistants/iru-mcp (searched)
+docs: https://docs.iru.com/en/endpoint/api/iru-api-overview
+summary:
+  types:
+  - http
+  - apiKey
+  api_key_in:
+  - header
+  oauth2_flows: []
+  note: >-
+    Two distinct credentials, both minted from the same object. A single API token created in
+    Access is used as an HTTP bearer token for REST, and — only if "Enable MCP" was switched on
+    before Create — the same token issuance also produces an MCP configuration whose X-API-Key
+    header value carries an `sk_live:` prefix. No OAuth 2.0, no OpenID Connect, no mutual TLS.
+schemes:
+- name: BearerAuth
+  type: http
+  scheme: bearer
+  bearerFormat: JWT
+  surface: rest
+  header: Authorization
+  value_format: 'Bearer <token>'
+  applied: globally via the spec root security[]; every one of the 121 operations inherits it
+  sources:
+  - openapi/kandji-endpoint-management-openapi.json
+  note: >-
+    The spec declares bearerFormat: JWT, but the docs describe the credential only as a
+    "tenant-level bearer token"; the token's internal format is not documented and should not be
+    parsed by clients.
+- name: MCP X-API-Key
+  type: apiKey
+  in: header
+  parameter: X-API-Key
+  value_format: 'sk_live:<key>'
+  surface: mcp
+  sources:
+  - https://docs.iru.com/en/endpoint/integrations/ai-assistants/iru-mcp
+- name: MCP X-MCP-Profile
+  type: apiKey
+  in: header
+  parameter: X-MCP-Profile
+  surface: mcp
+  role: selects the MCP profile issued with the token
+  sources:
+  - https://docs.iru.com/en/endpoint/integrations/ai-assistants/iru-mcp
+token_lifecycle:
+  issuance: Web App > Account Menu > Access > API tokens > Add Token (name + description required)
+  scope: tenant
+  one_time_display: true
+  one_time_display_note: >-
+    The token value and the MCP configuration JSON are shown once, on the creation success screen.
+    If lost, the token must be revoked and re-created.
+  rotation_policy_documented: false
+  expiry_documented: false
+  revocation: 'Access > API tokens; revoking a token kills both its REST and its MCP access.'
+  audit: >-
+    Token created / updated / deleted events appear in the tenant-wide Unified Activity timeline and
+    on each token's Activity tab; the API also exposes /api/v1/audit/events (listAuditEvents).
+authorization:
+  model: per-endpoint permission grid
+  granularity: individual endpoint, groupable by category (e.g. "Blueprints Management")
+  configurable: at creation ("Configure") or later ("Edit")
+  default: a token can be created with no permissions and configured later
+  scopes: null
+  scopes_note: >-
+    This is NOT an OAuth scope model — there is no scope string, no consent screen and no
+    authorization server, so no scopes/ artifact is emitted. Authorization is an operator-selected
+    allowlist of API endpoints attached to the token.
+  applies_to_mcp: true
+regions:
+  us: https://{subdomain}.api.kandji.io
+  eu: https://{subdomain}.api.eu.kandji.io
+  note: >-
+    A token is bound to its tenant's regional hostname, shown as "Your organization's API URL" on
+    the Access > API tokens page.
+failure_modes:
+  '401': Missing, malformed, revoked or wrong-tenant token (declared on 113 of 121 operations).
+  '403': Not declared anywhere in the spec — how an insufficient-permission denial surfaces is undocumented.
+see_also:
+  conventions: conventions/kandji-conventions.yml
+  errors: errors/kandji-problem-types.yml
+  mcp: mcp/kandji-mcp.yml

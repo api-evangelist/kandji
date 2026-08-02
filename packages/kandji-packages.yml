@@ -1,0 +1,122 @@
+generated: '2026-08-01'
+method: searched
+source: >-
+  https://github.com/kandji-inc (org listing, 7 public repos) + PyPI project metadata for iructl and
+  kst + npm registry search for "kandji". Probed 2026-08-01.
+notes: >-
+  Iru (formerly Kandji) publishes no conventional per-language REST client SDK (no first-party
+  JavaScript, Go, Java, Ruby, PHP or Rust client). What it does publish, first-party under the
+  kandji-inc GitHub organization, is a set of Python admin/automation tools distributed on PyPI,
+  plus a large Shell/Python support-script repository. Registries probed with no first-party hit:
+  npm, Maven Central, NuGet, pkg.go.dev, RubyGems, Packagist, crates.io.
+packages:
+- language: python
+  registry: pypi
+  name: iructl
+  version_observed: 1.3.1
+  url: https://pypi.org/project/iructl/
+  repository: https://github.com/kandji-inc/iructl
+  install: pip install iructl
+  official: true
+  description: >-
+    Iru Control — first-party utility for local management of Iru resources (Library Items,
+    Blueprints, custom profiles and scripts) as version-controlled files synced against the Iru
+    Endpoint Management API. Command surface captured in cli/kandji-cli.yml.
+- language: python
+  registry: pypi
+  name: kst
+  version_observed: 1.3.0
+  url: https://pypi.org/project/kst/
+  repository: https://github.com/kandji-inc/kst
+  install: pip install kst
+  official: true
+  status: deprecated
+  superseded_by: iructl
+  description: >-
+    Kandji Sync Toolkit — the pre-rebrand name of iructl. PyPI summary states "(Deprecated, use
+    iructl)"; its issue tracker now redirects to the iructl repository.
+- language: python
+  registry: github
+  name: irupkg
+  url: https://github.com/kandji-inc/irupkg
+  repository: https://github.com/kandji-inc/irupkg
+  official: true
+  description: >-
+    Iru Packages — standalone tool for programmatic management of Iru Custom Apps. Not published to
+    PyPI as of 2026-08-01 (pypi.org/pypi/irupkg/json returned 404).
+- language: python
+  registry: github
+  name: IOTA
+  url: https://github.com/kandji-inc/IOTA
+  repository: https://github.com/kandji-inc/IOTA
+  official: true
+  description: >-
+    Iru Orchestration Tool for AutoPkg — an AutoPkg processor for programmatic management of Iru
+    Custom Apps.
+- language: shell
+  registry: github
+  name: kandji-inc/support
+  url: https://github.com/kandji-inc/support
+  repository: https://github.com/kandji-inc/support
+  official: true
+  description: >-
+    Software provided by the Solutions and Support Engineering teams at Kandji/Iru — scripts,
+    Custom Script Library Item recipes and API automation examples.
+- language: shell
+  registry: github
+  name: kandji-inc/CARL
+  url: https://github.com/kandji-inc/CARL
+  repository: https://github.com/kandji-inc/CARL
+  official: true
+  description: Cacheless AutoPkg Runner Localized (CARL).
+- language: shell
+  registry: github
+  name: kandji-inc/security-toolkit
+  url: https://github.com/kandji-inc/security-toolkit
+  repository: https://github.com/kandji-inc/security-toolkit
+  official: true
+community_packages:
+- language: python
+  registry: pypi
+  name: kandji
+  url: https://pypi.org/project/kandji/
+  repository: https://github.com/frefrik/python-kandji
+  install: pip install kandji
+  official: false
+  author: Fredrik Haarstad
+  description: Third-party Python wrapper for the Kandji API. Not maintained by Iru.
+- language: javascript
+  registry: npm
+  name: "@jupiterone/graph-kandji"
+  url: https://www.npmjs.com/package/@jupiterone/graph-kandji
+  official: false
+  description: JupiterOne integration that ingests Kandji data. Not maintained by Iru.
+- language: javascript
+  registry: npm
+  name: "@clearfeed-ai/quix-kandji-agent"
+  url: https://www.npmjs.com/package/@clearfeed-ai/quix-kandji-agent
+  official: false
+  description: ClearFeed agent integration for managing Apple devices through Kandji. Not maintained by Iru.
+- language: javascript
+  registry: npm
+  name: "@siredmar/semantic-release-kandji"
+  url: https://www.npmjs.com/package/@siredmar/semantic-release-kandji
+  official: false
+  description: semantic-release plugin for updating Kandji Custom App artifacts. Not maintained by Iru.
+registries_probed:
+- registry: pypi
+  result: hit (iructl, kst first-party; kandji third-party)
+- registry: npm
+  result: no first-party package (only third-party integrations)
+- registry: maven-central
+  result: none
+- registry: nuget
+  result: none
+- registry: pkg.go.dev
+  result: none
+- registry: rubygems
+  result: none
+- registry: packagist
+  result: none
+- registry: crates.io
+  result: none

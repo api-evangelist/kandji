@@ -1,0 +1,41 @@
+generated: '2026-08-01'
+method: searched
+probe: true
+source: https://www.iru.com/security
+url: https://trust.iru.com/
+alternate_urls:
+- https://www.iru.com/security
+- https://trust.kandji.io/
+certifications:
+- SOC 2 Type II
+- ISO 27001
+compliance_artifacts:
+- {name: Data Processing Addendum, url: 'https://www.iru.com/legal/data-processing-addendum'}
+- {name: Sub-processor list, url: 'https://www.iru.com/legal/service-providers'}
+- {name: Platform Services Agreement, url: 'https://www.iru.com/legal/terms'}
+- {name: Privacy Policy, url: 'https://www.iru.com/legal/privacy'}
+- {name: Privacy Rights Request Form, url: 'https://www.iru.com/legal/privacy-rights-request'}
+- {name: Artificial Intelligence Acceptable Use Policy, url: 'https://www.iru.com/legal/ai-use-policy'}
+- {name: Accessibility Statement, url: 'https://www.iru.com/legal/accessibility'}
+security_program:
+  external_pentest: minimum 2x per year, qualified third-party firm
+  vulnerability_scanning: monthly third-party scans + daily internal scans
+  vulnerability_disclosure: security/kandji-vulnerability-disclosure.yml
+notes: >-
+  Two trust surfaces exist and they are different things. https://www.iru.com/security is Iru's own
+  security-practices page and is where the SOC 2 Type II and ISO 27001 claims and the pentest
+  cadence are stated in plain HTML. https://trust.iru.com/ (and trust.kandji.io, which resolves to
+  the same app) returned HTTP 200 but renders client-side — an unauthenticated fetch on 2026-08-01
+  saw only a "Loading..." shell, so no certification list could be read from it and none is asserted
+  from that host. Iru also SELLS a Trust Center product
+  (https://www.iru.com/products/compliance/trust-center); trust.iru.com is plausibly Iru dogfooding
+  it, but that is not asserted here as fact.
+evidence:
+- source: https://www.iru.com/security
+  keywords:
+  - soc 2
+  - trust center
+x-evidence:
+- {fetched: '2026-08-01', url: 'https://www.iru.com/security', http_status: 200, keywords: [soc 2 type ii, iso 27001, penetration test, vulnerability disclosure program]}
+- {fetched: '2026-08-01', url: 'https://trust.iru.com/', http_status: 200, note: 'JS-rendered; body was a Loading shell — no certifications readable'}
+- {fetched: '2026-08-01', url: 'https://trust.kandji.io/', http_status: 200, note: same app as trust.iru.com}

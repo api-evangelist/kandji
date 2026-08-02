@@ -1,0 +1,41 @@
+specification: API Commons Rate Limits
+specificationVersion: '0.1'
+provider: Iru (formerly Kandji)
+providerId: kandji
+generated: '2026-08-01'
+method: searched
+created: '2026-08-01'
+modified: '2026-08-01'
+tags:
+- Rate Limiting
+- Device Management
+description: >-
+  Iru publishes a single flat rate limit for the Endpoint Management API: 10,000 requests per hour
+  per customer (tenant). The limit is shared across every API token in the tenant AND across the
+  hosted MCP server, so MCP tool calls consume the same budget as direct REST calls. No per-endpoint,
+  per-token or per-tier limit is published, and no 429 response or rate-limit response header is
+  declared in the OpenAPI.
+sources:
+- https://api-docs.kandji.io/
+- https://docs.iru.com/en/endpoint/api/iru-api-overview
+- https://docs.iru.com/en/endpoint/integrations/ai-assistants/iru-mcp
+headers:
+  requestId: null
+  limit: null
+  remaining: null
+  reset: null
+  note: No rate-limit signalling headers are documented or declared in the spec.
+responseCodes:
+  throttled: null
+  note: No 429 response is declared on any of the 121 operations.
+limits:
+- name: Endpoint Management API requests
+  scope: tenant
+  metric: requests_per_hour
+  limit: 10000
+  timeFrame: hour
+  applies_to: [rest, mcp]
+  evidence: >-
+    "The Iru Endpoint Management API currently has an API rate limit of 10,000 requests per hour per
+    customer." — api-docs.kandji.io collection description, restated in the Iru MCP article with
+    "All API tokens in your tenant share that limit."

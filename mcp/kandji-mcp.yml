@@ -1,0 +1,72 @@
+generated: '2026-08-01'
+method: searched
+status: published
+source: https://docs.iru.com/en/endpoint/integrations/ai-assistants/iru-mcp
+server:
+  name: iru
+  vendor: Iru, Inc. (formerly Kandji)
+  transport: http
+  url_template: https://YOUR_TENANT.connect.iru.com/mcp-server/connector/kandji/tools
+  tenant_scoped: true
+  note: >-
+    First-party, hosted, per-tenant MCP server. There is no single shared endpoint — Iru issues the
+    concrete url in the one-time "MCP configuration" JSON shown when an API token is created with
+    "Enable MCP" turned on in Access. The connector path segment is still literally /kandji/ after
+    the Iru rebrand.
+authentication:
+  scheme: api_key_header
+  headers:
+  - name: X-API-Key
+    format: "sk_live:<key>"
+    note: "The sk_live: prefix is part of the value Iru emits; MCP clients send it verbatim."
+  - name: X-MCP-Profile
+    format: "<profile id>"
+  authorization_model: >-
+    The same per-endpoint API permission grid that governs the REST token governs the MCP tools —
+    permissions are selected per category (e.g. Blueprints) at token creation or edited later. The
+    MCP surface can never exceed the Enterprise API permissions granted to its token.
+  see: authentication/kandji-authentication.yml
+clients_documented:
+- Claude Desktop
+- Cursor
+- OpenAI Codex
+- any MCP-enabled client
+rate_limits:
+  shared_with_rest: true
+  limit: 10000 requests per hour per tenant
+  see: rate-limits/kandji-rate-limits.yml
+capability_scope: >-
+  Documented as exposing the Iru "Enterprise API" surface — Endpoint plus other products such as
+  Vulnerability Management and Endpoint Detection and Response, depending on tenant entitlements.
+  Iru states that new Enterprise API capabilities become available through MCP automatically, on the
+  same permission model.
+safety_guidance_published: >-
+  Iru documents that for destructive operations (erase, delete, lock) the assistant "should
+  summarize the impact and require your explicit approval before executing, unless you have added
+  that action to an allowlist for the MCP".
+tools:
+  enumerated: false
+  reason: >-
+    tools/list is authentication-gated and tenant-scoped. Probed 2026-08-01 with
+    POST {"jsonrpc":"2.0","id":1,"method":"tools/list"}: the bare host connect.iru.com does not
+    serve the connector path (curl exit 000 / Next.js 404 shell), and a tenant-shaped host returned
+    HTTP 401 {"detail":"Unauthorized"}. Iru publishes no tool list in docs or llms.txt, so no tool
+    names, descriptions or inputSchemas can be recorded without an authenticated tenant token.
+    NOTHING IS INVENTED HERE. The backing REST contract is fully captured instead — see
+    openapi/kandji-endpoint-management-openapi.json and mcp/kandji-tool-crosswalk.yml.
+x-evidence:
+- fetched: '2026-08-01'
+  url: https://docs.iru.com/en/endpoint/integrations/ai-assistants/iru-mcp
+  http_status: 200
+  kind: docs
+- fetched: '2026-08-01'
+  url: https://connect.iru.com/mcp-server/connector/kandji/tools
+  http_status: 000
+  method: POST tools/list
+  note: bare host does not serve the connector path (HTML error shell)
+- fetched: '2026-08-01'
+  url: https://<tenant>.connect.iru.com/mcp-server/connector/kandji/tools
+  http_status: 401
+  method: POST tools/list
+  body: '{"detail":"Unauthorized"}'
+  note: confirms the endpoint pattern is live and auth-gated
