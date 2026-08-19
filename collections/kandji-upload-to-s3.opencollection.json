@@ -1,0 +1,74 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Upload to S3",
+    "version": "1.0.0"
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Upload to S3",
+        "type": "http"
+      },
+      "http": {
+        "method": "POST",
+        "url": "https://:post_url",
+        "params": [
+          {
+            "name": "post_url",
+            "value": "https://s3.amazonaws.com/bucket-name/upload-path",
+            "type": "path",
+            "description": "The S3 upload URL provided by the custom app creation endpoint. This is a variable URL that changes for each upload request."
+          }
+        ],
+        "body": {
+          "type": "multipart-form",
+          "data": [
+            {
+              "name": "key",
+              "type": "text",
+              "value": ""
+            },
+            {
+              "name": "x-amz-algorithm",
+              "type": "text",
+              "value": ""
+            },
+            {
+              "name": "x-amz-credential",
+              "type": "text",
+              "value": ""
+            },
+            {
+              "name": "x-amz-date",
+              "type": "text",
+              "value": ""
+            },
+            {
+              "name": "x-amz-security-token",
+              "type": "text",
+              "value": ""
+            },
+            {
+              "name": "policy",
+              "type": "text",
+              "value": ""
+            },
+            {
+              "name": "x-amz-signature",
+              "type": "text",
+              "value": ""
+            },
+            {
+              "name": "file",
+              "type": "text",
+              "value": ""
+            }
+          ]
+        }
+      },
+      "docs": "This endpoint handles the S3 upload process for custom applications using a variable URL."
+    }
+  ],
+  "bundled": true
+}

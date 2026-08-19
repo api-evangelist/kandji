@@ -1,0 +1,3506 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Iru Endpoint Management API",
+    "version": "1.0.0"
+  },
+  "request": {
+    "auth": {
+      "type": "bearer",
+      "token": "{{bearerToken}}"
+    }
+  },
+  "items": [
+    {
+      "info": {
+        "name": "List audit events",
+        "type": "http"
+      },
+      "http": {
+        "method": "GET",
+        "url": "https://{subdomain}.api.kandji.io/api/v1/audit/events",
+        "params": [
+          {
+            "name": "limit",
+            "value": "",
+            "type": "query",
+            "description": "A max upper `limit` is set at 500 records returned per request. Pagination should be used using the cursor in the `next` key to request more results. Additionally, parameter queries can be added to a request to filter the results."
+          },
+          {
+            "name": "sort_by",
+            "value": "",
+            "type": "query",
+            "description": "Sort results by `occurred_at`, `id` either ascending (default behavior) or descending(-) order."
+          },
+          {
+            "name": "start_date",
+            "value": "",
+            "type": "query",
+            "description": "Filter by start date in datetime or year-month-day (2024-11-26) formats"
+          },
+          {
+            "name": "end_date",
+            "value": "",
+            "type": "query",
+            "description": "Filter by end date in datetime or year-month-day (2024-12-06) formats"
+          },
+          {
+            "name": "cursor",
+            "value": "",
+            "type": "query",
+            "description": "You can pass the next cursor as a parameter or use the URL in the next key to get the next page of results or to start from where you left off last."
+          }
+        ]
+      },
+      "docs": "This request returns audit log events from the Kandji Activity module."
+    },
+    {
+      "info": {
+        "name": "Download ADE public key",
+        "type": "http"
+      },
+      "http": {
+        "method": "GET",
+        "url": "https://{subdomain}.api.kandji.io/api/v1/integrations/apple/ade/public_key/"
+      },
+      "docs": "This request returns the public key used to create an MDM server connection in Apple Business or Apple School Manager."
+    },
+    {
+      "info": {
+        "name": "Create ADE integration",
+        "type": "http"
+      },
+      "http": {
+        "method": "POST",
+        "url": "https://{subdomain}.api.kandji.io/api/v1/integrations/apple/ade/",
+        "body": {
+          "type": "multipart-form",
+          "data": [
+            {
+              "name": "blueprint_id",
+              "type": "text",
+              "value": ""
+            },
+            {
+              "name": "phone",
+              "type": "text",
+              "value": ""
+            },
+            {
+              "name": "email",
+              "type": "text",
+              "value": ""
+            },
+            {
+              "name": "file",
+              "type": "text",
+              "value": ""
+            }
+          ]
+        }
+      },
+      "docs": "This request will create a new ADE integration."
+    },
+    {
+      "info": {
+        "name": "Renew ADE integration",
+        "type": "http"
+      },
+      "http": {
+        "method": "POST",
+        "url": "https://{subdomain}.api.kandji.io/api/v1/integrations/apple/ade/:ade_token_id/renew",
+        "params": [
+          {
+            "name": "ade_token_id",
+            "value": "",
+            "type": "path"
+          }
+        ]
+      },
+      "docs": "This request will renew an existing ADE integration."
+    },
+    {
+      "info": {
+        "name": "Get ADE integration",
+        "type": "http"
+      },
+      "http": {
+        "method": "GET",
+        "url": "https://{subdomain}.api.kandji.io/api/v1/integrations/apple/ade/:ade_token_id",
+        "params": [
+          {
+            "name": "ade_token_id",
+            "value": "",
+            "type": "path"
+          }
+        ]
+      },
+      "docs": "Get ADE integration"
+    },
+    {
+      "info": {
+        "name": "Update ADE integration",
+        "type": "http"
+      },
+      "http": {
+        "method": "PATCH",
+        "url": "https://{subdomain}.api.kandji.io/api/v1/integrations/apple/ade/:ade_token_id",
+        "params": [
+          {
+            "name": "ade_token_id",
+            "value": "",
+            "type": "path"
+          }
+        ],
+        "body": {
+          "type": "json",
+          "data": "{}"
+        }
+      },
+      "docs": "This request will update the default blueprint, phone number, and email address in an existing ADE integration."
+    },
+    {
+      "info": {
+        "name": "Delete ADE integration",
+        "type": "http"
+      },
+      "http": {
+        "method": "DELETE",
+        "url": "https://{subdomain}.api.kandji.io/api/v1/integrations/apple/ade/:ade_token_id",
+        "params": [
+          {
+            "name": "ade_token_id",
+            "value": "",
+            "type": "path"
+          }
+        ]
+      },
+      "docs": "Delete ADE integration"
+    },
+    {
+      "info": {
+        "name": "List ADE integrations",
+        "type": "http"
+      },
+      "http": {
+        "method": "GET",
+        "url": "https://{subdomain}.api.kandji.io/api/v1/integrations/apple/ade"
+      },
+      "docs": "This request returns a list of configured ADE integrations."
+    },
+    {
+      "info": {
+        "name": "List devices associated to ADE token",
+        "type": "http"
+      },
+      "http": {
+        "method": "GET",
+        "url": "https://{subdomain}.api.kandji.io/api/v1/integrations/apple/ade/:ade_token_id/devices",
+        "params": [
+          {
+            "name": "ade_token_id",
+            "value": "",
+            "type": "path"
+          }
+        ]
+      },
+      "docs": "This request returns a list of devices associated with a specified ade_token_id as well as their enrollment status."
+    },
+    {
+      "info": {
+        "name": "List ADE devices",
+        "type": "http"
+      },
+      "http": {
+        "method": "GET",
+        "url": "https://{subdomain}.api.kandji.io/api/v1/integrations/apple/ade/devices",
+        "params": [
+          {
+            "name": "blueprint_id",
+            "value": "",
+            "type": "query",
+            "description": "Return results \"containing\" the specified blueprint id"
+          },
+          {
+            "name": "user_id",
+            "value": "",
+            "type": "query",
+            "description": "\"exact\" match on user ID value (example: 5344c996-8823-4b37-8d6e-8515fc7c3a0a)"
+          },
+          {
+            "name": "dep_account",
+            "value": "",
+            "type": "query",
+            "description": "The ADE token UUID"
+          },
+          {
+            "name": "device_family",
+            "value": "",
+            "type": "query",
+            "description": "iPad, iPhone, iPod, Mac, AppleTV, or Vision"
+          },
+          {
+            "name": "model",
+            "value": "",
+            "type": "query",
+            "description": "Return model results \"containing\" the specified model string. - \"iPad (8th Generation)\", \"MacBook Air\""
+          },
+          {
+            "name": "os",
+            "value": "",
+            "type": "query",
+            "description": "iOS, iPadOS, OSX, tvOS, or visionOS"
+          },
+          {
+            "name": "profile_status",
+            "value": "",
+            "type": "query",
+            "description": "The automated device enrollment profile assignment status - assigned, empty, pushed, removed"
+          },
+          {
+            "name": "serial_number",
+            "value": "",
+            "type": "query",
+            "description": "Search for a specific device by Serial Number. If partial serial number is provided in the query, all device containing the partial string will be returned."
+          },
+          {
+            "name": "page",
+            "value": "",
+            "type": "query",
+            "description": "Use the `page` parameter to page through results or to request a specific page. By default, if a page is not specified, page 1 is returned. Note: 300 device records are returned per page of results. Alternatively, the `next` and `previous` key attributes in the response can be used to request the next page of results or return to the previous page."
+          }
+        ]
+      },
+      "docs": "Get a list of Automated Device Enrollment devices."
+    },
+    {
+      "info": {
+        "name": "Get ADE device",
+        "type": "http"
+      },
+      "http": {
+        "method": "GET",
+        "url": "https://{subdomain}.api.kandji.io/api/v1/integrations/apple/ade/devices/:device_id",
+        "params": [
+          {
+            "name": "device_id",
+            "value": "",
+            "type": "path"
+          }
+        ]
+      },
+      "docs": "Get information about a specific Automated Device Enrollment device."
+    },
+    {
+      "info": {
+        "name": "Update ADE device",
+        "type": "http"
+      },
+      "http": {
+        "method": "PATCH",
+        "url": "https://{subdomain}.api.kandji.io/api/v1/integrations/apple/ade/devices/:device_id",
+        "params": [
+          {
+            "name": "device_id",
+            "value": "",
+            "type": "path"
+          }
+        ],
+        "body": {
+          "type": "json",
+          "data": "{}"
+        }
+      },
+      "docs": "Update a specific Automated Device Enrollment device's blueprint assignment, user assignment, and asset tag."
+    },
+    {
+      "info": {
+        "name": "List Blueprints",
+        "type": "http"
+      },
+      "http": {
+        "method": "GET",
+        "url": "https://{subdomain}.api.kandji.io/api/v1/blueprints",
+        "params": [
+          {
+            "name": "id",
+            "value": "",
+            "type": "query",
+            "description": "Look up a specific Blueprint by its ID"
+          },
+          {
+            "name": "id__in",
+            "value": "",
+            "type": "query",
+            "description": "Specify a list of Blueprint IDs to limit the results to. Multiple values may be separated by commas. There is a double underscore (__) between id and in"
+          },
+          {
+            "name": "name",
+            "value": "",
+            "type": "query",
+            "description": "Return Blueprint names \"containing\" the specified search string."
+          },
+          {
+            "name": "limit",
+            "value": "",
+            "type": "query",
+            "description": "Number of results to return per page."
+          },
+          {
+            "name": "offset",
+            "value": "",
+            "type": "query",
+            "description": "The initial index from which to return the results."
+          }
+        ]
+      },
+      "docs": "This request returns a list of blueprint records in the Iru Endpoint Management tenant."
+    },
+    {
+      "info": {
+        "name": "Create Blueprint",
+        "type": "http"
+      },
+      "http": {
+        "method": "POST",
+        "url": "https://{subdomain}.api.kandji.io/api/v1/blueprints",
+        "body": {
+          "type": "form-urlencoded",
+          "data": [
+            {
+              "name": "name",
+              "value": ""
+            },
+            {
+              "name": "enrollment_code.is_active",
+              "value": ""
+            },
+            {
+              "name": "enrollment_code.code",
+              "value": ""
+            },
+            {
+              "name": "type",
+              "value": ""
+            },
+            {
+              "name": "description",
+              "value": ""
+            },
+            {
+              "name": "icon",
+              "value": ""
+            },
+            {
+              "name": "color",
+              "value": ""
+            }
+          ]
+        }
+      },
+      "docs": "This request creates a new empty Blueprint or a new Blueprint from a template."
+    },
+    {
+      "info": {
+        "name": "Get Manual Enrollment Profile",
+        "type": "http"
+      },
+      "http": {
+        "method": "GET",
+        "url": "https://{subdomain}.api.kandji.io/api/v1/blueprints/:blueprint_id/ota-enrollment-profile",
+        "params": [
+          {
+            "name": "blueprint_id",
+            "value": "",
+            "type": "path",
+            "description": "The unique identifier of the blueprint."
+          },
+          {
+            "name": "sso",
+            "value": "",
+            "type": "query",
+            "description": "Use the `sso` query parameter, set to `true`, to return a URL instead of the manual enrollment profile. This parameter should only be used for blueprints in which \"Require Authentication\" is configured for Manual Enrollment. The returned URL must be used to authenticate via SSO to receive an enrollment profile."
+          }
+        ]
+      },
+      "docs": "This request returns the manual enrollment profile (.mobileconfig file) for a specified Blueprint."
+    },
+    {
+      "info": {
+        "name": "Get Blueprint Templates",
+        "type": "http"
+      },
+      "http": {
+        "method": "GET",
+        "url": "https://{subdomain}.api.kandji.io/api/v1/blueprints/templates/"
+      },
+      "docs": "Get Blueprint Templates"
+    },
+    {
+      "info": {
+        "name": "Enable Lost Mode",
+        "type": "http"
+      },
+      "http": {
+        "method": "POST",
+        "url": "https://{subdomain}.api.kandji.io/api/v1/devices/:device_id/action/enablelostmode",
+        "params": [
+          {
+            "name": "device_id",
+            "value": "",
+            "type": "path"
+          }
+        ],
+        "body": {
+          "type": "json",
+          "data": "{}"
+        }
+      },
+      "docs": "This endpoint sends an MDM command to remotely turn on lost mode on iOS and iPadOS."
+    },
+    {
+      "info": {
+        "name": "Disable Lost Mode",
+        "type": "http"
+      },
+      "http": {
+        "method": "POST",
+        "url": "https://{subdomain}.api.kandji.io/api/v1/devices/:device_id/action/disablelostmode",
+        "params": [
+          {
+            "name": "device_id",
+            "value": "",
+            "type": "path"
+          }
+        ]
+      },
+      "docs": "This command will send a request to turn off lost mode on iOS and iPadOS."
+    },
+    {
+      "info": {
+        "name": "Play Lost Mode Sound",
+        "type": "http"
+      },
+      "http": {
+        "method": "POST",
+        "url": "https://{subdomain}.api.kandji.io/api/v1/devices/:device_id/action/playlostmodesound",
+        "params": [
+          {
+            "name": "device_id",
+            "value": "",
+            "type": "path"
+          }
+        ]
+      },
+      "docs": "This command will tell the target iOS or iPadOS device to play the lost mode sound."
+    },
+    {
+      "info": {
+        "name": "Update Location",
+        "type": "http"
+      },
+      "http": {
+        "method": "POST",
+        "url": "https://{subdomain}.api.kandji.io/api/v1/devices/:device_id/action/updatelocation",
+        "params": [
+          {
+            "name": "device_id",
+            "value": "",
+            "type": "path"
+          }
+        ]
+      },
+      "docs": "This endpoint sends an MDM command to update the location data on iOS and iPadOS."
+    },
+    {
+      "info": {
+        "name": "Clear Passcode",
+        "type": "http"
+      },
+      "http": {
+        "method": "POST",
+        "url": "https://{subdomain}.api.kandji.io/api/v1/devices/:device_id/action/clearpasscode",
+        "params": [
+          {
+            "name": "device_id",
+            "value": "",
+            "type": "path"
+          }
+        ]
+      },
+      "docs": "This endpoint sends an MDM command to clear a device passcode. Available for iPhone and iPad."
+    },
+    {
+      "info": {
+        "name": "Get Device",
+        "type": "http"
+      },
+      "http": {
+        "method": "GET",
+        "url": "https://{subdomain}.api.kandji.io/api/v1/devices/:device_id",
+        "params": [
+          {
+            "name": "device_id",
+            "value": "",
+            "type": "path"
+          }
+        ]
+      },
+      "docs": "This request returns the high-level information for a specified Device ID."
+    },
+    {
+      "info": {
+        "name": "Update Device",
+        "type": "http"
+      },
+      "http": {
+        "method": "PATCH",
+        "url": "https://{subdomain}.api.kandji.io/api/v1/devices/:device_id",
+        "params": [
+          {
+            "name": "device_id",
+            "value": "",
+            "type": "path"
+          }
+        ],
+        "body": {
+          "type": "json",
+          "data": "{}"
+        }
+      },
+      "docs": "This request allows you to update device information, such as the assigned blueprint, user, Asset Tag, "
+    },
+    {
+      "info": {
+        "name": "Delete device",
+        "type": "http"
+      },
+      "http": {
+        "method": "DELETE",
+        "url": "https://{subdomain}.api.kandji.io/api/v1/devices/:device_id",
+        "params": [
+          {
+            "name": "device_id",
+            "value": "",
+            "type": "path"
+          }
+        ]
+      },
+      "docs": "This endpoint deletes a specific device."
+    },
+    {
+      "info": {
+        "name": "Erase Device",
+        "type": "http"
+      },
+      "http": {
+        "method": "POST",
+        "url": "https://{subdomain}.api.kandji.io/api/v1/devices/:device_id/action/erase",
+        "params": [
+          {
+            "name": "device_id",
+            "value": "",
+            "type": "path"
+          }
+        ],
+        "body": {
+          "type": "json",
+          "data": "{}"
+        }
+      },
+      "docs": "This endpoint sends an MDM command to erase the device.\niOS 4.0+, iPadOS 4.0+, macOS 10.7+, tvOS 10.2+"
+    },
+    {
+      "info": {
+        "name": "Get Device Commands",
+        "type": "http"
+      },
+      "http": {
+        "method": "GET",
+        "url": "https://{subdomain}.api.kandji.io/api/v1/devices/:device_id/commands",
+        "params": [
+          {
+            "name": "device_id",
+            "value": "",
+            "type": "path"
+          },
+          {
+            "name": "limit",
+            "value": "",
+            "type": "query",
+            "description": "A hard upper `limit` is set at 300 device records returned per request. If more device records are expected, pagination should be used using the `limit` and `offset` parameters. Additionally, parameter queries can be added to a request to limit the results."
+          },
+          {
+            "name": "offset",
+            "value": "",
+            "type": "query",
+            "description": "The initial index from which to return the results."
+          }
+        ]
+      },
+      "docs": "This endpoint sends a request to get information about the commands sent to a given device ID."
+    },
+    {
+      "info": {
+        "name": "Lock Device",
+        "type": "http"
+      },
+      "http": {
+        "method": "POST",
+        "url": "https://{subdomain}.api.kandji.io/api/v1/devices/:device_id/action/lock",
+        "params": [
+          {
+            "name": "device_id",
+            "value": "",
+            "type": "path"
+          }
+        ],
+        "body": {
+          "type": "json",
+          "data": "{}"
+        }
+      },
+      "docs": "This endpoint sends an MDM command to remotely lock a device."
+    },
+    {
+      "info": {
+        "name": "Reinstall Agent",
+        "type": "http"
+      },
+      "http": {
+        "method": "POST",
+        "url": "https://{subdomain}.api.kandji.io/api/v1/devices/:device_id/action/reinstallagent",
+        "params": [
+          {
+            "name": "device_id",
+            "value": "",
+            "type": "path"
+          }
+        ]
+      },
+      "docs": "This endpoint sends an MDM command reinstall the Kandji Agent."
+    },
+    {
+      "info": {
+        "name": "Remote Desktop",
+        "type": "http"
+      },
+      "http": {
+        "method": "POST",
+        "url": "https://{subdomain}.api.kandji.io/api/v1/devices/:device_id/action/remotedesktop",
+        "params": [
+          {
+            "name": "device_id",
+            "value": "",
+            "type": "path"
+          }
+        ],
+        "body": {
+          "type": "json",
+          "data": "{}"
+        }
+      },
+      "docs": "This endpoint sends an MDM command to control the Remote Management status on a Mac."
+    },
+    {
+      "info": {
+        "name": "Renew MDM Profile",
+        "type": "http"
+      },
+      "http": {
+        "method": "POST",
+        "url": "https://{subdomain}.api.kandji.io/api/v1/devices/:device_id/action/renewmdmprofile",
+        "params": [
+          {
+            "name": "device_id",
+            "value": "",
+            "type": "path"
+          }
+        ]
+      },
+      "docs": "This endpoint sends an MDM command to re-install the existing root MDM profile for a given device ID."
+    },
+    {
+      "info": {
+        "name": "Restart Device",
+        "type": "http"
+      },
+      "http": {
+        "method": "POST",
+        "url": "https://{subdomain}.api.kandji.io/api/v1/devices/:device_id/action/restart",
+        "params": [
+          {
+            "name": "device_id",
+            "value": "",
+            "type": "path"
+          }
+        ],
+        "body": {
+          "type": "json",
+          "data": "{}"
+        }
+      },
+      "docs": "This endpoint sends an MDM command to remotely restart a device."
+    },
+    {
+      "info": {
+        "name": "Send Blankpush",
+        "type": "http"
+      },
+      "http": {
+        "method": "POST",
+        "url": "https://{subdomain}.api.kandji.io/api/v1/devices/:device_id/action/blankpush",
+        "params": [
+          {
+            "name": "device_id",
+            "value": "",
+            "type": "path"
+          }
+        ]
+      },
+      "docs": "This endpoint sends an MDM command to initiate a blank push."
+    },
+    {
+      "info": {
+        "name": "Set Name",
+        "type": "http"
+      },
+      "http": {
+        "method": "POST",
+        "url": "https://{subdomain}.api.kandji.io/api/v1/devices/:device_id/action/setname",
+        "params": [
+          {
+            "name": "device_id",
+            "value": "",
+            "type": "path"
+          }
+        ],
+        "body": {
+          "type": "json",
+          "data": "{}"
+        }
+      },
+      "docs": "This endpoint sends an MDM command to set the device name."
+    },
+    {
+      "info": {
+        "name": "Shutdown",
+        "type": "http"
+      },
+      "http": {
+        "method": "POST",
+        "url": "https://{subdomain}.api.kandji.io/api/v1/devices/:device_id/action/shutdown",
+        "params": [
+          {
+            "name": "device_id",
+            "value": "",
+            "type": "path"
+          }
+        ]
+      },
+      "docs": "This endpoint sends an MDM command to shutdown a device."
+    },
+    {
+      "info": {
+        "name": "Update Inventory",
+        "type": "http"
+      },
+      "http": {
+        "method": "POST",
+        "url": "https://{subdomain}.api.kandji.io/api/v1/devices/:device_id/action/updateinventory",
+        "params": [
+          {
+            "name": "device_id",
+            "value": "",
+            "type": "path"
+          }
+        ]
+      },
+      "docs": "This endpoint sends an MDM command to start a check-in for a device, initiating the daily MDM commands and MDM logic."
+    },
+    {
+      "info": {
+        "name": "Unlock Account",
+        "type": "http"
+      },
+      "http": {
+        "method": "POST",
+        "url": "https://{subdomain}.api.kandji.io/api/v1/devices/:device_id/action/unlockaccount",
+        "params": [
+          {
+            "name": "device_id",
+            "value": "",
+            "type": "path"
+          }
+        ],
+        "body": {
+          "type": "json",
+          "data": "{}"
+        }
+      },
+      "docs": "This endpoint sends an MDM command to unlock a user account that was locked by the system because of too many failed password attempts."
+    },
+    {
+      "info": {
+        "name": "Get Device Notes",
+        "type": "http"
+      },
+      "http": {
+        "method": "GET",
+        "url": "https://{subdomain}.api.kandji.io/api/v1/devices/:device_id/notes",
+        "params": [
+          {
+            "name": "device_id",
+            "value": "",
+            "type": "path"
+          }
+        ]
+      },
+      "docs": "This request gets all notes for the specified Device ID."
+    },
+    {
+      "info": {
+        "name": "Create Device Note",
+        "type": "http"
+      },
+      "http": {
+        "method": "POST",
+        "url": "https://{subdomain}.api.kandji.io/api/v1/devices/:device_id/notes",
+        "params": [
+          {
+            "name": "device_id",
+            "value": "",
+            "type": "path"
+          }
+        ],
+        "body": {
+          "type": "json",
+          "data": "{}"
+        }
+      },
+      "docs": "This request creates a note for the specified device ID."
+    },
+    {
+      "info": {
+        "name": "Retrieve Device Note",
+        "type": "http"
+      },
+      "http": {
+        "method": "GET",
+        "url": "https://{subdomain}.api.kandji.io/api/v1/devices/:device_id/notes/:note_id",
+        "params": [
+          {
+            "name": "device_id",
+            "value": "",
+            "type": "path"
+          },
+          {
+            "name": "note_id",
+            "value": "",
+            "type": "path"
+          }
+        ]
+      },
+      "docs": "This request retrieves a specified note (Note ID) for the specified Device ID."
+    },
+    {
+      "info": {
+        "name": "Update Device Note",
+        "type": "http"
+      },
+      "http": {
+        "method": "PATCH",
+        "url": "https://{subdomain}.api.kandji.io/api/v1/devices/:device_id/notes/:note_id",
+        "params": [
+          {
+            "name": "device_id",
+            "value": "",
+            "type": "path"
+          },
+          {
+            "name": "note_id",
+            "value": "",
+            "type": "path"
+          }
+        ],
+        "body": {
+          "type": "json",
+          "data": "{}"
+        }
+      },
+      "docs": "This request patches a specified note (Note ID) for the specified Device ID."
+    },
+    {
+      "info": {
+        "name": "Delete Device Note",
+        "type": "http"
+      },
+      "http": {
+        "method": "DELETE",
+        "url": "https://{subdomain}.api.kandji.io/api/v1/devices/:device_id/notes/:note_id",
+        "params": [
+          {
+            "name": "device_id",
+            "value": "",
+            "type": "path"
+          },
+          {
+            "name": "note_id",
+            "value": "",
+            "type": "path"
+          }
+        ]
+      },
+      "docs": "This request deletes a specified note (Note ID) for the specified Device ID."
+    },
+    {
+      "info": {
+        "name": "List Devices",
+        "type": "http"
+      },
+      "http": {
+        "method": "GET",
+        "url": "https://{subdomain}.api.kandji.io/api/v1/devices",
+        "params": [
+          {
+            "name": "asset_tag",
+            "value": "",
+            "type": "query",
+            "description": "Filter by asset tag"
+          },
+          {
+            "name": "blueprint_id",
+            "value": "",
+            "type": "query",
+            "description": "Return results \"containing\" the specified blueprint id"
+          },
+          {
+            "name": "device_id",
+            "value": "",
+            "type": "query",
+            "description": "Filter by device ID"
+          },
+          {
+            "name": "device_name",
+            "value": "",
+            "type": "query",
+            "description": "Filter by device name"
+          },
+          {
+            "name": "filevault_enabled",
+            "value": "",
+            "type": "query",
+            "description": "Query for devices that either have FileVault on (true) or off (false). This parameter only applies to macOS. An empty list will be returned if no devices are found with the given parameter value."
+          },
+          {
+            "name": "mac_address",
+            "value": "",
+            "type": "query",
+            "description": "Search for a specific device by MAC address"
+          },
+          {
+            "name": "model",
+            "value": "",
+            "type": "query",
+            "description": "Return model results \"containing\" the specified model string"
+          },
+          {
+            "name": "ordering",
+            "value": "",
+            "type": "query",
+            "description": "The ordering parameter can be used to define how the device records are ordered in the response. Prepending a dash (-) to the parameter value will reverse the order of the returned results. Possible values are asset_tag, blueprint_id, device_id, device_name, last_check_in, model, platform, os_version, serial_number, user. Multiple values can be combined in a comma separated list."
+          },
+          {
+            "name": "os_version",
+            "value": "",
+            "type": "query",
+            "description": "Return all device records containing the specified OS version"
+          },
+          {
+            "name": "platform",
+            "value": "",
+            "type": "query",
+            "description": "Return all records matching a specific platform. Possible values are Mac, iPad, iPhone, AppleTV"
+          },
+          {
+            "name": "serial_number",
+            "value": "",
+            "type": "query",
+            "description": "Search for a specific device by Serial Number. If partial serial number is provided in the query, all device containing the partial string will be returned"
+          },
+          {
+            "name": "tag_name",
+            "value": "",
+            "type": "query",
+            "description": "Return results for given tag name. Case sensitive"
+          },
+          {
+            "name": "tag_name_in",
+            "value": "",
+            "type": "query",
+            "description": "Return results for given tag names separate by commas. Case sensitive"
+          },
+          {
+            "name": "tag_id",
+            "value": "",
+            "type": "query",
+            "description": "Search for a tag by its ID. Case sensitive"
+          },
+          {
+            "name": "tag_id_in",
+            "value": "",
+            "type": "query",
+            "description": "Return results for given tag IDs separated by commas. Case sensitive"
+          },
+          {
+            "name": "user",
+            "value": "",
+            "type": "query",
+            "description": "Return results \"containing\" the user name"
+          },
+          {
+            "name": "user_email",
+            "value": "",
+            "type": "query",
+            "description": "Return results \"containing\" search on email address"
+          },
+          {
+            "name": "user_email_exact",
+            "value": "",
+            "type": "query",
+            "description": "Return results \"matching\" the specified email address"
+          },
+          {
+            "name": "user_id",
+            "value": "",
+            "type": "query",
+            "description": "exact match on kandji user ID"
+          },
+          {
+            "name": "user_name",
+            "value": "",
+            "type": "query",
+            "description": "Return results \"containing\" the assigned user Display Name"
+          },
+          {
+            "name": "limit",
+            "value": "",
+            "type": "query",
+            "description": "A hard upper limit is set at 300 device records returned per request. If more device records are expected, pagination should be used using the limit and offset parameters. Additionally, parameter queries can be added to a request to limit the results."
+          },
+          {
+            "name": "offset",
+            "value": "",
+            "type": "query",
+            "description": "Specify the starting record to return"
+          }
+        ]
+      },
+      "docs": "This request returns a list of devices in an Iru Endpoint Management tenant."
+    },
+    {
+      "info": {
+        "name": "Get Device Details",
+        "type": "http"
+      },
+      "http": {
+        "method": "GET",
+        "url": "https://{subdomain}.api.kandji.io/api/v1/devices/:device_id/details",
+        "params": [
+          {
+            "name": "device_id",
+            "value": "",
+            "type": "path"
+          }
+        ]
+      },
+      "docs": "This request returns the device details for a specified Device ID."
+    },
+    {
+      "info": {
+        "name": "Get device lost mode details",
+        "type": "http"
+      },
+      "http": {
+        "method": "GET",
+        "url": "https://{subdomain}.api.kandji.io/api/v1/devices/:device_id/details/lostmode",
+        "params": [
+          {
+            "name": "device_id",
+            "value": "",
+            "type": "path"
+          }
+        ]
+      },
+      "docs": "This request returns lost mode details for a device."
+    },
+    {
+      "info": {
+        "name": "Cancel Lost Mode",
+        "type": "http"
+      },
+      "http": {
+        "method": "DELETE",
+        "url": "https://{subdomain}.api.kandji.io/api/v1/devices/:device_id/details/lostmode",
+        "params": [
+          {
+            "name": "device_id",
+            "value": "",
+            "type": "path"
+          }
+        ]
+      },
+      "docs": "This endpoint can be used to send a cancelation request if Lost Mode is in an error state for a given iOS or iPadOS device."
+    },
+    {
+      "info": {
+        "name": "Get Device Activity",
+        "type": "http"
+      },
+      "http": {
+        "method": "GET",
+        "url": "https://{subdomain}.api.kandji.io/api/v1/devices/:device_id/activity",
+        "params": [
+          {
+            "name": "device_id",
+            "value": "",
+            "type": "path"
+          },
+          {
+            "name": "limit",
+            "value": "",
+            "type": "query",
+            "description": "A hard upper limit is set at 300 device records returned per request. If more device records are expected, pagination should be used using the limit and offset parameters. Additionally, parameter queries can be added to a request to limit the results."
+          },
+          {
+            "name": "offset",
+            "value": "",
+            "type": "query",
+            "description": "Specify the starting record to return"
+          }
+        ]
+      },
+      "docs": "This request returns the device activity for a specified Device ID."
+    },
+    {
+      "info": {
+        "name": "Get Device Apps",
+        "type": "http"
+      },
+      "http": {
+        "method": "GET",
+        "url": "https://{subdomain}.api.kandji.io/api/v1/devices/:device_id/apps",
+        "params": [
+          {
+            "name": "device_id",
+            "value": "",
+            "type": "path"
+          }
+        ]
+      },
+      "docs": "This request returns a list of all installed apps for a specified Device ID."
+    },
+    {
+      "info": {
+        "name": "Get Device Library Items",
+        "type": "http"
+      },
+      "http": {
+        "method": "GET",
+        "url": "https://{subdomain}.api.kandji.io/api/v1/devices/:device_id/library-items",
+        "params": [
+          {
+            "name": "device_id",
+            "value": "",
+            "type": "path"
+          }
+        ]
+      },
+      "docs": "This request gets all library items and their statuses for a specified Device ID\n#### Possible library item status values"
+    },
+    {
+      "info": {
+        "name": "Get Device Parameters",
+        "type": "http"
+      },
+      "http": {
+        "method": "GET",
+        "url": "https://{subdomain}.api.kandji.io/api/v1/devices/:device_id/parameters",
+        "params": [
+          {
+            "name": "device_id",
+            "value": "",
+            "type": "path"
+          }
+        ]
+      },
+      "docs": "This request returns the parameters and their statuses for a specified Device ID"
+    },
+    {
+      "info": {
+        "name": "Get Device Status",
+        "type": "http"
+      },
+      "http": {
+        "method": "GET",
+        "url": "https://{subdomain}.api.kandji.io/api/v1/devices/:device_id/status",
+        "params": [
+          {
+            "name": "device_id",
+            "value": "",
+            "type": "path"
+          }
+        ]
+      },
+      "docs": "This request returns the full status (parameters and library items) for a specified Device ID."
+    },
+    {
+      "info": {
+        "name": "Get Activation Lock Bypass Code",
+        "type": "http"
+      },
+      "http": {
+        "method": "GET",
+        "url": "https://{subdomain}.api.kandji.io/api/v1/devices/:device_id/secrets/bypasscode",
+        "params": [
+          {
+            "name": "device_id",
+            "value": "",
+            "type": "path"
+          }
+        ]
+      },
+      "docs": "This request allows you to retrieve the Activation Lock Bypass code."
+    },
+    {
+      "info": {
+        "name": "Get FileVault Recovery Key",
+        "type": "http"
+      },
+      "http": {
+        "method": "GET",
+        "url": "https://{subdomain}.api.kandji.io/api/v1/devices/:device_id/secrets/filevaultkey",
+        "params": [
+          {
+            "name": "device_id",
+            "value": "",
+            "type": "path"
+          }
+        ]
+      },
+      "docs": "This request allows you to retrieve the FileVault Recovery key for a macOS device."
+    },
+    {
+      "info": {
+        "name": "Get Unlock Pin",
+        "type": "http"
+      },
+      "http": {
+        "method": "GET",
+        "url": "https://{subdomain}.api.kandji.io/api/v1/devices/:device_id/secrets/unlockpin",
+        "params": [
+          {
+            "name": "device_id",
+            "value": "",
+            "type": "path"
+          }
+        ]
+      },
+      "docs": "This request allows you to retrieve the device unlock pin for a macOS device."
+    },
+    {
+      "info": {
+        "name": "Get Recovery Lock Password",
+        "type": "http"
+      },
+      "http": {
+        "method": "GET",
+        "url": "https://{subdomain}.api.kandji.io/api/v1/devices/:device_id/secrets/recoverypassword",
+        "params": [
+          {
+            "name": "device_id",
+            "value": "",
+            "type": "path"
+          }
+        ]
+      },
+      "docs": "This request returns the Recovery Lock password."
+    },
+    {
+      "info": {
+        "name": "List Custom Apps",
+        "type": "http"
+      },
+      "http": {
+        "method": "GET",
+        "url": "https://{subdomain}.api.kandji.io/api/v1/library/custom-apps",
+        "params": [
+          {
+            "name": "page",
+            "value": "1",
+            "type": "query",
+            "description": "Optional page number. Used when results exceed pagination threshold. A hard upper limit is set at 300 device records returned per request."
+          },
+          {
+            "name": "limit",
+            "value": "300",
+            "type": "query",
+            "description": "Number of results to return per page. A hard upper limit is set at 300 records returned per request."
+          },
+          {
+            "name": "offset",
+            "value": "0",
+            "type": "query",
+            "description": "The initial index from which to return the results. Used for offset-based pagination."
+          }
+        ]
+      },
+      "docs": "This endpoint makes a request to retrieve a list of custom apps from the Iru Endpoint Management library."
+    },
+    {
+      "info": {
+        "name": "Create Custom App",
+        "type": "http"
+      },
+      "http": {
+        "method": "POST",
+        "url": "https://{subdomain}.api.kandji.io/api/v1/library/custom-apps",
+        "body": {
+          "type": "form-urlencoded",
+          "data": [
+            {
+              "name": "name",
+              "value": ""
+            },
+            {
+              "name": "file_key",
+              "value": ""
+            },
+            {
+              "name": "install_type",
+              "value": ""
+            },
+            {
+              "name": "install_enforcement",
+              "value": ""
+            },
+            {
+              "name": "audit_script",
+              "value": ""
+            },
+            {
+              "name": "unzip_location",
+              "value": ""
+            },
+            {
+              "name": "active",
+              "value": ""
+            },
+            {
+              "name": "restart",
+              "value": ""
+            },
+            {
+              "name": "preinstall_script",
+              "value": ""
+            },
+            {
+              "name": "postinstall_script",
+              "value": ""
+            }
+          ]
+        }
+      },
+      "docs": "This request allows you to create a custom app in the Iru Endpoint Management library."
+    },
+    {
+      "info": {
+        "name": "Get Custom App",
+        "type": "http"
+      },
+      "http": {
+        "method": "GET",
+        "url": "https://{subdomain}.api.kandji.io/api/v1/library/custom-apps/:library_item_id",
+        "params": [
+          {
+            "name": "library_item_id",
+            "value": "",
+            "type": "path"
+          }
+        ]
+      },
+      "docs": "This endpoint retrieves details about a specific custom app from the Kandji library."
+    },
+    {
+      "info": {
+        "name": "Update Custom App",
+        "type": "http"
+      },
+      "http": {
+        "method": "PATCH",
+        "url": "https://{subdomain}.api.kandji.io/api/v1/library/custom-apps/:library_item_id",
+        "params": [
+          {
+            "name": "library_item_id",
+            "value": "",
+            "type": "path"
+          }
+        ],
+        "body": {
+          "type": "form-urlencoded",
+          "data": [
+            {
+              "name": "name",
+              "value": ""
+            },
+            {
+              "name": "install_enforcement",
+              "value": ""
+            },
+            {
+              "name": "file_key",
+              "value": ""
+            },
+            {
+              "name": "install_type",
+              "value": ""
+            },
+            {
+              "name": "audit_script",
+              "value": ""
+            },
+            {
+              "name": "unzip_location",
+              "value": ""
+            },
+            {
+              "name": "active",
+              "value": ""
+            },
+            {
+              "name": "restart",
+              "value": ""
+            },
+            {
+              "name": "preinstall_script",
+              "value": ""
+            },
+            {
+              "name": "postinstall_script",
+              "value": ""
+            }
+          ]
+        }
+      },
+      "docs": "This request allows you to update a custom app in the Iru Endpoint Management library."
+    },
+    {
+      "info": {
+        "name": "Delete Custom App",
+        "type": "http"
+      },
+      "http": {
+        "method": "DELETE",
+        "url": "https://{subdomain}.api.kandji.io/api/v1/library/custom-apps/:library_item_id",
+        "params": [
+          {
+            "name": "library_item_id",
+            "value": "",
+            "type": "path"
+          }
+        ]
+      },
+      "docs": "This endpoint sends a request to delete a specific custom app from the Kandji library."
+    },
+    {
+      "info": {
+        "name": "Upload Custom App",
+        "type": "http"
+      },
+      "http": {
+        "method": "POST",
+        "url": "https://{subdomain}.api.kandji.io/api/v1/library/custom-apps/upload",
+        "body": {
+          "type": "json",
+          "data": "{}"
+        }
+      },
+      "docs": "This request retrieves the S3 upload details need for uploading the app to Amazon S3."
+    },
+    {
+      "info": {
+        "name": "List In-House Apps",
+        "type": "http"
+      },
+      "http": {
+        "method": "GET",
+        "url": "https://{subdomain}.api.kandji.io/api/v1/library/ipa-apps",
+        "params": [
+          {
+            "name": "page",
+            "value": "1",
+            "type": "query",
+            "description": "Optional page number. Used when results exceed pagination threshold. A hard upper limit is set at 300 app records returned per request."
+          },
+          {
+            "name": "limit",
+            "value": "300",
+            "type": "query",
+            "description": "Number of results to return per page. A hard upper limit is set at 300 records returned per request."
+          },
+          {
+            "name": "offset",
+            "value": "0",
+            "type": "query",
+            "description": "The initial index from which to return the results. Used for offset-based pagination."
+          }
+        ]
+      },
+      "docs": "This endpoint returns a list of In-House App Library Items in your Iru Endpoint Management tenant."
+    },
+    {
+      "info": {
+        "name": "Create In-House App",
+        "type": "http"
+      },
+      "http": {
+        "method": "POST",
+        "url": "https://{subdomain}.api.kandji.io/api/v1/library/ipa-apps",
+        "body": {
+          "type": "json",
+          "data": "{}"
+        }
+      },
+      "docs": "This endpoint creates a new In-House App Library Item in the Kandji library."
+    },
+    {
+      "info": {
+        "name": "Get In-House App",
+        "type": "http"
+      },
+      "http": {
+        "method": "GET",
+        "url": "https://{subdomain}.api.kandji.io/api/v1/library/ipa-apps/:library_item_id",
+        "params": [
+          {
+            "name": "library_item_id",
+            "value": "",
+            "type": "path"
+          }
+        ]
+      },
+      "docs": "This endpoint retrieves information about a specific In-House App Library Item."
+    },
+    {
+      "info": {
+        "name": "Update In-House App",
+        "type": "http"
+      },
+      "http": {
+        "method": "PATCH",
+        "url": "https://{subdomain}.api.kandji.io/api/v1/library/ipa-apps/:library_item_id",
+        "params": [
+          {
+            "name": "library_item_id",
+            "value": "13cc4ab7-0380-4d64-b80f-d2c22136e522",
+            "type": "path",
+            "description": "The unique identifier of the library item"
+          }
+        ],
+        "body": {
+          "type": "json",
+          "data": "{}"
+        }
+      },
+      "docs": "This request allows you to update an existing In-House App in the Kandji library."
+    },
+    {
+      "info": {
+        "name": "Delete In-House App",
+        "type": "http"
+      },
+      "http": {
+        "method": "DELETE",
+        "url": "https://{subdomain}.api.kandji.io/api/v1/library/ipa-apps/:library_item_id",
+        "params": [
+          {
+            "name": "library_item_id",
+            "value": "13cc4ab7-0380-4d64-b80f-d2c22136e522",
+            "type": "path",
+            "description": "The unique identifier of the Library Item"
+          }
+        ]
+      },
+      "docs": "This endpoint sends a request to delete a specific In-House App Library Item from Kandji."
+    },
+    {
+      "info": {
+        "name": "Upload In-House App",
+        "type": "http"
+      },
+      "http": {
+        "method": "POST",
+        "url": "https://{subdomain}.api.kandji.io/api/v1/library/ipa-apps/upload",
+        "body": {
+          "type": "json",
+          "data": "{}"
+        }
+      },
+      "docs": "Creates a pre-signed post_url to upload a new In-House App to S3."
+    },
+    {
+      "info": {
+        "name": "Upload In-House App Status",
+        "type": "http"
+      },
+      "http": {
+        "method": "GET",
+        "url": "https://{subdomain}.api.kandji.io/api/v1/library/ipa-apps/upload/:pending_upload_id/status",
+        "params": [
+          {
+            "name": "pending_upload_id",
+            "value": "",
+            "type": "path",
+            "description": "This should be the id from the [Upload In-House App](/en/endpoint/api/upload-in-house-app) API response"
+          }
+        ]
+      },
+      "docs": "This endpoint retrieves the current upload status of an In-House App .ipa file to Amazon S3."
+    },
+    {
+      "info": {
+        "name": "List Custom Profiles",
+        "type": "http"
+      },
+      "http": {
+        "method": "GET",
+        "url": "https://{subdomain}.api.kandji.io/api/v1/library/custom-profiles",
+        "params": [
+          {
+            "name": "page",
+            "value": "",
+            "type": "query",
+            "description": "Optional page number. Used when results exceed pagination threshold. A hard upper limit is set at 300 device records returned per request."
+          }
+        ]
+      },
+      "docs": "This endpoint makes a request to retrieve a list of custom profiles from the Iru Endpoint Management library."
+    },
+    {
+      "info": {
+        "name": "Create Custom Profile",
+        "type": "http"
+      },
+      "http": {
+        "method": "POST",
+        "url": "https://{subdomain}.api.kandji.io/api/v1/library/custom-profiles",
+        "body": {
+          "type": "multipart-form",
+          "data": [
+            {
+              "name": "name",
+              "type": "text",
+              "value": ""
+            },
+            {
+              "name": "file",
+              "type": "text",
+              "value": ""
+            },
+            {
+              "name": "active",
+              "type": "text",
+              "value": ""
+            },
+            {
+              "name": "runs_on_mac",
+              "type": "text",
+              "value": ""
+            },
+            {
+              "name": "runs_on_iphone",
+              "type": "text",
+              "value": ""
+            },
+            {
+              "name": "runs_on_ipad",
+              "type": "text",
+              "value": ""
+            },
+            {
+              "name": "runs_on_tv",
+              "type": "text",
+              "value": ""
+            }
+          ]
+        }
+      },
+      "docs": "This request allows you to create a custom profile in the Kandji library."
+    },
+    {
+      "info": {
+        "name": "Get Custom Profile",
+        "type": "http"
+      },
+      "http": {
+        "method": "GET",
+        "url": "https://{subdomain}.api.kandji.io/api/v1/library/custom-profiles/:library_item_id",
+        "params": [
+          {
+            "name": "library_item_id",
+            "value": "a403f056-b1ec-4053-a79d-72ad2fe92485",
+            "type": "path",
+            "description": "The unique identifier of the library item"
+          }
+        ]
+      },
+      "docs": "This endpoint retrieves details about a specific custom profile from the Kandji library."
+    },
+    {
+      "info": {
+        "name": "Update Custom Profile",
+        "type": "http"
+      },
+      "http": {
+        "method": "PATCH",
+        "url": "https://{subdomain}.api.kandji.io/api/v1/library/custom-profiles/:library_item_id",
+        "params": [
+          {
+            "name": "library_item_id",
+            "value": "a403f056-b1ec-4053-a79d-72ad2fe92485",
+            "type": "path",
+            "description": "The unique identifier of the library item"
+          }
+        ],
+        "body": {
+          "type": "multipart-form",
+          "data": [
+            {
+              "name": "name",
+              "type": "text",
+              "value": ""
+            },
+            {
+              "name": "file",
+              "type": "text",
+              "value": ""
+            },
+            {
+              "name": "active",
+              "type": "text",
+              "value": ""
+            },
+            {
+              "name": "runs_on_mac",
+              "type": "text",
+              "value": ""
+            },
+            {
+              "name": "runs_on_iphone",
+              "type": "text",
+              "value": ""
+            },
+            {
+              "name": "runs_on_ipad",
+              "type": "text",
+              "value": ""
+            },
+            {
+              "name": "runs_on_tv",
+              "type": "text",
+              "value": ""
+            }
+          ]
+        }
+      },
+      "docs": "This request allows you to update a custom profile in the Kandji library."
+    },
+    {
+      "info": {
+        "name": "Delete Custom Profile",
+        "type": "http"
+      },
+      "http": {
+        "method": "DELETE",
+        "url": "https://{subdomain}.api.kandji.io/api/v1/library/custom-profiles/:library_item_id",
+        "params": [
+          {
+            "name": "library_item_id",
+            "value": "e8f93d8e-77da-45a3-b5bf-ede2cf1a330d",
+            "type": "path",
+            "description": "The unique identifier of the library item"
+          }
+        ]
+      },
+      "docs": "This endpoint sends a request to delete a specific custom profile from the Kandji library."
+    },
+    {
+      "info": {
+        "name": "List Custom Scripts",
+        "type": "http"
+      },
+      "http": {
+        "method": "GET",
+        "url": "https://{subdomain}.api.kandji.io/api/v1/library/custom-scripts",
+        "params": [
+          {
+            "name": "page",
+            "value": "",
+            "type": "query",
+            "description": "Optional page number. Used when results exceed pagination threshold. A hard upper limit is set at 300 device records returned per request."
+          }
+        ]
+      },
+      "docs": "This endpoint makes a request to retrieve a list of custom scripts from the Iru Endpoint Management library."
+    },
+    {
+      "info": {
+        "name": "Create Custom Script",
+        "type": "http"
+      },
+      "http": {
+        "method": "POST",
+        "url": "https://{subdomain}.api.kandji.io/api/v1/library/custom-scripts",
+        "body": {
+          "type": "json",
+          "data": "{}"
+        }
+      },
+      "docs": "This request allows you to create a custom script in the Kandji library."
+    },
+    {
+      "info": {
+        "name": "Get Custom Script",
+        "type": "http"
+      },
+      "http": {
+        "method": "GET",
+        "url": "https://{subdomain}.api.kandji.io/api/v1/library/custom-scripts/:library_item_id",
+        "params": [
+          {
+            "name": "library_item_id",
+            "value": "1cdbbf21-682b-4573-aa22-5aff027a337b",
+            "type": "path",
+            "description": "The unique identifier of the library item"
+          }
+        ]
+      },
+      "docs": "This endpoint retrieves details about a specific custom script from the Kandji library."
+    },
+    {
+      "info": {
+        "name": "Update Custom Script",
+        "type": "http"
+      },
+      "http": {
+        "method": "PATCH",
+        "url": "https://{subdomain}.api.kandji.io/api/v1/library/custom-scripts/:library_item_id",
+        "params": [
+          {
+            "name": "library_item_id",
+            "value": "",
+            "type": "path"
+          }
+        ],
+        "body": {
+          "type": "json",
+          "data": "{}"
+        }
+      },
+      "docs": "This request allows you to update a custom script in the Kandji library."
+    },
+    {
+      "info": {
+        "name": "Delete Custom Script",
+        "type": "http"
+      },
+      "http": {
+        "method": "DELETE",
+        "url": "https://{subdomain}.api.kandji.io/api/v1/library/custom-scripts/:library_item_id",
+        "params": [
+          {
+            "name": "library_item_id",
+            "value": "1cdbbf21-682b-4573-aa22-5aff027a337b",
+            "type": "path",
+            "description": "The unique identifier of the library item"
+          }
+        ]
+      },
+      "docs": "This endpoint sends a request to delete a specific custom script from the Kandji library."
+    },
+    {
+      "info": {
+        "name": "List Self Service Categories",
+        "type": "http"
+      },
+      "http": {
+        "method": "GET",
+        "url": "https://{subdomain}.api.kandji.io/api/v1/self-service/categories"
+      },
+      "docs": "This endpoint retrieves a list of self-service categories and their associated IDs."
+    },
+    {
+      "info": {
+        "name": "Get Library Item Activity",
+        "type": "http"
+      },
+      "http": {
+        "method": "GET",
+        "url": "https://{subdomain}.api.kandji.io/api/v1/library/library-items/:library_item_id/activity",
+        "params": [
+          {
+            "name": "library_item_id",
+            "value": "",
+            "type": "path"
+          }
+        ]
+      },
+      "docs": "This endpoint retrieves the activity related to a specific library item. Activity is listed from newest to oldest."
+    },
+    {
+      "info": {
+        "name": "Get Library Item Statuses",
+        "type": "http"
+      },
+      "http": {
+        "method": "GET",
+        "url": "https://{subdomain}.api.kandji.io/api/v1/library/library-items/:library_item_id/status",
+        "params": [
+          {
+            "name": "library_item_id",
+            "value": "",
+            "type": "path"
+          },
+          {
+            "name": "computer_id",
+            "value": "",
+            "type": "query",
+            "description": "Query for the status of one device."
+          },
+          {
+            "name": "limit",
+            "value": "",
+            "type": "query",
+            "description": "A hard upper limit is set at 300 device records returned per request. If more device records are expected, pagination should be used using the limit and offset parameters."
+          },
+          {
+            "name": "offset",
+            "value": "",
+            "type": "query",
+            "description": "Specify the starting record to return"
+          }
+        ]
+      },
+      "docs": "This endpoint retrieves the statuses related to a specific library item."
+    },
+    {
+      "info": {
+        "name": "Activation lock",
+        "type": "http"
+      },
+      "http": {
+        "method": "GET",
+        "url": "https://{subdomain}.api.kandji.io/api/v1/prism/activation_lock",
+        "params": [
+          {
+            "name": "blueprint_ids",
+            "value": "blueprint_id, blueprint_id,blueprint_id",
+            "type": "query",
+            "description": "Filter results by one or more blueprint IDs separated by commas."
+          },
+          {
+            "name": "device_families",
+            "value": "Mac,iPhone,iPad,tvOS",
+            "type": "query",
+            "description": "Filter results by one or more device families separated by commas (`Mac`, `iPhone`, `iPad`, `tvOS`)."
+          },
+          {
+            "name": "filter",
+            "value": "",
+            "type": "query",
+            "description": "JSON schema object containing one or more key value pairs. Note: For detailed information on filters, see the Filters section at the beginning of the Visibility API endpoints in this doc."
+          },
+          {
+            "name": "sort_by",
+            "value": "",
+            "type": "query",
+            "description": "Sort results by the name of a given response body key in either ascending (default behavior) or descending(-) order."
+          },
+          {
+            "name": "limit",
+            "value": "",
+            "type": "query",
+            "description": "A hard upper limit is set at 300 device records returned per request. If more device records are expected, pagination should be used using the limit and offset parameters. Additionally, parameter queries can be added to a request to limit the results."
+          },
+          {
+            "name": "offset",
+            "value": "",
+            "type": "query",
+            "description": "Specify the starting record to return."
+          }
+        ]
+      },
+      "docs": "This request returns activation lock attributes for devices."
+    },
+    {
+      "info": {
+        "name": "Applications",
+        "type": "http"
+      },
+      "http": {
+        "method": "GET",
+        "url": "https://{subdomain}.api.kandji.io/api/v1/prism/apps",
+        "params": [
+          {
+            "name": "blueprint_ids",
+            "value": "blueprint_id, blueprint_id,blueprint_id",
+            "type": "query",
+            "description": "Filter results by one or more blueprint IDs separated by commas."
+          },
+          {
+            "name": "device_families",
+            "value": "Mac,iPhone,iPad,tvOS",
+            "type": "query",
+            "description": "Filter results by one or more device families separated by commas (`Mac`, `iPhone`, `iPad`, `tvOS`)."
+          },
+          {
+            "name": "filter",
+            "value": "{\"name\":{\"not_in\":[\"Okta Verify\"]},\"device__name\":{\"not_in\":[\"testuser’s MacBook Air\"]}}",
+            "type": "query",
+            "description": "JSON schema object containing one or more key value pairs. Note: For detailed information on filters, see the Filters section at the beginning of the Visibility API endpoints in this doc."
+          },
+          {
+            "name": "sort_by",
+            "value": "",
+            "type": "query",
+            "description": "Sort results by the name of a given response body key in either ascending (default behavior) or descending() order."
+          },
+          {
+            "name": "limit",
+            "value": "300",
+            "type": "query",
+            "description": "A hard upper limit is set at 300 device records returned per request. If more device records are expected, pagination should be used using the limit and offset parameters. Additionally, parameter queries can be added to a request to limit the results."
+          },
+          {
+            "name": "offset",
+            "value": "0",
+            "type": "query",
+            "description": "Specify the starting record to return."
+          }
+        ]
+      },
+      "docs": "This request returns the applications installed on macOS, iOS, iPadOS, and tvOS devices."
+    },
+    {
+      "info": {
+        "name": "Application firewall",
+        "type": "http"
+      },
+      "http": {
+        "method": "GET",
+        "url": "https://{subdomain}.api.kandji.io/api/v1/prism/application_firewall",
+        "params": [
+          {
+            "name": "blueprint_ids",
+            "value": "blueprint_id, blueprint_id,blueprint_id",
+            "type": "query",
+            "description": "Filter results by one or more blueprint IDs separated by commas."
+          },
+          {
+            "name": "device_families",
+            "value": "Mac,iPhone,iPad,tvOS",
+            "type": "query",
+            "description": "Filter results by one or more device families separated by commas (`Mac`, `iPhone`, `iPad`, `tvOS`)."
+          },
+          {
+            "name": "filter",
+            "value": "",
+            "type": "query",
+            "description": "JSON schema object containing one or more key value pairs. Note: For detailed information on filters, see the Filters section at the beginning of the Visibility API endpoints in this doc."
+          },
+          {
+            "name": "sort_by",
+            "value": "",
+            "type": "query",
+            "description": "Sort results by the name of a given response body key in either ascending (default behavior) or descending(-) order."
+          },
+          {
+            "name": "limit",
+            "value": "",
+            "type": "query",
+            "description": "A hard upper limit is set at 300 device records returned per request. If more device records are expected, pagination should be used using the limit and offset parameters. Additionally, parameter queries can be added to a request to limit the results."
+          },
+          {
+            "name": "offset",
+            "value": "",
+            "type": "query",
+            "description": "Specify the starting record to return."
+          }
+        ]
+      },
+      "docs": "This request returns Application Firewall details for macOS."
+    },
+    {
+      "info": {
+        "name": "Cellular",
+        "type": "http"
+      },
+      "http": {
+        "method": "GET",
+        "url": "https://{subdomain}.api.kandji.io/api/v1/prism/cellular",
+        "params": [
+          {
+            "name": "blueprint_ids",
+            "value": "blueprint_id, blueprint_id,blueprint_id",
+            "type": "query",
+            "description": "Filter results by one or more blueprint IDs separated by commas."
+          },
+          {
+            "name": "device_families",
+            "value": "Mac,iPhone,iPad,tvOS",
+            "type": "query",
+            "description": "Filter results by one or more device families separated by commas (`Mac`, `iPhone`, `iPad`, `tvOS`)."
+          },
+          {
+            "name": "filter",
+            "value": "",
+            "type": "query",
+            "description": "JSON schema object containing one or more key value pairs. Note: For detailed information on filters, see the Filters section at the beginning of the Visibility API endpoints in this doc."
+          },
+          {
+            "name": "sort_by",
+            "value": "",
+            "type": "query",
+            "description": "Sort results by the name of a given response body key in either ascending (default behavior) or descending(-) order."
+          },
+          {
+            "name": "limit",
+            "value": "",
+            "type": "query",
+            "description": "A hard upper limit is set at 300 device records returned per request. If more device records are expected, pagination should be used using the limit and offset parameters. Additionally, parameter queries can be added to a request to limit the results."
+          },
+          {
+            "name": "offset",
+            "value": "",
+            "type": "query",
+            "description": "Specify the starting record to return."
+          }
+        ]
+      },
+      "docs": "This request returns Cellular attributes for devices."
+    },
+    {
+      "info": {
+        "name": "Certificates",
+        "type": "http"
+      },
+      "http": {
+        "method": "GET",
+        "url": "https://{subdomain}.api.kandji.io/api/v1/prism/certificates",
+        "params": [
+          {
+            "name": "blueprint_ids",
+            "value": "blueprint_id, blueprint_id,blueprint_id",
+            "type": "query",
+            "description": "Filter results by one or more blueprint IDs separated by commas."
+          },
+          {
+            "name": "device_families",
+            "value": "Mac,iPhone,iPad,tvOS",
+            "type": "query",
+            "description": "Filter results by one or more device families separated by commas (`Mac`, `iPhone`, `iPad`, `tvOS`)."
+          },
+          {
+            "name": "filter",
+            "value": "",
+            "type": "query",
+            "description": "JSON schema object containing one or more key value pairs. Note: For detailed information on filters, see the Filters section at the beginning of the Visibility API endpoints in this doc."
+          },
+          {
+            "name": "sort_by",
+            "value": "",
+            "type": "query",
+            "description": "Sort results by the name of a given response body key in either ascending (default behavior) or descending(-) order."
+          },
+          {
+            "name": "limit",
+            "value": "",
+            "type": "query",
+            "description": "A hard upper limit is set at 300 device records returned per request. If more device records are expected, pagination should be used using the limit and offset parameters. Additionally, parameter queries can be added to a request to limit the results."
+          },
+          {
+            "name": "offset",
+            "value": "",
+            "type": "query",
+            "description": "Specify the starting record to return."
+          }
+        ]
+      },
+      "docs": "This request returns certificate details."
+    },
+    {
+      "info": {
+        "name": "Desktop and Screensaver",
+        "type": "http"
+      },
+      "http": {
+        "method": "GET",
+        "url": "https://{subdomain}.api.kandji.io/api/v1/prism/desktop_and_screensaver",
+        "params": [
+          {
+            "name": "blueprint_ids",
+            "value": "blueprint_id, blueprint_id,blueprint_id",
+            "type": "query",
+            "description": "Filter results by one or more blueprint IDs separated by commas."
+          },
+          {
+            "name": "device_families",
+            "value": "Mac,iPhone,iPad,tvOS",
+            "type": "query",
+            "description": "Filter results by one or more device families separated by commas (`Mac`, `iPhone`, `iPad`, `tvOS`)."
+          },
+          {
+            "name": "filter",
+            "value": "",
+            "type": "query",
+            "description": "JSON schema object containing one or more key value pairs. Note: For detailed information on filters, see the Filters section at the beginning of the Visibility API endpoints in this doc."
+          },
+          {
+            "name": "sort_by",
+            "value": "",
+            "type": "query",
+            "description": "Sort results by the name of a given response body key in either ascending (default behavior) or descending(-) order."
+          },
+          {
+            "name": "limit",
+            "value": "",
+            "type": "query",
+            "description": "A hard upper limit is set at 300 device records returned per request. If more device records are expected, pagination should be used using the limit and offset parameters. Additionally, parameter queries can be added to a request to limit the results."
+          },
+          {
+            "name": "offset",
+            "value": "",
+            "type": "query",
+            "description": "Specify the starting record to return."
+          }
+        ]
+      },
+      "docs": "This request returns Desktop and Screensaver details for macOS."
+    },
+    {
+      "info": {
+        "name": "Device information",
+        "type": "http"
+      },
+      "http": {
+        "method": "GET",
+        "url": "https://{subdomain}.api.kandji.io/api/v1/prism/device_information",
+        "params": [
+          {
+            "name": "blueprint_ids",
+            "value": "14afabf2-7599-47af-a942-bf7f0b8fedf8",
+            "type": "query",
+            "description": "Filter results by one or more blueprint IDs separated by commas."
+          },
+          {
+            "name": "device_families",
+            "value": "Mac,iPhone,iPad,tvOS",
+            "type": "query",
+            "description": "Filter results by one or more device families separated by commas (`Mac`, `iPhone`, `iPad`, `tvOS`)."
+          },
+          {
+            "name": "filter",
+            "value": "{\"device__name\":{\"in\":[\"testusers's MacBook Air\"]},\"updated_at\":{\"gte\":\"2023-09-03T04:00:00.000Z\",\"lte\":\"2023-09-04T04:00:00.000Z\"}}",
+            "type": "query",
+            "description": "JSON schema object containing one or more key value pairs. Note: For detailed information on filters, see the Filters section at the beginning of the Visibility API endpoints in this doc."
+          },
+          {
+            "name": "sort_by",
+            "value": "serial_number",
+            "type": "query",
+            "description": "Sort results by the name of a given response body key in either ascending (default behavior) or descending(-) order."
+          },
+          {
+            "name": "limit",
+            "value": "",
+            "type": "query",
+            "description": "A hard upper limit is set at 300 device records returned per request. If more device records are expected, pagination should be used using the limit and offset parameters. Additionally, parameter queries can be added to a request to limit the results."
+          },
+          {
+            "name": "offset",
+            "value": "",
+            "type": "query",
+            "description": "Specify the starting record to return."
+          }
+        ]
+      },
+      "docs": "This request returns device information attributes."
+    },
+    {
+      "info": {
+        "name": "FileVault",
+        "type": "http"
+      },
+      "http": {
+        "method": "GET",
+        "url": "https://{subdomain}.api.kandji.io/api/v1/prism/filevault",
+        "params": [
+          {
+            "name": "blueprint_ids",
+            "value": "blueprint_id, blueprint_id,blueprint_id",
+            "type": "query",
+            "description": "Filter results by one or more blueprint IDs separated by commas."
+          },
+          {
+            "name": "device_families",
+            "value": "Mac,iPhone,iPad,tvOS",
+            "type": "query",
+            "description": "Filter results by one or more device families separated by commas (`Mac`, `iPhone`, `iPad`, `tvOS`)."
+          },
+          {
+            "name": "filter",
+            "value": "",
+            "type": "query",
+            "description": "JSON schema object containing one or more key value pairs. Note: For detailed information on filters, see the Filters section at the beginning of the Visibility API endpoints in this doc."
+          },
+          {
+            "name": "sort_by",
+            "value": "",
+            "type": "query",
+            "description": "Sort results by the name of a given response body key in either ascending (default behavior) or descending(-) order."
+          },
+          {
+            "name": "limit",
+            "value": "",
+            "type": "query",
+            "description": "A hard upper limit is set at 300 device records returned per request. If more device records are expected, pagination should be used using the limit and offset parameters. Additionally, parameter queries can be added to a request to limit the results."
+          },
+          {
+            "name": "offset",
+            "value": "",
+            "type": "query",
+            "description": "Specify the starting record to return."
+          }
+        ]
+      },
+      "docs": "This request returns FileVault information for macOS."
+    },
+    {
+      "info": {
+        "name": "Gatekeeper and XProtect",
+        "type": "http"
+      },
+      "http": {
+        "method": "GET",
+        "url": "https://{subdomain}.api.kandji.io/api/v1/prism/gatekeeper_and_xprotect",
+        "params": [
+          {
+            "name": "blueprint_ids",
+            "value": "blueprint_id, blueprint_id,blueprint_id",
+            "type": "query",
+            "description": "Filter results by one or more blueprint IDs separated by commas."
+          },
+          {
+            "name": "device_families",
+            "value": "Mac,iPhone,iPad,tvOS",
+            "type": "query",
+            "description": "Filter results by one or more device families separated by commas (`Mac`, `iPhone`, `iPad`, `tvOS`)."
+          },
+          {
+            "name": "filter",
+            "value": "",
+            "type": "query",
+            "description": "JSON schema object containing one or more key value pairs. Note: For detailed information on filters, see the Filters section at the beginning of the Visibility API endpoints in this doc."
+          },
+          {
+            "name": "sort_by",
+            "value": "",
+            "type": "query",
+            "description": "Sort results by the name of a given response body key in either ascending (default behavior) or descending(-) order."
+          },
+          {
+            "name": "limit",
+            "value": "",
+            "type": "query",
+            "description": "A hard upper limit is set at 300 device records returned per request. If more device records are expected, pagination should be used using the limit and offset parameters. Additionally, parameter queries can be added to a request to limit the results."
+          },
+          {
+            "name": "offset",
+            "value": "",
+            "type": "query",
+            "description": "Specify the starting record to return."
+          }
+        ]
+      },
+      "docs": "This request returns Gatekeeper and XProtect attributes for macOS."
+    },
+    {
+      "info": {
+        "name": "Installed profiles",
+        "type": "http"
+      },
+      "http": {
+        "method": "GET",
+        "url": "https://{subdomain}.api.kandji.io/api/v1/prism/installed_profiles",
+        "params": [
+          {
+            "name": "blueprint_ids",
+            "value": "blueprint_id, blueprint_id,blueprint_id",
+            "type": "query",
+            "description": "Filter results by one or more blueprint IDs separated by commas."
+          },
+          {
+            "name": "device_families",
+            "value": "Mac,iPhone,iPad,tvOS",
+            "type": "query",
+            "description": "Filter results by one or more device families separated by commas (`Mac`, `iPhone`, `iPad`, `tvOS`)."
+          },
+          {
+            "name": "filter",
+            "value": "",
+            "type": "query",
+            "description": "JSON schema object containing one or more key value pairs. Note: For detailed information on filters, see the Filters section at the beginning of the Visibility API endpoints in this doc."
+          },
+          {
+            "name": "sort_by",
+            "value": "",
+            "type": "query",
+            "description": "Sort results by the name of a given response body key in either ascending (default behavior) or descending(-) order."
+          },
+          {
+            "name": "limit",
+            "value": "",
+            "type": "query",
+            "description": "A hard upper limit is set at 300 device records returned per request. If more device records are expected, pagination should be used using the limit and offset parameters. Additionally, parameter queries can be added to a request to limit the results."
+          },
+          {
+            "name": "offset",
+            "value": "",
+            "type": "query",
+            "description": "Specify the starting record to return."
+          }
+        ]
+      },
+      "docs": "This request returns Installed Profiles attributes for macOS, iOS, iPadOS, and tvOS."
+    },
+    {
+      "info": {
+        "name": "Kernel Extensions",
+        "type": "http"
+      },
+      "http": {
+        "method": "GET",
+        "url": "https://{subdomain}.api.kandji.io/api/v1/prism/kernel_extensions",
+        "params": [
+          {
+            "name": "blueprint_ids",
+            "value": "blueprint_id, blueprint_id,blueprint_id",
+            "type": "query",
+            "description": "Filter results by one or more blueprint IDs separated by commas."
+          },
+          {
+            "name": "device_families",
+            "value": "Mac,iPhone,iPad,tvOS",
+            "type": "query",
+            "description": "Filter results by one or more device families separated by commas (`Mac`, `iPhone`, `iPad`, `tvOS`)."
+          },
+          {
+            "name": "filter",
+            "value": "",
+            "type": "query",
+            "description": "JSON schema object containing one or more key value pairs. Note: For detailed information on filters, see the Filters section at the beginning of the Visibility API endpoints in this doc."
+          },
+          {
+            "name": "sort_by",
+            "value": "",
+            "type": "query",
+            "description": "Sort results by the name of a given response body key in either ascending (default behavior) or descending(-) order."
+          },
+          {
+            "name": "limit",
+            "value": "",
+            "type": "query",
+            "description": "A hard upper limit is set at 300 device records returned per request. If more device records are expected, pagination should be used using the limit and offset parameters. Additionally, parameter queries can be added to a request to limit the results."
+          },
+          {
+            "name": "offset",
+            "value": "",
+            "type": "query",
+            "description": "Specify the starting record to return."
+          }
+        ]
+      },
+      "docs": "This request returns Kernel Extension attributes for macOS."
+    },
+    {
+      "info": {
+        "name": "Launch Agents and Daemons",
+        "type": "http"
+      },
+      "http": {
+        "method": "GET",
+        "url": "https://{subdomain}.api.kandji.io/api/v1/prism/launch_agents_and_daemons",
+        "params": [
+          {
+            "name": "blueprint_ids",
+            "value": "blueprint_id, blueprint_id,blueprint_id",
+            "type": "query",
+            "description": "Filter results by one or more blueprint IDs separated by commas."
+          },
+          {
+            "name": "device_families",
+            "value": "Mac,iPhone,iPad,tvOS",
+            "type": "query",
+            "description": "Filter results by one or more device families separated by commas (`Mac`, `iPhone`, `iPad`, `tvOS`)."
+          },
+          {
+            "name": "filter",
+            "value": "",
+            "type": "query",
+            "description": "JSON schema object containing one or more key value pairs. Note: For detailed information on filters, see the Filters section at the beginning of the Visibility API endpoints in this doc."
+          },
+          {
+            "name": "sort_by",
+            "value": "",
+            "type": "query",
+            "description": "Sort results by the name of a given response body key in either ascending (default behavior) or descending(-) order."
+          },
+          {
+            "name": "limit",
+            "value": "",
+            "type": "query",
+            "description": "A hard upper limit is set at 300 device records returned per request. If more device records are expected, pagination should be used using the limit and offset parameters. Additionally, parameter queries can be added to a request to limit the results."
+          },
+          {
+            "name": "offset",
+            "value": "",
+            "type": "query",
+            "description": "Specify the starting record to return."
+          }
+        ]
+      },
+      "docs": "This request returns Launch Agents and Daemons installed on macOS."
+    },
+    {
+      "info": {
+        "name": "Local users",
+        "type": "http"
+      },
+      "http": {
+        "method": "GET",
+        "url": "https://{subdomain}.api.kandji.io/api/v1/prism/local_users",
+        "params": [
+          {
+            "name": "blueprint_ids",
+            "value": "blueprint_id, blueprint_id,blueprint_id",
+            "type": "query",
+            "description": "Filter results by one or more blueprint IDs separated by commas."
+          },
+          {
+            "name": "device_families",
+            "value": "Mac,iPhone,iPad,tvOS",
+            "type": "query",
+            "description": "Filter results by one or more device families separated by commas (`Mac`, `iPhone`, `iPad`, `tvOS`)."
+          },
+          {
+            "name": "filter",
+            "value": "",
+            "type": "query",
+            "description": "JSON schema object containing one or more key value pairs. Note: For detailed information on filters, see the Filters section at the beginning of the Visibility API endpoints in this doc."
+          },
+          {
+            "name": "sort_by",
+            "value": "",
+            "type": "query",
+            "description": "Sort results by the name of a given response body key in either ascending (default behavior) or descending(-) order."
+          },
+          {
+            "name": "limit",
+            "value": "",
+            "type": "query",
+            "description": "A hard upper limit is set at 300 device records returned per request. If more device records are expected, pagination should be used using the limit and offset parameters. Additionally, parameter queries can be added to a request to limit the results."
+          },
+          {
+            "name": "offset",
+            "value": "",
+            "type": "query",
+            "description": "Specify the starting record to return."
+          }
+        ]
+      },
+      "docs": "This request returns Local Users details for macOS."
+    },
+    {
+      "info": {
+        "name": "Startup settings",
+        "type": "http"
+      },
+      "http": {
+        "method": "GET",
+        "url": "https://{subdomain}.api.kandji.io/api/v1/prism/startup_settings",
+        "params": [
+          {
+            "name": "blueprint_ids",
+            "value": "blueprint_id, blueprint_id,blueprint_id",
+            "type": "query",
+            "description": "Filter results by one or more blueprint IDs separated by commas."
+          },
+          {
+            "name": "device_families",
+            "value": "Mac,iPhone,iPad,tvOS",
+            "type": "query",
+            "description": "Filter results by one or more device families separated by commas (`Mac`, `iPhone`, `iPad`, `tvOS`)."
+          },
+          {
+            "name": "filter",
+            "value": "",
+            "type": "query",
+            "description": "JSON schema object containing one or more key value pairs. Note: For detailed information on filters, see the Filters section at the beginning of the Visibility API endpoints in this doc."
+          },
+          {
+            "name": "sort_by",
+            "value": "",
+            "type": "query",
+            "description": "Sort results by the name of a given response body key in either ascending (default behavior) or descending(-) order."
+          },
+          {
+            "name": "limit",
+            "value": "",
+            "type": "query",
+            "description": "A hard upper limit is set at 300 device records returned per request. If more device records are expected, pagination should be used using the limit and offset parameters. Additionally, parameter queries can be added to a request to limit the results."
+          },
+          {
+            "name": "offset",
+            "value": "",
+            "type": "query",
+            "description": "Specify the starting record to return."
+          }
+        ]
+      },
+      "docs": "This request returns Startup settings for macOS."
+    },
+    {
+      "info": {
+        "name": "System Extensions",
+        "type": "http"
+      },
+      "http": {
+        "method": "GET",
+        "url": "https://{subdomain}.api.kandji.io/api/v1/prism/system_extensions",
+        "params": [
+          {
+            "name": "blueprint_ids",
+            "value": "blueprint_id, blueprint_id,blueprint_id",
+            "type": "query",
+            "description": "Filter results by one or more blueprint IDs separated by commas."
+          },
+          {
+            "name": "device_families",
+            "value": "Mac,iPhone,iPad,tvOS",
+            "type": "query",
+            "description": "Filter results by one or more device families separated by commas (`Mac`, `iPhone`, `iPad`, `tvOS`)."
+          },
+          {
+            "name": "filter",
+            "value": "",
+            "type": "query",
+            "description": "JSON schema object containing one or more key value pairs. Note: For detailed information on filters, see the Filters section at the beginning of the Visibility API endpoints in this doc."
+          },
+          {
+            "name": "sort_by",
+            "value": "",
+            "type": "query",
+            "description": "Sort results by the name of a given response body key in either ascending (default behavior) or descending(-) order."
+          },
+          {
+            "name": "limit",
+            "value": "",
+            "type": "query",
+            "description": "A hard upper limit is set at 300 device records returned per request. If more device records are expected, pagination should be used using the limit and offset parameters. Additionally, parameter queries can be added to a request to limit the results."
+          },
+          {
+            "name": "offset",
+            "value": "",
+            "type": "query",
+            "description": "Specify the starting record to return."
+          }
+        ]
+      },
+      "docs": "This request returns System Extension attributes for macOS."
+    },
+    {
+      "info": {
+        "name": "Transparency database",
+        "type": "http"
+      },
+      "http": {
+        "method": "GET",
+        "url": "https://{subdomain}.api.kandji.io/api/v1/prism/transparency_database",
+        "params": [
+          {
+            "name": "blueprint_ids",
+            "value": "blueprint_id, blueprint_id,blueprint_id",
+            "type": "query",
+            "description": "Filter results by one or more blueprint IDs separated by commas."
+          },
+          {
+            "name": "device_families",
+            "value": "Mac,iPhone,iPad,tvOS",
+            "type": "query",
+            "description": "Filter results by one or more device families separated by commas (`Mac`, `iPhone`, `iPad`, `tvOS`)."
+          },
+          {
+            "name": "filter",
+            "value": "",
+            "type": "query",
+            "description": "JSON schema object containing one or more key value pairs. Note: For detailed information on filters, see the Filters section at the beginning of the Visibility API endpoints in this doc."
+          },
+          {
+            "name": "sort_by",
+            "value": "",
+            "type": "query",
+            "description": "Sort results by the name of a given response body key in either ascending (default behavior) or descending(-) order."
+          },
+          {
+            "name": "limit",
+            "value": "",
+            "type": "query",
+            "description": "A hard upper limit is set at 300 device records returned per request. If more device records are expected, pagination should be used using the limit and offset parameters. Additionally, parameter queries can be added to a request to limit the results."
+          },
+          {
+            "name": "offset",
+            "value": "",
+            "type": "query",
+            "description": "Specify the starting record to return."
+          }
+        ]
+      },
+      "docs": "This request returns Transparency Database (TCC) attributes for macOS."
+    },
+    {
+      "info": {
+        "name": "Request category export",
+        "type": "http"
+      },
+      "http": {
+        "method": "POST",
+        "url": "https://{subdomain}.api.kandji.io/api/v1/prism/export",
+        "body": {
+          "type": "json",
+          "data": "{}"
+        }
+      },
+      "docs": "Request export of a category."
+    },
+    {
+      "info": {
+        "name": "Get category export",
+        "type": "http"
+      },
+      "http": {
+        "method": "GET",
+        "url": "https://{subdomain}.api.kandji.io/api/v1/prism/export/:export_id",
+        "params": [
+          {
+            "name": "export_id",
+            "value": "",
+            "type": "path"
+          }
+        ]
+      },
+      "docs": "Get an export request's status."
+    },
+    {
+      "info": {
+        "name": "Count",
+        "type": "http"
+      },
+      "http": {
+        "method": "GET",
+        "url": "https://{subdomain}.api.kandji.io/api/v1/prism/count",
+        "params": [
+          {
+            "name": "category",
+            "value": "apps",
+            "type": "query",
+            "description": "Return the count of records for the specified category. \nIf a category contains spaces substitute the spaces for underscores (\"_\") when using the API query.\n\nExamples:\napps\ndevice_information\nkernel_extensions\nsystem_extensions"
+          }
+        ]
+      },
+      "docs": "This request returns the total record count for the specified Prism category."
+    },
+    {
+      "info": {
+        "name": "Licensing",
+        "type": "http"
+      },
+      "http": {
+        "method": "GET",
+        "url": "https://{subdomain}.api.kandji.io/api/v1/settings/licensing"
+      },
+      "docs": "This request returns Iru Endpoint Management tenant licensing and utilization information."
+    },
+    {
+      "info": {
+        "name": "Get Tags",
+        "type": "http"
+      },
+      "http": {
+        "method": "GET",
+        "url": "https://{subdomain}.api.kandji.io/api/v1/tags",
+        "params": [
+          {
+            "name": "search",
+            "value": "",
+            "type": "query",
+            "description": "Return resultes containing a given tag search string."
+          }
+        ]
+      },
+      "docs": "This request returns configured tags."
+    },
+    {
+      "info": {
+        "name": "Create Tag",
+        "type": "http"
+      },
+      "http": {
+        "method": "POST",
+        "url": "https://{subdomain}.api.kandji.io/api/v1/tags",
+        "body": {
+          "type": "json",
+          "data": "{}"
+        }
+      },
+      "docs": "This request creates a tag."
+    },
+    {
+      "info": {
+        "name": "Update Tag",
+        "type": "http"
+      },
+      "http": {
+        "method": "PATCH",
+        "url": "https://{subdomain}.api.kandji.io/api/v1/tags/:tag_id",
+        "params": [
+          {
+            "name": "tag_id",
+            "value": "",
+            "type": "path"
+          }
+        ],
+        "body": {
+          "type": "json",
+          "data": "{}"
+        }
+      },
+      "docs": "This request updates a tag name."
+    },
+    {
+      "info": {
+        "name": "Delete Tag",
+        "type": "http"
+      },
+      "http": {
+        "method": "DELETE",
+        "url": "https://{subdomain}.api.kandji.io/api/v1/tags/:tag_id",
+        "params": [
+          {
+            "name": "tag_id",
+            "value": "",
+            "type": "path"
+          }
+        ]
+      },
+      "docs": "This request deletes a tag."
+    },
+    {
+      "info": {
+        "name": "Get Threat Details",
+        "type": "http"
+      },
+      "http": {
+        "method": "GET",
+        "url": "https://{subdomain}.api.kandji.io/api/v1/threat-details",
+        "params": [
+          {
+            "name": "classification",
+            "value": "malware",
+            "type": "query",
+            "description": "Return all records matching a specified classification. The following classification options are available: `malware` and `pup`. Leave this parameter empty to return all classification types. Example: `malware`"
+          },
+          {
+            "name": "date_range",
+            "value": "7",
+            "type": "query",
+            "description": "Return all records within a specified number of days. Any positive number of days may be specified. Examples: `7`, `30`, `60`, `90`, `180`, or `365`. Example: `7`"
+          },
+          {
+            "name": "device_id",
+            "value": "15fcec08-xxxx-xxxx-xxxx-7c2f950910eb",
+            "type": "query",
+            "description": "Search for a specific device by the device id (uuid). Example: `15fcec08-xxxx-xxxx-xxxx-7c2f950910eb`"
+          },
+          {
+            "name": "status",
+            "value": "quarantined",
+            "type": "query",
+            "description": "Return all records matching a specified status. The following status options are available: `quarantined`, `not_quarantined`, or `released`. Leave this parameter empty to return all status types. Example: `quarantined`"
+          },
+          {
+            "name": "sort_by",
+            "value": "status",
+            "type": "query",
+            "description": "Results can be sorted with the following options: `threat_name`, `classification`, `device_name`, `process_name`, `process_owner`, `detection_date`, `status`. Prepending a dash (-) to the parameter value will reverse the order of the returned results. Example: `status` or `-device_name`"
+          },
+          {
+            "name": "term",
+            "value": "Chrome",
+            "type": "query",
+            "description": "Search term to filter threat results. The response will include anything matching the following fields: `device_name`, `file_hash`, and `file_path`. Example: `Chrome`"
+          },
+          {
+            "name": "limit",
+            "value": "1000",
+            "type": "query",
+            "description": "A hard upper `limit` is set at 1000 records returned per request. If more records are expected, pagination should be used using the `limit` and `offset` parameters. Example: `1000`"
+          },
+          {
+            "name": "offset",
+            "value": "1",
+            "type": "query",
+            "description": "Specify the starting record to return. Example: `1`"
+          }
+        ]
+      },
+      "docs": "Get threat details."
+    },
+    {
+      "info": {
+        "name": "Get Behavioral Detections",
+        "type": "http"
+      },
+      "http": {
+        "method": "GET",
+        "url": "https://{subdomain}.api.kandji.io/api/v1/behavioral-detections",
+        "params": [
+          {
+            "name": "threat_id",
+            "value": "Kandji_BD_0096",
+            "type": "query",
+            "description": "Filter by a specific threat ID. Example: `Kandji_BD_0096`"
+          },
+          {
+            "name": "classification",
+            "value": "malicious",
+            "type": "query",
+            "description": "Filter by threat classification. Example: `malicious`"
+          },
+          {
+            "name": "status",
+            "value": "blocked",
+            "type": "query",
+            "description": "Filter by threat status. Example: `blocked`"
+          },
+          {
+            "name": "date_range",
+            "value": "30",
+            "type": "query",
+            "description": "Return all records within a specified number of days. Example: `30`"
+          },
+          {
+            "name": "detection_date_from",
+            "value": "2024-01-01",
+            "type": "query",
+            "description": "Start date for detection date range filter. Example: `2024-01-01`"
+          },
+          {
+            "name": "detection_date_to",
+            "value": "2024-01-31",
+            "type": "query",
+            "description": "End date for detection date range filter. Example: `2024-01-31`"
+          },
+          {
+            "name": "device_id",
+            "value": "123e4567-e89b-12d3-a456-426614174000",
+            "type": "query",
+            "description": "Search for a specific device by the device id (uuid). Example: `123e4567-e89b-12d3-a456-426614174000`"
+          },
+          {
+            "name": "malware_family",
+            "value": "TrickBot",
+            "type": "query",
+            "description": "Filter by malware family. Example: `TrickBot`"
+          },
+          {
+            "name": "parent_process_name",
+            "value": "bash",
+            "type": "query",
+            "description": "Filter by parent process. Example: `bash`"
+          },
+          {
+            "name": "target_process_name",
+            "value": "python",
+            "type": "query",
+            "description": "Filter by target process. Example: `python`"
+          },
+          {
+            "name": "informational_tags",
+            "value": "exploit,privilege_escalation",
+            "type": "query",
+            "description": "Filter by tags. Example: `exploit,privilege_escalation`"
+          },
+          {
+            "name": "term",
+            "value": "device_name",
+            "type": "query",
+            "description": "Search term to filter threat results. Device name, file hash, image path. Example: `device_name`"
+          },
+          {
+            "name": "sort_by",
+            "value": "status",
+            "type": "query",
+            "description": "Detections can be sorted by any of the following keys. Prepending a dash (-) to the parameter value will reverse the order. Example: `status` or `-status`"
+          },
+          {
+            "name": "limit",
+            "value": "100",
+            "type": "query",
+            "description": "A hard upper limit is set at 1000 records returned per request. If more records are expected, pagination should be used using the limit and offset parameters. Example: `100`"
+          },
+          {
+            "name": "offset",
+            "value": "0",
+            "type": "query",
+            "description": "Specify the starting record to return. Example: `0`"
+          }
+        ]
+      },
+      "docs": "Get Behavioral Detections."
+    },
+    {
+      "info": {
+        "name": "List Detections",
+        "type": "http"
+      },
+      "http": {
+        "method": "GET",
+        "url": "https://{subdomain}.api.kandji.io/api/v1/vulnerability-management/detections",
+        "params": [
+          {
+            "name": "after",
+            "value": "eyJpZCI6MTIzNDU2Nzg5fQ==",
+            "type": "query",
+            "description": "Cursor token for pagination. Example: `eyJpZCI6MTIzNDU2Nzg5fQ==`"
+          },
+          {
+            "name": "size",
+            "value": "300",
+            "type": "query",
+            "description": "A hard upper `limit` is set at 300 records returned per request. If more records are expected, pagination should be used using the URL value returned in the `next` attribute. Additionally, filters can be added to a request to limit the results. Example: `300`"
+          },
+          {
+            "name": "filter",
+            "value": "{\"cve_id\":{\"in\":[\"CVE-2024-24795\"]}}",
+            "type": "query",
+            "description": "Filter on any key attribute within the response.\n\nAvailable fields: `device_id`, `device_name`, `device_serial_number`, `device_model`, `device_os_version`, `blueprint_id`, `blueprint_name`, `name`, `path`, `version`, `bundle_id`, `cve_id`, `cve_description`, `cve_link`, `cvss_score`, `cvss_severity`, `detection_datetime`, `cve_published_at`, `cve_modified_at`.\n\nExample: `{\"cve_id\":{\"in\":[\"CVE-2024-24795\"]}}`"
+          }
+        ]
+      },
+      "docs": "Retrieve a list of all vulnerability detections across the device fleet."
+    },
+    {
+      "info": {
+        "name": "List Vulnerabilities",
+        "type": "http"
+      },
+      "http": {
+        "method": "GET",
+        "url": "https://{subdomain}.api.kandji.io/api/v1/vulnerability-management/vulnerabilities",
+        "params": [
+          {
+            "name": "page",
+            "value": "1",
+            "type": "query",
+            "description": "The page number of the response. Example: `1`"
+          },
+          {
+            "name": "size",
+            "value": "50",
+            "type": "query",
+            "description": "A hard upper `limit` is set at 50 records returned per request. If more records are expected, pagination should be used using the URL value returned in the `next` attribute. Additionally, filters can be added to a request to limit the results. Example: `50`"
+          },
+          {
+            "name": "sort_by",
+            "value": "cve_id",
+            "type": "query",
+            "description": "Field to sort by. Available options: `age`, `cve_id`, `cvss_score`, `device_count`, `known_exploit`, `software` (software name), `severity`, `status`. Example: `cve_id`"
+          },
+          {
+            "name": "filter",
+            "value": "{\"cve_id\":{\"in\":[\"CVE-2024-24795\"]}}",
+            "type": "query",
+            "description": "Filter results. Similar to prism filters.\n\nFilterable columns: `cve_id`, `software`, `severity`, `first_detection_date`, `status`.\n\nExample: `{\"cve_id\":{\"in\":[\"CVE-2024-24795\"]}}`"
+          }
+        ]
+      },
+      "docs": "Retrieve a list of all vulnerabilities grouped by CVE."
+    },
+    {
+      "info": {
+        "name": "Get Blueprint",
+        "type": "http"
+      },
+      "http": {
+        "method": "GET",
+        "url": "https://{subdomain}.api.kandji.io/api/v1/blueprints/:blueprint_id",
+        "params": [
+          {
+            "name": "blueprint_id",
+            "value": "",
+            "type": "path",
+            "description": "The unique identifier of the blueprint."
+          }
+        ]
+      },
+      "docs": "This request returns information about a specific blueprint based on blueprint ID."
+    },
+    {
+      "info": {
+        "name": "Update Blueprint",
+        "type": "http"
+      },
+      "http": {
+        "method": "PATCH",
+        "url": "https://{subdomain}.api.kandji.io/api/v1/blueprints/:blueprint_id",
+        "params": [
+          {
+            "name": "blueprint_id",
+            "value": "",
+            "type": "path",
+            "description": "The unique identifier of the blueprint."
+          }
+        ],
+        "body": {
+          "type": "form-urlencoded",
+          "data": [
+            {
+              "name": "name",
+              "value": ""
+            },
+            {
+              "name": "color",
+              "value": ""
+            },
+            {
+              "name": "description",
+              "value": ""
+            },
+            {
+              "name": "enrollment_code.code",
+              "value": ""
+            },
+            {
+              "name": "enrollment_code.is_active",
+              "value": ""
+            },
+            {
+              "name": "icon",
+              "value": ""
+            }
+          ]
+        }
+      },
+      "docs": "This request allows updating of the name, icon, icon color, description, enrollment code, and active status on an existing blueprint."
+    },
+    {
+      "info": {
+        "name": "Delete Blueprint",
+        "type": "http"
+      },
+      "http": {
+        "method": "DELETE",
+        "url": "https://{subdomain}.api.kandji.io/api/v1/blueprints/:blueprint_id",
+        "params": [
+          {
+            "name": "blueprint_id",
+            "value": "",
+            "type": "path",
+            "description": "The unique identifier of the blueprint."
+          }
+        ]
+      },
+      "docs": "This is a HIGHLY destructive action - deleting a Blueprint will un-manage ALL devices assigned to the Blueprint."
+    },
+    {
+      "info": {
+        "name": "Delete device user",
+        "type": "http"
+      },
+      "http": {
+        "method": "POST",
+        "url": "https://{subdomain}.api.kandji.io/api/v1/devices/:device_id/action/deleteuser",
+        "params": [
+          {
+            "name": "device_id",
+            "value": "",
+            "type": "path",
+            "description": "The unique identifier of the device."
+          }
+        ],
+        "body": {
+          "type": "json",
+          "data": "{}"
+        }
+      },
+      "docs": "This endpoint sends an MDM command to delete a local user account on macOS and Shared iPad."
+    },
+    {
+      "info": {
+        "name": "List users",
+        "type": "http"
+      },
+      "http": {
+        "method": "GET",
+        "url": "https://{subdomain}.api.kandji.io/api/v1/users",
+        "params": [
+          {
+            "name": "email",
+            "value": "test_user_01@accuhive.io",
+            "type": "query",
+            "description": "Returns users with email addresses containing the provided string. Example: `test_user_01@accuhive.io`"
+          },
+          {
+            "name": "id",
+            "value": "69c009ca-1f78-4bdf-bb93-08d6d39041db",
+            "type": "query",
+            "description": "Search for a user matching the provided UUID value. Example: `69c009ca-1f78-4bdf-bb93-08d6d39041db`"
+          },
+          {
+            "name": "integration_id",
+            "value": "f7461096-4ef9-43aa-88e9-ca1967ba0b38",
+            "type": "query",
+            "description": "Search for an integration matching the provided UUID value. Example: `f7461096-4ef9-43aa-88e9-ca1967ba0b38`"
+          },
+          {
+            "name": "archived",
+            "value": "false",
+            "type": "query",
+            "description": "Return only users that are either archived (`true`) or not archived (`false`). Archived users are users that appear in the Users module under the Archived tab. Example: `false`"
+          },
+          {
+            "name": "cursor",
+            "value": "eyJpZCI6MTIzNDU2Nzg5fQ==",
+            "type": "query",
+            "description": "Cursor for the next or previous page of results. Can also store the URL in the `next` and `previous` fields in the response. Example: `eyJpZCI6MTIzNDU2Nzg5fQ==`"
+          }
+        ]
+      },
+      "docs": "This endpoint makes a request to retrieve a list of users from user directory integrations."
+    },
+    {
+      "info": {
+        "name": "Get user",
+        "type": "http"
+      },
+      "http": {
+        "method": "GET",
+        "url": "https://{subdomain}.api.kandji.io/api/v1/users/:user_id",
+        "params": [
+          {
+            "name": "user_id",
+            "value": "",
+            "type": "path",
+            "description": "The unique identifier of the user directory integration user."
+          }
+        ]
+      },
+      "docs": "This request returns a specific user."
+    },
+    {
+      "info": {
+        "name": "Delete user",
+        "type": "http"
+      },
+      "http": {
+        "method": "DELETE",
+        "url": "https://{subdomain}.api.kandji.io/api/v1/users/:user_id",
+        "params": [
+          {
+            "name": "user_id",
+            "value": "",
+            "type": "path",
+            "description": "The unique identifier of the user directory integration user."
+          }
+        ]
+      },
+      "docs": "This request deletes a user directory integration user."
+    },
+    {
+      "info": {
+        "name": "Assign Library Item",
+        "type": "http"
+      },
+      "http": {
+        "method": "POST",
+        "url": "https://{subdomain}.api.kandji.io/api/v1/blueprints/:blueprint_id/assign-library-item",
+        "params": [
+          {
+            "name": "blueprint_id",
+            "value": "",
+            "type": "path",
+            "description": "The unique identifier of the blueprint."
+          }
+        ],
+        "body": {
+          "type": "json",
+          "data": "{}"
+        }
+      },
+      "docs": "This endpoint allows assigning a library item to a specific blueprint (classic and maps)."
+    },
+    {
+      "info": {
+        "name": "List Library Items",
+        "type": "http"
+      },
+      "http": {
+        "method": "GET",
+        "url": "https://{subdomain}.api.kandji.io/api/v1/blueprints/:blueprint_id/list-library-items",
+        "params": [
+          {
+            "name": "blueprint_id",
+            "value": "",
+            "type": "path",
+            "description": "The unique identifier of the blueprint."
+          }
+        ]
+      },
+      "docs": "This API endpoint retrieves a list of library items associated with a specific blueprint (classic and maps)."
+    },
+    {
+      "info": {
+        "name": "Get Vulnerability Description",
+        "type": "http"
+      },
+      "http": {
+        "method": "GET",
+        "url": "https://{subdomain}.api.kandji.io/api/v1/vulnerability-management/vulnerabilities/:cve_id",
+        "params": [
+          {
+            "name": "cve_id",
+            "value": "",
+            "type": "path",
+            "description": "The unique identifier of the vulnerability. Example: `CVE-2024-12345`"
+          }
+        ]
+      },
+      "docs": "Retrieve information about a CVE."
+    },
+    {
+      "info": {
+        "name": "List Affected Devices",
+        "type": "http"
+      },
+      "http": {
+        "method": "GET",
+        "url": "https://{subdomain}.api.kandji.io/api/v1/vulnerability-management/vulnerabilities/:cve_id/devices",
+        "params": [
+          {
+            "name": "cve_id",
+            "value": "CVE-2024-12345",
+            "type": "path",
+            "description": "The unique identifier of the vulnerability. Example: `CVE-2024-12345`"
+          },
+          {
+            "name": "page",
+            "value": "1",
+            "type": "query",
+            "description": "The page number of the response. Example: `1`"
+          },
+          {
+            "name": "size",
+            "value": "50",
+            "type": "query",
+            "description": "A hard upper `limit` is set at 50 records returned per request. If more records are expected, pagination should be used using the URL value returned in the `next` attribute. Additionally, filters can be added to a request to limit the results. Example: `50`"
+          },
+          {
+            "name": "sort_by",
+            "value": "software_name",
+            "type": "query",
+            "description": "Field to sort by. Available options: `name` (device name), `detection_datetime`. Example: `software_name`"
+          },
+          {
+            "name": "filter",
+            "value": "{\"detection_datetime\":{\"gte\":\"2025-05-23T17:11:31.816587Z\"}}",
+            "type": "query",
+            "description": "Filter results.\n\nFilterable columns: `name`, `detection_datetime`.\n\nExample: `{\"detection_datetime\":{\"gte\":\"2025-05-23T17:11:31.816587Z\"}}`"
+          }
+        ]
+      },
+      "docs": "Retrieve a list of devices impacted by a specified cve_id vulnerability for a tenants fleet."
+    },
+    {
+      "info": {
+        "name": "List Affected Software",
+        "type": "http"
+      },
+      "http": {
+        "method": "GET",
+        "url": "https://{subdomain}.api.kandji.io/api/v1/vulnerability-management/vulnerabilities/:cve_id/software",
+        "params": [
+          {
+            "name": "cve_id",
+            "value": "CVE-2024-12345",
+            "type": "path",
+            "description": "The unique identifier of the vulnerability. Example: `CVE-2024-12345`"
+          },
+          {
+            "name": "page",
+            "value": "1",
+            "type": "query",
+            "description": "The page number of the response. Example: `1`"
+          },
+          {
+            "name": "size",
+            "value": "50",
+            "type": "query",
+            "description": "A hard upper `limit` is set at 50 records returned per request. If more records are expected, pagination should be used using the URL value returned in the `next` attribute. Additionally, filters can be added to a request to limit the results. Example: `50`"
+          },
+          {
+            "name": "sort_by",
+            "value": "software",
+            "type": "query",
+            "description": "Field to sort by. Available options: `software` (software name), `detection_datetime`. Example: `software`"
+          },
+          {
+            "name": "filter",
+            "value": "{\"detection_datetime\":{\"gte\":\"2025-05-23T17:11:31.816587Z\"}}",
+            "type": "query",
+            "description": "Filter results. Similar to prism filters.\n\nFilterable columns: `blueprint_id`, `detection_datetime`.\n\nExample: `{\"detection_datetime\":{\"gte\":\"2025-05-23T17:11:31.816587Z\"}}`"
+          }
+        ]
+      },
+      "docs": "This endpoint makes a request to retrieve a list of software impacted by a specified cve_id vulnerability for a tenant's fleet."
+    },
+    {
+      "info": {
+        "name": "Daily check-in",
+        "type": "http"
+      },
+      "http": {
+        "method": "POST",
+        "url": "https://{subdomain}.api.kandji.io/api/v1/devices/:device_id/action/dailycheckin",
+        "params": [
+          {
+            "name": "device_id",
+            "value": "",
+            "type": "path"
+          }
+        ]
+      },
+      "docs": "This endpoint sends a daily check-in command to a device."
+    }
+  ],
+  "bundled": true
+}

@@ -1,0 +1,578 @@
+{
+  "item": [
+    {
+      "id": "74723b3e-fc96-431b-81a0-bf3c699598d8",
+      "name": "Upload to S3",
+      "request": {
+        "name": "Upload to S3",
+        "description": {
+          "content": "This endpoint handles the S3 upload process for custom applications using a variable URL.",
+          "type": "text/plain"
+        },
+        "url": {
+          "path": [
+            ":post_url"
+          ],
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "query": [],
+          "variable": [
+            {
+              "disabled": false,
+              "type": "any",
+              "value": "<string>",
+              "key": "post_url",
+              "description": "(Required) The S3 upload URL provided by the custom app creation endpoint. This is a variable URL that changes for each upload request."
+            }
+          ]
+        },
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "multipart/form-data"
+          },
+          {
+            "key": "Accept",
+            "value": "application/json"
+          }
+        ],
+        "method": "POST",
+        "auth": null,
+        "body": {
+          "mode": "formdata",
+          "formdata": [
+            {
+              "key": "key",
+              "value": "<string>",
+              "type": "text",
+              "description": "(Required) Value provided by the custom app creation endpoint"
+            },
+            {
+              "key": "file",
+              "type": "file",
+              "description": "(Required) The application file to upload"
+            },
+            {
+              "key": "x-amz-algorithm",
+              "value": "<string>",
+              "type": "text",
+              "description": "AWS signature algorithm"
+            },
+            {
+              "key": "x-amz-credential",
+              "value": "<string>",
+              "type": "text",
+              "description": "AWS credentials"
+            },
+            {
+              "key": "x-amz-date",
+              "value": "<string>",
+              "type": "text",
+              "description": "AWS request date"
+            },
+            {
+              "key": "x-amz-security-token",
+              "value": "<string>",
+              "type": "text",
+              "description": "AWS security token"
+            },
+            {
+              "key": "policy",
+              "value": "<string>",
+              "type": "text",
+              "description": "AWS policy"
+            },
+            {
+              "key": "x-amz-signature",
+              "value": "<string>",
+              "type": "text",
+              "description": "AWS signature"
+            }
+          ]
+        }
+      },
+      "response": [
+        {
+          "id": "8caa58c5-e1f9-4730-a45d-77d7135e4259",
+          "name": "File uploaded successfully",
+          "originalRequest": {
+            "url": {
+              "path": [
+                ":post_url"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "post_url",
+                  "description": "(Required) The S3 upload URL provided by the custom app creation endpoint. This is a variable URL that changes for each upload request."
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "POST",
+            "body": {
+              "mode": "formdata",
+              "formdata": [
+                {
+                  "description": {
+                    "content": "(Required) Value provided by the custom app creation endpoint",
+                    "type": "text/plain"
+                  },
+                  "key": "key",
+                  "value": "<string>",
+                  "type": "text"
+                },
+                {
+                  "description": {
+                    "content": "(Required) The application file to upload",
+                    "type": "text/plain"
+                  },
+                  "key": "file",
+                  "value": "<binary>",
+                  "type": "text"
+                },
+                {
+                  "description": {
+                    "content": "AWS signature algorithm",
+                    "type": "text/plain"
+                  },
+                  "key": "x-amz-algorithm",
+                  "value": "<string>",
+                  "type": "text"
+                },
+                {
+                  "description": {
+                    "content": "AWS credentials",
+                    "type": "text/plain"
+                  },
+                  "key": "x-amz-credential",
+                  "value": "<string>",
+                  "type": "text"
+                },
+                {
+                  "description": {
+                    "content": "AWS request date",
+                    "type": "text/plain"
+                  },
+                  "key": "x-amz-date",
+                  "value": "<string>",
+                  "type": "text"
+                },
+                {
+                  "description": {
+                    "content": "AWS security token",
+                    "type": "text/plain"
+                  },
+                  "key": "x-amz-security-token",
+                  "value": "<string>",
+                  "type": "text"
+                },
+                {
+                  "description": {
+                    "content": "AWS policy",
+                    "type": "text/plain"
+                  },
+                  "key": "policy",
+                  "value": "<string>",
+                  "type": "text"
+                },
+                {
+                  "description": {
+                    "content": "AWS signature",
+                    "type": "text/plain"
+                  },
+                  "key": "x-amz-signature",
+                  "value": "<string>",
+                  "type": "text"
+                }
+              ]
+            }
+          },
+          "status": "OK",
+          "code": 200,
+          "header": [
+            {
+              "key": "Content-Type",
+              "value": "application/json"
+            }
+          ],
+          "body": "{\n  \"success\": true,\n  \"message\": \"File uploaded successfully\"\n}",
+          "cookie": [],
+          "_postman_previewlanguage": "json"
+        },
+        {
+          "id": "25666479-e9a0-4ea1-aab8-434cbd84fa15",
+          "name": "Bad request - invalid parameters or file",
+          "originalRequest": {
+            "url": {
+              "path": [
+                ":post_url"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "post_url",
+                  "description": "(Required) The S3 upload URL provided by the custom app creation endpoint. This is a variable URL that changes for each upload request."
+                }
+              ]
+            },
+            "method": "POST",
+            "body": {
+              "mode": "formdata",
+              "formdata": [
+                {
+                  "description": {
+                    "content": "(Required) Value provided by the custom app creation endpoint",
+                    "type": "text/plain"
+                  },
+                  "key": "key",
+                  "value": "<string>",
+                  "type": "text"
+                },
+                {
+                  "description": {
+                    "content": "(Required) The application file to upload",
+                    "type": "text/plain"
+                  },
+                  "key": "file",
+                  "value": "<binary>",
+                  "type": "text"
+                },
+                {
+                  "description": {
+                    "content": "AWS signature algorithm",
+                    "type": "text/plain"
+                  },
+                  "key": "x-amz-algorithm",
+                  "value": "<string>",
+                  "type": "text"
+                },
+                {
+                  "description": {
+                    "content": "AWS credentials",
+                    "type": "text/plain"
+                  },
+                  "key": "x-amz-credential",
+                  "value": "<string>",
+                  "type": "text"
+                },
+                {
+                  "description": {
+                    "content": "AWS request date",
+                    "type": "text/plain"
+                  },
+                  "key": "x-amz-date",
+                  "value": "<string>",
+                  "type": "text"
+                },
+                {
+                  "description": {
+                    "content": "AWS security token",
+                    "type": "text/plain"
+                  },
+                  "key": "x-amz-security-token",
+                  "value": "<string>",
+                  "type": "text"
+                },
+                {
+                  "description": {
+                    "content": "AWS policy",
+                    "type": "text/plain"
+                  },
+                  "key": "policy",
+                  "value": "<string>",
+                  "type": "text"
+                },
+                {
+                  "description": {
+                    "content": "AWS signature",
+                    "type": "text/plain"
+                  },
+                  "key": "x-amz-signature",
+                  "value": "<string>",
+                  "type": "text"
+                }
+              ]
+            }
+          },
+          "status": "Bad Request",
+          "code": 400,
+          "header": [
+            {
+              "key": "Content-Type",
+              "value": "text/plain"
+            }
+          ],
+          "body": "",
+          "cookie": [],
+          "_postman_previewlanguage": "text"
+        },
+        {
+          "id": "18fe5301-ad9e-4db3-86d1-9c0f4fe463cc",
+          "name": "Forbidden - invalid S3 credentials or permissions",
+          "originalRequest": {
+            "url": {
+              "path": [
+                ":post_url"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "post_url",
+                  "description": "(Required) The S3 upload URL provided by the custom app creation endpoint. This is a variable URL that changes for each upload request."
+                }
+              ]
+            },
+            "method": "POST",
+            "body": {
+              "mode": "formdata",
+              "formdata": [
+                {
+                  "description": {
+                    "content": "(Required) Value provided by the custom app creation endpoint",
+                    "type": "text/plain"
+                  },
+                  "key": "key",
+                  "value": "<string>",
+                  "type": "text"
+                },
+                {
+                  "description": {
+                    "content": "(Required) The application file to upload",
+                    "type": "text/plain"
+                  },
+                  "key": "file",
+                  "value": "<binary>",
+                  "type": "text"
+                },
+                {
+                  "description": {
+                    "content": "AWS signature algorithm",
+                    "type": "text/plain"
+                  },
+                  "key": "x-amz-algorithm",
+                  "value": "<string>",
+                  "type": "text"
+                },
+                {
+                  "description": {
+                    "content": "AWS credentials",
+                    "type": "text/plain"
+                  },
+                  "key": "x-amz-credential",
+                  "value": "<string>",
+                  "type": "text"
+                },
+                {
+                  "description": {
+                    "content": "AWS request date",
+                    "type": "text/plain"
+                  },
+                  "key": "x-amz-date",
+                  "value": "<string>",
+                  "type": "text"
+                },
+                {
+                  "description": {
+                    "content": "AWS security token",
+                    "type": "text/plain"
+                  },
+                  "key": "x-amz-security-token",
+                  "value": "<string>",
+                  "type": "text"
+                },
+                {
+                  "description": {
+                    "content": "AWS policy",
+                    "type": "text/plain"
+                  },
+                  "key": "policy",
+                  "value": "<string>",
+                  "type": "text"
+                },
+                {
+                  "description": {
+                    "content": "AWS signature",
+                    "type": "text/plain"
+                  },
+                  "key": "x-amz-signature",
+                  "value": "<string>",
+                  "type": "text"
+                }
+              ]
+            }
+          },
+          "status": "Forbidden",
+          "code": 403,
+          "header": [
+            {
+              "key": "Content-Type",
+              "value": "text/plain"
+            }
+          ],
+          "body": "",
+          "cookie": [],
+          "_postman_previewlanguage": "text"
+        },
+        {
+          "id": "2d8d8b6c-1a2b-4093-8b51-ce89b265faba",
+          "name": "Internal server error",
+          "originalRequest": {
+            "url": {
+              "path": [
+                ":post_url"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "post_url",
+                  "description": "(Required) The S3 upload URL provided by the custom app creation endpoint. This is a variable URL that changes for each upload request."
+                }
+              ]
+            },
+            "method": "POST",
+            "body": {
+              "mode": "formdata",
+              "formdata": [
+                {
+                  "description": {
+                    "content": "(Required) Value provided by the custom app creation endpoint",
+                    "type": "text/plain"
+                  },
+                  "key": "key",
+                  "value": "<string>",
+                  "type": "text"
+                },
+                {
+                  "description": {
+                    "content": "(Required) The application file to upload",
+                    "type": "text/plain"
+                  },
+                  "key": "file",
+                  "value": "<binary>",
+                  "type": "text"
+                },
+                {
+                  "description": {
+                    "content": "AWS signature algorithm",
+                    "type": "text/plain"
+                  },
+                  "key": "x-amz-algorithm",
+                  "value": "<string>",
+                  "type": "text"
+                },
+                {
+                  "description": {
+                    "content": "AWS credentials",
+                    "type": "text/plain"
+                  },
+                  "key": "x-amz-credential",
+                  "value": "<string>",
+                  "type": "text"
+                },
+                {
+                  "description": {
+                    "content": "AWS request date",
+                    "type": "text/plain"
+                  },
+                  "key": "x-amz-date",
+                  "value": "<string>",
+                  "type": "text"
+                },
+                {
+                  "description": {
+                    "content": "AWS security token",
+                    "type": "text/plain"
+                  },
+                  "key": "x-amz-security-token",
+                  "value": "<string>",
+                  "type": "text"
+                },
+                {
+                  "description": {
+                    "content": "AWS policy",
+                    "type": "text/plain"
+                  },
+                  "key": "policy",
+                  "value": "<string>",
+                  "type": "text"
+                },
+                {
+                  "description": {
+                    "content": "AWS signature",
+                    "type": "text/plain"
+                  },
+                  "key": "x-amz-signature",
+                  "value": "<string>",
+                  "type": "text"
+                }
+              ]
+            }
+          },
+          "status": "Internal Server Error",
+          "code": 500,
+          "header": [
+            {
+              "key": "Content-Type",
+              "value": "text/plain"
+            }
+          ],
+          "body": "",
+          "cookie": [],
+          "_postman_previewlanguage": "text"
+        }
+      ],
+      "event": [],
+      "protocolProfileBehavior": {
+        "disableBodyPruning": true
+      }
+    }
+  ],
+  "event": [],
+  "variable": [
+    {
+      "type": "string",
+      "value": "https://",
+      "key": "baseUrl"
+    }
+  ],
+  "info": {
+    "_postman_id": "84d8ecd2-5a43-4322-bb66-2a7b62574bf5",
+    "name": "Upload to S3",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "description": {
+      "content": "This endpoint handles the S3 upload process for custom applications using a variable URL.",
+      "type": "text/plain"
+    }
+  }
+}
