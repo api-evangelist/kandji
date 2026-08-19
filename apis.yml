@@ -28,7 +28,7 @@ x-name-discrepancy: >-
   on 2026-08-01); the live company site is www.iru.com. The Forge Global secondary-market listing at
   forgeglobal.com/kandji_stock/ is still filed under the Kandji name and returned HTTP 403 to
   automated fetches. Slug retained as `kandji` for catalog continuity.
-specificationVersion: '0.21'
+specificationVersion: '0.23'
 created: '2026-08-01'
 modified: '2026-08-01'
 tags:
