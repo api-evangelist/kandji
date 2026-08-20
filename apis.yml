@@ -33,6 +33,19 @@ created: '2026-08-01'
 modified: '2026-08-01'
 tags:
 - Company
+- Device Management
+- Mobile Device Management
+- apple-management
+- Endpoint Security
+- endpoint-detection-response
+- Vulnerability Management
+- Compliance Automation
+- Workforce Identity
+- IT Operations
+- MCP
+- agent-native
+tags_raw:
+- Company
 - device-management
 - mobile-device-management
 - apple-management
@@ -58,6 +71,13 @@ apis:
   humanURL: https://api-docs.kandji.io/
   baseURL: https://your-subdomain.api.kandji.io
   tags:
+  - Device Management
+  - Mobile Device Management
+  - apple-management
+  - Endpoint Security
+  - Vulnerability Management
+  - IT Operations
+  tags_raw:
   - device-management
   - mobile-device-management
   - apple-management
@@ -95,6 +115,9 @@ apis:
   humanURL: https://api-docs.kandji.io/
   baseURL: https://your-subdomain.api.kandji.io
   tags:
+  - Device Management
+  - File Upload
+  tags_raw:
   - device-management
   - file-upload
   properties:
@@ -112,6 +135,11 @@ apis:
   humanURL: https://docs.iru.com/en/endpoint/integrations/ai-assistants/iru-mcp
   baseURL: https://your-tenant.connect.iru.com/mcp-server/connector/kandji/tools
   tags:
+  - MCP
+  - agent-native
+  - Device Management
+  - Endpoint Security
+  tags_raw:
   - mcp
   - agent-native
   - device-management
