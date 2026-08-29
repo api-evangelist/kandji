@@ -12,6 +12,18 @@ description: >-
   collection, covering devices and device actions, Blueprints, Library Items, Prism inventory
   reporting, Automated Device Enrollment, tags, users, threats and vulnerabilities, and it also backs
   a hosted, tenant-scoped Model Context Protocol server for AI assistants.
+deliveryModel:
+  model: saas
+  open_source: false
+  commercial: true
+  callable_host: true
+  label: Hosted service · you call their endpoint
+  confidence: high
+  source:
+  - openapi
+  - pricing
+  generated: '2026-08-28'
+  method: derived
 image: https://www.iru.com/hubfs/assets/favicons/og-image.png
 url: https://raw.githubusercontent.com/api-evangelist/kandji/refs/heads/main/apis.yml
 x-type: company
