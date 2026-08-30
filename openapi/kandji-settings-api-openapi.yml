@@ -1,0 +1,113 @@
+openapi: 3.2.0
+info:
+  title: Iru Endpoint Management Settings API
+  description: "# Welcome to the Iru Endpoint Management API Documentation\n\n**Note:** Kandji is in the process of changing to Iru. Many URLs and notes within this documentation will continue to reference Kandji for some time.\n\nYou can find your API URL in Settings > Access. The API URL will follow the below formats.\n\n- US - `https://SubDomain.api.kandji.io`\n    \n- EU - `https://SubDomain.api.eu.kandji.io`\n    \n\nFor information on how to obtain an API token, please refer to the Iru docs.\n\n[https://docs.iru.com/](https://docs.iru.com/)\n\n#### Rate Limit\n\nThe Iru Endpoint Management API currently has an API rate limit of 10,000 requests per hour per customer.\n\n#### Request Methods\n\nHTTP request methods supported by the API.\n\n| Method | Definition |\n| --- | --- |\n| GET | The `GET` method requests a representation of the specified resource. |\n| POST | The `POST` method submits an entity to the specified resource. |\n| PATCH | The `PATCH` method applies partial modifications to a resource. |\n| DELETE | The `DELETE` method deletes the specified resource. |\n\n#### Response codes\n\nNot all response codes apply to every endpoint.\n\n| Code | Response |\n| --- | --- |\n| 200 | OK |\n| 201 | Created |\n| 204 | No content |\n|  | Typical response when sending the DELETE method. |\n| 400 | Bad Request |\n|  | \"Command already running\" - The command may already be running in a _Pending_ state waiting on the device. |\n|  | \"Command is not allowed for current device\" - The command may not be compatible with the target device. |\n|  | \"JSON parse error - Expecting ',' delimiter: line 3 column 2 (char 65)\" |\n| 401 | Unauthorized |\n|  | This error can occur if the token is incorrect, was revoked, or the token has expired. |\n| 403 | Forbidden |\n|  | The request was understood but cannot be authorized. |\n| 404 | Not found |\n|  | Unable to locate the resource in the Iru tenant. |\n| 415 | Unsupported Media Type |\n|  | The request contains a media type which the server or resource does not support. |\n| 500 | Internal server error |\n| 503 | Service unavailable |\n|  | This error can occur if a file upload is still being processed via the custom apps API. |\n\n#### Data structure\n\nThe API returns all structured responses in JSON schema format.\n\n#### Examples\n\nCode examples using the API can be found in the Iru Endpoint Management support [GitHub](https://github.com/kandji-inc/support/tree/main/api-tools)."
+  version: 1.0.0
+servers:
+- url: https://{subdomain}.api.kandji.io
+  description: US Server
+  variables:
+    subdomain:
+      default: your-subdomain
+      description: Your Iru Endpoint Management subdomain
+- url: https://{subdomain}.api.eu.kandji.io
+  description: EU Server
+  variables:
+    subdomain:
+      default: your-subdomain
+      description: Your Iru Endpoint Management subdomain
+security:
+- BearerAuth: []
+tags:
+- name: Settings
+paths:
+  /api/v1/settings/licensing:
+    get:
+      summary: Licensing
+      description: This request returns Iru Endpoint Management tenant licensing and utilization information.
+      parameters: []
+      responses:
+        '200':
+          description: success
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  counts:
+                    type: object
+                    properties:
+                      computers_count:
+                        type: integer
+                        example: 8
+                      ios_count:
+                        type: integer
+                        example: 0
+                      ipados_count:
+                        type: integer
+                        example: 1
+                      macos_count:
+                        type: integer
+                        example: 7
+                      tvos_count:
+                        type: integer
+                        example: 0
+                  limits:
+                    type: object
+                    properties:
+                      plan_type:
+                        type: string
+                        example: single_limit
+                      max_devices:
+                        type: integer
+                        example: 10
+                      max_devices_per_platform:
+                        type: object
+                        properties:
+                          macos:
+                            type: integer
+                            example: 0
+                          ios_ipados:
+                            type: integer
+                            example: 0
+                  tenantOverLicenseLimit:
+                    type: boolean
+                    example: false
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    example: Bad Request
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    example: Unauthorized
+        '404':
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    example: Not Found
+      tags:
+      - Settings
+components:
+  securitySchemes:
+    BearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT

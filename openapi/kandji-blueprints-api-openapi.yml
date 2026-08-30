@@ -1,0 +1,1736 @@
+openapi: 3.2.0
+info:
+  title: Iru Endpoint Management Blueprints API
+  description: "# Welcome to the Iru Endpoint Management API Documentation\n\n**Note:** Kandji is in the process of changing to Iru. Many URLs and notes within this documentation will continue to reference Kandji for some time.\n\nYou can find your API URL in Settings > Access. The API URL will follow the below formats.\n\n- US - `https://SubDomain.api.kandji.io`\n    \n- EU - `https://SubDomain.api.eu.kandji.io`\n    \n\nFor information on how to obtain an API token, please refer to the Iru docs.\n\n[https://docs.iru.com/](https://docs.iru.com/)\n\n#### Rate Limit\n\nThe Iru Endpoint Management API currently has an API rate limit of 10,000 requests per hour per customer.\n\n#### Request Methods\n\nHTTP request methods supported by the API.\n\n| Method | Definition |\n| --- | --- |\n| GET | The `GET` method requests a representation of the specified resource. |\n| POST | The `POST` method submits an entity to the specified resource. |\n| PATCH | The `PATCH` method applies partial modifications to a resource. |\n| DELETE | The `DELETE` method deletes the specified resource. |\n\n#### Response codes\n\nNot all response codes apply to every endpoint.\n\n| Code | Response |\n| --- | --- |\n| 200 | OK |\n| 201 | Created |\n| 204 | No content |\n|  | Typical response when sending the DELETE method. |\n| 400 | Bad Request |\n|  | \"Command already running\" - The command may already be running in a _Pending_ state waiting on the device. |\n|  | \"Command is not allowed for current device\" - The command may not be compatible with the target device. |\n|  | \"JSON parse error - Expecting ',' delimiter: line 3 column 2 (char 65)\" |\n| 401 | Unauthorized |\n|  | This error can occur if the token is incorrect, was revoked, or the token has expired. |\n| 403 | Forbidden |\n|  | The request was understood but cannot be authorized. |\n| 404 | Not found |\n|  | Unable to locate the resource in the Iru tenant. |\n| 415 | Unsupported Media Type |\n|  | The request contains a media type which the server or resource does not support. |\n| 500 | Internal server error |\n| 503 | Service unavailable |\n|  | This error can occur if a file upload is still being processed via the custom apps API. |\n\n#### Data structure\n\nThe API returns all structured responses in JSON schema format.\n\n#### Examples\n\nCode examples using the API can be found in the Iru Endpoint Management support [GitHub](https://github.com/kandji-inc/support/tree/main/api-tools)."
+  version: 1.0.0
+servers:
+- url: https://{subdomain}.api.kandji.io
+  description: US Server
+  variables:
+    subdomain:
+      default: your-subdomain
+      description: Your Iru Endpoint Management subdomain
+- url: https://{subdomain}.api.eu.kandji.io
+  description: EU Server
+  variables:
+    subdomain:
+      default: your-subdomain
+      description: Your Iru Endpoint Management subdomain
+security:
+- BearerAuth: []
+tags:
+- name: Blueprints
+paths:
+  /api/v1/blueprints:
+    get:
+      summary: List Blueprints
+      description: This request returns a list of blueprint records in the Iru Endpoint Management tenant.
+      parameters:
+      - name: id
+        in: query
+        description: Look up a specific Blueprint by its ID
+        required: false
+        schema:
+          type: string
+      - name: id__in
+        in: query
+        description: Specify a list of Blueprint IDs to limit the results to. Multiple values may be separated by commas. There is a double underscore (__) between id and in
+        required: false
+        schema:
+          type: string
+      - name: name
+        in: query
+        description: Return Blueprint names "containing" the specified search string.
+        required: false
+        schema:
+          type: string
+      - name: limit
+        in: query
+        description: Number of results to return per page.
+        required: false
+        schema:
+          type: integer
+          minimum: 1
+          maximum: 1000
+      - name: offset
+        in: query
+        description: The initial index from which to return the results.
+        required: false
+        schema:
+          type: integer
+          minimum: 0
+      responses:
+        '200':
+          description: success
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  count: 2
+                  next: null
+                  previous: null
+                  results:
+                  - id: b38787e4-401c-4c4b-86dc-f1cca2072531
+                    name: auto_app_testing
+                    icon: ss-paintdisabled
+                    color: aqua-500
+                    description: ''
+                    params: {}
+                    computers_count: 0
+                    enrollment_code:
+                      code: '123456'
+                      is_active: true
+                    type: classic
+                  - id: cbe7daa9-2bcb-4cb1-aff9-024cd3a0330c
+                    name: this is a test assignment map
+                    icon: ss-files
+                    color: aqua-800
+                    description: ''
+                    params: {}
+                    computers_count: 0
+                    enrollment_code:
+                      code: '012345'
+                      is_active: true
+                    type: map
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    example: Bad Request
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    example: Unauthorized
+        '404':
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    example: Not Found
+      tags:
+      - Blueprints
+    post:
+      summary: Create Blueprint
+      description: This request creates a new empty Blueprint or a new Blueprint from a template.
+      parameters: []
+      requestBody:
+        required: true
+        content:
+          application/x-www-form-urlencoded:
+            schema:
+              type: object
+              properties:
+                name:
+                  type: string
+                  description: The name of the Blueprint. Must be unique.
+                enrollment_code.is_active:
+                  type: boolean
+                  description: Enable or disable the Blueprint for manual device enrollment.
+                enrollment_code.code:
+                  type: string
+                  description: The enrollment code for the Blueprint. If not provided, will be randomly generated.
+                type:
+                  type: string
+                  description: The type of blueprint. Use 'map' for Assignment Map blueprints.
+                description:
+                  type: string
+                  description: Optional description for the Blueprint.
+                icon:
+                  type: string
+                  description: Optional icon for the Blueprint.
+                color:
+                  type: string
+                  description: Optional color for the Blueprint.
+              required:
+              - name
+              - enrollment_code.is_active
+            example:
+              name: Test Template123
+              enrollment_code.is_active: 'true'
+              enrollment_code.code: '897526'
+              type: map
+              description: An example blueprint description
+      responses:
+        '201':
+          description: success
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  id: f3a0445f-87ba-4c37-ba9f-67186004f375
+                  name: Test Template123
+                  icon: ss-files
+                  color: aqua-800
+                  description: ''
+                  params: {}
+                  enrollment_code:
+                    code: '123456'
+                    is_active: true
+                  type: map
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    example: Bad Request
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    example: Unauthorized
+        '404':
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    example: Not Found
+      tags:
+      - Blueprints
+  /api/v1/blueprints/{blueprint_id}/ota-enrollment-profile:
+    get:
+      summary: Get Manual Enrollment Profile
+      description: This request returns the manual enrollment profile (.mobileconfig file) for a specified Blueprint.
+      parameters:
+      - name: blueprint_id
+        in: path
+        required: true
+        schema:
+          type: string
+        description: The unique identifier of the blueprint.
+      - name: sso
+        in: query
+        required: false
+        description: Use the `sso` query parameter, set to `true`, to return a URL instead of the manual enrollment profile. This parameter should only be used for blueprints in which "Require Authentication" is configured for Manual Enrollment. The returned URL must be used to authenticate via SSO to receive an enrollment profile.
+        schema:
+          type: string
+      responses:
+        '200':
+          description: Get Manual Enrollment Profile
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  url: https://accuhive.kandji.io/enrollment/authentication?metadata=eyJjbGllbnRfZG9tYWluIjogImQ1MzhjNjJjLmNsaWVudHMudXMtMS5rYW5kamkuaW8iLCAiYmx1ZXByaW50X2lkIjogIjNiYTU3MWFlLTIyZDEtNDlkNC1hNTUwLTdjODU0NTc3ZWY1MCIsICJ0ZW1wX2NvbXB1dGVyIjogImUxNWM3YzYzLTg4NDUtNDk0Mi05NmE4LWE2M2NiN2UyNjA0MSIsICJlbnJvbGxtZW50X2NvZGUiOiAiNjEwMzMyIiwgImNhbGxiYWNrX3VybCI6ICJodHRwczovL2Q1MzhjNjJjLndlYi1hcGkua2FuZGppLmlvL2FwcC92MS9tZG0vZW5yb2xsLW90YS1jYWxsYmFjay9lMTVjN2M2My04ODQ1LTQ5NDItOTZhOC1hNjNjYjdlMjYwNDEiLCAiYXV0aDBfY29uZmlndXJhdGlvbnMiOiBbeyJhdXRoMF9jbGllbnRfaWQiOiAiVW1DOXN3MGNBdHg3NWhpOWJzUHNCSmN0YTdrTlB6TnEiLCAiYXV0aDBfY29ubmVjdGlvbl9pZCI6ICJjb25fV3kxRE1qeU1vaHdHYUtnSyIsICJhdXRoMF9jb25uZWN0aW9uX25hbWUiOiBudWxsLCAiZW5hYmxlZCI6IHRydWV9XSwgImVuYWJsZV9pbnN0cnVtZW50YXRpb24iOiBmYWxzZX0=
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  detail: Bad Request - Invalid blueprint ID or parameters
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  detail: Unauthorized - Invalid or missing API token
+        '404':
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  detail: Not Found - Blueprint not found
+      tags:
+      - Blueprints
+  /api/v1/blueprints/templates/:
+    get:
+      summary: Get Blueprint Templates
+      description: ''
+      parameters: []
+      responses:
+        '200':
+          description: success
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  count: 2
+                  next: null
+                  previous: null
+                  results:
+                  - id: 2
+                    name: CIS
+                    weight: 20
+                    templates:
+                    - id: 16
+                      name: CIS Level 2 Scored
+                      description: 'CIS Level 1 and Level 2 Scored parameters, based on the macOS benchmark created and maintained by Center for Internet Security. More details can be found at benchmarks.cisecurity.org.
+
+
+                        CIS ”Scored" parameters are parameters that will decrease a final CIS benchmark score if they fail audit.
+
+
+                        CIS “Level 1” parameters are intended to be practical and prudent, provide a clear security benefit, and not inhibit the utility of the technology beyond acceptable means.
+
+
+                        CIS "Level 2" parameters are intended for environments or use cases where security is paramount, and may negatively inhibit the utility or performance of the technology.
+
+
+                        This template is meant to be a starting point for macOS CIS Level 1 & 2 Scored compliance. Please review, and make changes as needed. Always thoroughly test before deploying to a production environment.'
+                      category: 2
+                      icon: ss-files
+                      color: aqua-800
+                      params:
+                        0264078c-4555-4b7a-bd90-888eae867830:
+                          mute: false
+                          daily: false
+                        0720f00c-393a-4a66-b676-efa82307ebd4:
+                          mute: false
+                          daily: false
+                        0f692ac3-670e-4ee2-b207-3604bd54e32c:
+                          mute: false
+                          daily: false
+                        135b1c65-a665-431b-b919-39e984d6d29d:
+                          mute: true
+                          daily: false
+                        1cdcd680-f880-4734-9cac-dec627351478:
+                          mute: false
+                          daily: false
+                        1e4be748-e072-4c1f-b1ff-a98f076b8e8e:
+                          mute: false
+                          daily: false
+                        1fb8d435-3205-429c-9394-868add3e4822:
+                          mute: false
+                          daily: false
+                        1fd6eac1-2db4-4520-bfc1-b5f972e392fc:
+                          mute: false
+                          daily: false
+                        2107e444-9421-4ec8-a7d0-67ac23ed555c:
+                          mute: false
+                          daily: false
+                          details:
+                          - /Library/Application Support/Adobe/
+                          - /Library/Application Support/regid.1986-12.com.adobe/
+                          - /Library/Application Support/VMware/
+                        2ab1b190-c3b2-4f79-8fea-c5a147a0e564:
+                          mute: false
+                          daily: false
+                        34e7d714-5772-416d-9aff-c467504b45eb:
+                          mute: false
+                          daily: false
+                        370625c0-77fe-4972-bac3-6be812fa4dd7:
+                          mute: false
+                          daily: false
+                        3b176bde-d7bc-4086-9cfa-1cf8a6d32757:
+                          mute: false
+                          daily: false
+                        3d81acd3-8d3d-4941-a88e-6b8b9147cc6a:
+                          mute: false
+                          daily: false
+                          details:
+                            corner: wvous-br-corner
+                            method: 0
+                        3e41b186-f713-4b71-9f77-bddff07942f8:
+                          mute: false
+                          daily: false
+                        428d99a1-5ab0-4198-b248-7603d1c2e258:
+                          mute: false
+                          daily: false
+                        42a3fdf6-3774-4f56-9fde-c286760a48bf:
+                          mute: false
+                          daily: false
+                        4911ed60-3c2d-40ba-a5ca-33306f1d1245:
+                          mute: false
+                          daily: false
+                          details: 15
+                        5112c772-bf78-4bf9-81a1-35e45ae2b915:
+                          mute: false
+                          daily: false
+                        51a763db-716c-4bfa-b721-2f303d203b3b:
+                          mute: false
+                          daily: false
+                          details: '1'
+                        52ad1967-3d00-4cb3-93c4-92b49b95a446:
+                          mute: false
+                          daily: false
+                        56171a5e-27e5-4d6e-86cf-8956ca3b7bca:
+                          mute: false
+                          daily: false
+                        58513f4e-be5b-4726-8ed5-a9b337bbd973:
+                          mute: false
+                          daily: false
+                        5d78eebc-8552-4f9a-8236-44b9e7a4bff2:
+                          mute: false
+                          daily: false
+                          details: '0'
+                        6d268d72-3859-458c-a413-9a7210b89719:
+                          mute: false
+                          daily: false
+                        6e82a850-901a-47ec-9b4e-03393af029c9:
+                          mute: false
+                          daily: false
+                          details: 365
+                        776f1c86-54ea-4876-a226-a0a07040fec0:
+                          mute: false
+                          daily: false
+                          details:
+                            type: text
+                            value: This system is reserved for authorized use only, and the use of this system may be monitored.
+                        7888dff6-ad41-41f2-8f07-0f7c43a1c993:
+                          mute: false
+                          daily: false
+                        7a49b60a-7793-4fb7-854d-aa12829a8e57:
+                          mute: false
+                          daily: false
+                        7c368d56-88c9-45b4-b9a0-d389febbe027:
+                          mute: false
+                          daily: false
+                        86e70b82-c7d6-4266-8a89-104e9dde6a30:
+                          mute: false
+                          daily: false
+                        8ed38311-50d7-4165-890e-ac3bdf55047e:
+                          mute: false
+                          daily: false
+                        91e86fb9-1c25-45b0-b1ed-064f8a478409:
+                          mute: false
+                          daily: false
+                          details:
+                          - flag: lo
+                            prefix: none
+                          - flag: ad
+                            prefix: none
+                          - flag: fd
+                            prefix: none
+                          - flag: fm
+                            prefix: none
+                          - flag: all
+                            prefix: '-'
+                        93384921-61aa-46f6-a7d9-d45908babccc:
+                          mute: false
+                          daily: false
+                          details: false
+                        986a50bc-7cea-4874-b61c-4b2b9b1c318b:
+                          mute: false
+                          daily: false
+                        a189df03-cdfd-4c55-b429-95e7df5a7521:
+                          mute: false
+                          daily: false
+                        b648790a-0fac-43b8-bd96-5682f60f467e:
+                          mute: false
+                          daily: false
+                        b8fa043f-80bd-43d5-aea6-a94626d92c3a:
+                          mute: false
+                          daily: false
+                        c248f070-6bce-42b1-9688-27d9bf4c1513:
+                          mute: false
+                          daily: false
+                        cbb3b9c5-2db4-476a-9faa-0c61b7354ec1:
+                          mute: false
+                          daily: false
+                          details:
+                            days: 60
+                            size: 1
+                            unit: GB
+                            modifier: or
+                        cc59e3c1-eb02-4021-afa2-50977a30cf0a:
+                          mute: false
+                          daily: false
+                        cf19344c-572a-4359-a7f1-b02db1df1a43:
+                          mute: false
+                          daily: false
+                        d011e3a4-eebe-4af2-adf8-aa41c11efacf:
+                          mute: false
+                          daily: false
+                          details: time.apple.com
+                        d19e2f27-6ddb-41b1-b76a-1662b6330cd1:
+                          mute: false
+                          daily: false
+                        da3834d5-c315-4ce0-980e-b650f675b630:
+                          mute: false
+                          daily: false
+                        e5d41a12-a0be-42c8-ada8-0bc0cec1b465:
+                          mute: false
+                          daily: false
+                        e5decad7-7cbf-49b4-99b0-d7e94a21fa47:
+                          mute: false
+                          daily: false
+                        e9c1d35c-55f1-4ab9-9081-2865091b1fb2:
+                          mute: true
+                          daily: false
+                          details:
+                            alert_no_backups: false
+                            days_between_backups: 14
+                        ea3bb880-de67-4988-8266-ae2f4f81a05c:
+                          mute: false
+                          daily: false
+                        f1f19efe-75a1-4ade-8456-8da539433728:
+                          mute: false
+                          daily: false
+                        f228e471-2a6c-4046-b676-02b133a6239d:
+                          mute: false
+                          daily: false
+                        f6b09eeb-a213-4fb5-8b09-1bb4d81583ab:
+                          mute: false
+                          daily: false
+                        fb63a562-062d-4679-9e16-3dd2453e726d:
+                          mute: false
+                          daily: false
+                      rating: 80
+                    - id: 15
+                      name: CIS Level 1 Scored
+                      description: 'CIS Level 1 Scored parameters, based on the macOS benchmark created and maintained by Center for Internet Security. More details can be found at https://benchmarks.cisecurity.org.
+
+
+                        CIS ”Scored" parameters are parameters that will decrease a final CIS benchmark score if they fail audit.
+
+
+                        CIS “Level 1” parameters are intended to be practical and prudent, provide a clear security benefit, and not inhibit the utility of the technology beyond acceptable means.
+
+
+                        This template is meant to be a starting point for macOS CIS Level 1 Scored compliance. Please review, and make changes as needed. Always thoroughly test before deploying to a production environment.'
+                      category: 2
+                      icon: ss-files
+                      color: aqua-800
+                      params:
+                        0264078c-4555-4b7a-bd90-888eae867830:
+                          mute: false
+                          daily: false
+                        0f692ac3-670e-4ee2-b207-3604bd54e32c:
+                          mute: false
+                          daily: false
+                        135b1c65-a665-431b-b919-39e984d6d29d:
+                          mute: true
+                          daily: false
+                        1e4be748-e072-4c1f-b1ff-a98f076b8e8e:
+                          mute: false
+                          daily: false
+                        1fb8d435-3205-429c-9394-868add3e4822:
+                          mute: false
+                          daily: false
+                        1fd6eac1-2db4-4520-bfc1-b5f972e392fc:
+                          mute: false
+                          daily: false
+                        2ab1b190-c3b2-4f79-8fea-c5a147a0e564:
+                          mute: false
+                          daily: false
+                        34e7d714-5772-416d-9aff-c467504b45eb:
+                          mute: false
+                          daily: false
+                        370625c0-77fe-4972-bac3-6be812fa4dd7:
+                          mute: false
+                          daily: false
+                        3b176bde-d7bc-4086-9cfa-1cf8a6d32757:
+                          mute: false
+                          daily: false
+                        3d81acd3-8d3d-4941-a88e-6b8b9147cc6a:
+                          mute: false
+                          daily: false
+                          details:
+                            corner: wvous-br-corner
+                            method: 0
+                        428d99a1-5ab0-4198-b248-7603d1c2e258:
+                          mute: false
+                          daily: false
+                        5112c772-bf78-4bf9-81a1-35e45ae2b915:
+                          mute: false
+                          daily: false
+                        52ad1967-3d00-4cb3-93c4-92b49b95a446:
+                          mute: false
+                          daily: false
+                        56171a5e-27e5-4d6e-86cf-8956ca3b7bca:
+                          mute: false
+                          daily: false
+                        58513f4e-be5b-4726-8ed5-a9b337bbd973:
+                          mute: false
+                          daily: false
+                        5d78eebc-8552-4f9a-8236-44b9e7a4bff2:
+                          mute: false
+                          daily: false
+                          details: '0'
+                        6d268d72-3859-458c-a413-9a7210b89719:
+                          mute: false
+                          daily: false
+                        6e82a850-901a-47ec-9b4e-03393af029c9:
+                          mute: false
+                          daily: false
+                          details: 365
+                        7888dff6-ad41-41f2-8f07-0f7c43a1c993:
+                          mute: false
+                          daily: false
+                        7a49b60a-7793-4fb7-854d-aa12829a8e57:
+                          mute: false
+                          daily: false
+                        7c368d56-88c9-45b4-b9a0-d389febbe027:
+                          mute: false
+                          daily: false
+                        86e70b82-c7d6-4266-8a89-104e9dde6a30:
+                          mute: false
+                          daily: false
+                        8ed38311-50d7-4165-890e-ac3bdf55047e:
+                          mute: false
+                          daily: false
+                        93384921-61aa-46f6-a7d9-d45908babccc:
+                          mute: false
+                          daily: false
+                          details: false
+                        986a50bc-7cea-4874-b61c-4b2b9b1c318b:
+                          mute: false
+                          daily: false
+                        a189df03-cdfd-4c55-b429-95e7df5a7521:
+                          mute: false
+                          daily: false
+                        b648790a-0fac-43b8-bd96-5682f60f467e:
+                          mute: false
+                          daily: false
+                        c248f070-6bce-42b1-9688-27d9bf4c1513:
+                          mute: false
+                          daily: false
+                        cbb3b9c5-2db4-476a-9faa-0c61b7354ec1:
+                          mute: false
+                          daily: false
+                          details:
+                            days: 60
+                            size: 1
+                            unit: GB
+                            modifier: or
+                        cc59e3c1-eb02-4021-afa2-50977a30cf0a:
+                          mute: false
+                          daily: false
+                        cf19344c-572a-4359-a7f1-b02db1df1a43:
+                          mute: false
+                          daily: false
+                        d011e3a4-eebe-4af2-adf8-aa41c11efacf:
+                          mute: false
+                          daily: false
+                          details: time.apple.com
+                        d19e2f27-6ddb-41b1-b76a-1662b6330cd1:
+                          mute: false
+                          daily: false
+                        da3834d5-c315-4ce0-980e-b650f675b630:
+                          mute: false
+                          daily: false
+                        e5d41a12-a0be-42c8-ada8-0bc0cec1b465:
+                          mute: false
+                          daily: false
+                        e5decad7-7cbf-49b4-99b0-d7e94a21fa47:
+                          mute: false
+                          daily: false
+                        e9c1d35c-55f1-4ab9-9081-2865091b1fb2:
+                          mute: true
+                          daily: false
+                          details:
+                            alert_no_backups: false
+                            days_between_backups: 14
+                        ea3bb880-de67-4988-8266-ae2f4f81a05c:
+                          mute: false
+                          daily: false
+                        f1f19efe-75a1-4ade-8456-8da539433728:
+                          mute: false
+                          daily: false
+                        f6b09eeb-a213-4fb5-8b09-1bb4d81583ab:
+                          mute: false
+                          daily: false
+                        fb63a562-062d-4679-9e16-3dd2453e726d:
+                          mute: false
+                          daily: false
+                      rating: 60
+                  - id: 1
+                    name: Kandji
+                    weight: 10
+                    templates:
+                    - id: 11
+                      name: Kandji Level III
+                      description: "Parameters found in Kandji Level II as well as advanced media and network configurations. Several built-in macOS features have been disabled. \n\nImportant: Always review and test thoroughly before deploying. Users day to day impact will be affected. It is recommended that you review these changes with end-users before deployment."
+                      category: 1
+                      icon: ss-files
+                      color: aqua-800
+                      params:
+                        0264078c-4555-4b7a-bd90-888eae867830:
+                          mute: false
+                          daily: false
+                        0720f00c-393a-4a66-b676-efa82307ebd4:
+                          mute: false
+                          daily: false
+                        0f692ac3-670e-4ee2-b207-3604bd54e32c:
+                          mute: false
+                          daily: false
+                        12167a3a-a134-4d33-aea6-429086b872f5:
+                          mute: false
+                          daily: false
+                          details: '0'
+                        135b1c65-a665-431b-b919-39e984d6d29d:
+                          mute: true
+                          daily: false
+                        1cdcd680-f880-4734-9cac-dec627351478:
+                          mute: false
+                          daily: false
+                        1e4be748-e072-4c1f-b1ff-a98f076b8e8e:
+                          mute: false
+                          daily: false
+                        1fb8d435-3205-429c-9394-868add3e4822:
+                          mute: false
+                          daily: false
+                        1fd6eac1-2db4-4520-bfc1-b5f972e392fc:
+                          mute: false
+                          daily: false
+                        2ab1b190-c3b2-4f79-8fea-c5a147a0e564:
+                          mute: false
+                          daily: false
+                        34e7d714-5772-416d-9aff-c467504b45eb:
+                          mute: false
+                          daily: false
+                        370625c0-77fe-4972-bac3-6be812fa4dd7:
+                          mute: false
+                          daily: false
+                        3b176bde-d7bc-4086-9cfa-1cf8a6d32757:
+                          mute: false
+                          daily: false
+                        3d81acd3-8d3d-4941-a88e-6b8b9147cc6a:
+                          mute: false
+                          daily: false
+                          details:
+                            corner: wvous-br-corner
+                            method: 0
+                        428d99a1-5ab0-4198-b248-7603d1c2e258:
+                          mute: false
+                          daily: false
+                        42a3fdf6-3774-4f56-9fde-c286760a48bf:
+                          mute: false
+                          daily: false
+                        5112c772-bf78-4bf9-81a1-35e45ae2b915:
+                          mute: false
+                          daily: false
+                        52ad1967-3d00-4cb3-93c4-92b49b95a446:
+                          mute: false
+                          daily: false
+                        56171a5e-27e5-4d6e-86cf-8956ca3b7bca:
+                          mute: false
+                          daily: false
+                        58513f4e-be5b-4726-8ed5-a9b337bbd973:
+                          mute: false
+                          daily: false
+                        5d78eebc-8552-4f9a-8236-44b9e7a4bff2:
+                          mute: false
+                          daily: false
+                          details: '0'
+                        6d268d72-3859-458c-a413-9a7210b89719:
+                          mute: false
+                          daily: false
+                        6e82a850-901a-47ec-9b4e-03393af029c9:
+                          mute: false
+                          daily: false
+                          details: 365
+                        776f1c86-54ea-4876-a226-a0a07040fec0:
+                          mute: false
+                          daily: false
+                          details:
+                            type: text
+                            value: This system is reserved for authorized use only, and the use of this system may be monitored.
+                        7888dff6-ad41-41f2-8f07-0f7c43a1c993:
+                          mute: false
+                          daily: false
+                        7c368d56-88c9-45b4-b9a0-d389febbe027:
+                          mute: false
+                          daily: false
+                        86e70b82-c7d6-4266-8a89-104e9dde6a30:
+                          mute: false
+                          daily: false
+                        8c6b6864-3faa-47f1-b599-e13bb04682ed:
+                          mute: false
+                          daily: false
+                          details: '0'
+                        8ed38311-50d7-4165-890e-ac3bdf55047e:
+                          mute: false
+                          daily: false
+                        91e86fb9-1c25-45b0-b1ed-064f8a478409:
+                          mute: false
+                          daily: false
+                          details:
+                          - flag: lo
+                            prefix: none
+                          - flag: ad
+                            prefix: none
+                          - flag: fd
+                            prefix: none
+                          - flag: fm
+                            prefix: none
+                          - flag: all
+                            prefix: '-'
+                        93384921-61aa-46f6-a7d9-d45908babccc:
+                          mute: false
+                          daily: false
+                          details: false
+                        986a50bc-7cea-4874-b61c-4b2b9b1c318b:
+                          mute: false
+                          daily: false
+                        af5c6286-f084-4369-a14b-7af9b5797aa8:
+                          mute: false
+                          daily: false
+                        b648790a-0fac-43b8-bd96-5682f60f467e:
+                          mute: false
+                          daily: false
+                        c248f070-6bce-42b1-9688-27d9bf4c1513:
+                          mute: false
+                          daily: false
+                        c2f95015-c14e-49bd-8d89-27c3f5963dc1:
+                          mute: false
+                          daily: false
+                        cbb3b9c5-2db4-476a-9faa-0c61b7354ec1:
+                          mute: false
+                          daily: false
+                          details:
+                            days: 60
+                            size: 1024
+                            unit: MB
+                            modifier: or
+                        cc59e3c1-eb02-4021-afa2-50977a30cf0a:
+                          mute: false
+                          daily: false
+                        cf19344c-572a-4359-a7f1-b02db1df1a43:
+                          mute: false
+                          daily: false
+                        d011e3a4-eebe-4af2-adf8-aa41c11efacf:
+                          mute: false
+                          daily: false
+                          details: time.apple.com
+                        d19e2f27-6ddb-41b1-b76a-1662b6330cd1:
+                          mute: false
+                          daily: false
+                        da3834d5-c315-4ce0-980e-b650f675b630:
+                          mute: false
+                          daily: false
+                        e5d41a12-a0be-42c8-ada8-0bc0cec1b465:
+                          mute: false
+                          daily: false
+                        e5fbd8ad-e45b-4fa1-b900-21969fefd2ac:
+                          mute: false
+                          daily: false
+                        ea3bb880-de67-4988-8266-ae2f4f81a05c:
+                          mute: false
+                          daily: false
+                        f1f19efe-75a1-4ade-8456-8da539433728:
+                          mute: false
+                          daily: false
+                        f6b09eeb-a213-4fb5-8b09-1bb4d81583ab:
+                          mute: false
+                          daily: false
+                        fb63a562-062d-4679-9e16-3dd2453e726d:
+                          mute: false
+                          daily: false
+                      rating: 70
+                    - id: 13
+                      name: Kandji Level IV
+                      description: "Security is paramount by including all that is enabled in Kandji Level III, with added parameters disabling iCloud related services, and several additional macOS functions. \n\n\nImportant: Always review and test thoroughly before deploying. Users day to day impact will be affected. It is recommended that you review these changes with end-users before deployment."
+                      category: 1
+                      icon: ss-files
+                      color: aqua-800
+                      params:
+                        0264078c-4555-4b7a-bd90-888eae867830:
+                          mute: false
+                          daily: false
+                        0720f00c-393a-4a66-b676-efa82307ebd4:
+                          mute: false
+                          daily: false
+                        07cac17b-33b0-4af3-8302-3e5ded562b45:
+                          mute: false
+                          daily: false
+                          details: '1'
+                        08323d29-7296-4fc1-8a74-295b3ac2b081:
+                          mute: false
+                          daily: false
+                          details: '1'
+                        0f692ac3-670e-4ee2-b207-3604bd54e32c:
+                          mute: false
+                          daily: false
+                        12167a3a-a134-4d33-aea6-429086b872f5:
+                          mute: false
+                          daily: false
+                          details: '0'
+                        135b1c65-a665-431b-b919-39e984d6d29d:
+                          mute: true
+                          daily: false
+                        1636e014-eee6-4858-b508-24594a4b521d:
+                          mute: true
+                          daily: false
+                        19b5c13d-ccc7-49f5-9534-8e5c790a2925:
+                          mute: false
+                          daily: false
+                        1cdcd680-f880-4734-9cac-dec627351478:
+                          mute: false
+                          daily: false
+                        1ce8e700-9636-4420-b9f9-6db1071ebdcb:
+                          mute: false
+                          daily: false
+                          profile: com.apple.applicationaccess.4a273661-7142-4d4e-8566-115b2b29dd27
+                        1e058873-3137-4387-8760-ccab6fa4771e:
+                          mute: false
+                          daily: false
+                          details: '0'
+                        1e4be748-e072-4c1f-b1ff-a98f076b8e8e:
+                          mute: false
+                          daily: false
+                        1fb8d435-3205-429c-9394-868add3e4822:
+                          mute: false
+                          daily: false
+                        1fd6eac1-2db4-4520-bfc1-b5f972e392fc:
+                          mute: false
+                          daily: false
+                        2107e444-9421-4ec8-a7d0-67ac23ed555c:
+                          mute: false
+                          daily: false
+                          details:
+                          - /Library/Application Support/Adobe/
+                          - /Library/Application Support/regid.1986-12.com.adobe/
+                          - /Library/Application Support/VMware/
+                        2ab1b190-c3b2-4f79-8fea-c5a147a0e564:
+                          mute: false
+                          daily: false
+                        326e8ed6-0f21-4da6-87fc-00aada554c6d:
+                          mute: false
+                          daily: false
+                          details: 90
+                        3364fb4b-eb12-410a-a471-bc22e8b14725:
+                          mute: false
+                          daily: false
+                        33c9548d-863a-4b9d-82a4-f9d7037054d6:
+                          mute: false
+                          daily: false
+                          details: 90
+                        34e7d714-5772-416d-9aff-c467504b45eb:
+                          mute: false
+                          daily: false
+                        370625c0-77fe-4972-bac3-6be812fa4dd7:
+                          mute: false
+                          daily: false
+                        3b176bde-d7bc-4086-9cfa-1cf8a6d32757:
+                          mute: false
+                          daily: false
+                        3d81acd3-8d3d-4941-a88e-6b8b9147cc6a:
+                          mute: false
+                          daily: false
+                          details:
+                            corner: wvous-br-corner
+                            method: 0
+                        428d99a1-5ab0-4198-b248-7603d1c2e258:
+                          mute: false
+                          daily: false
+                        42a3fdf6-3774-4f56-9fde-c286760a48bf:
+                          mute: false
+                          daily: false
+                        43d198e0-50c6-43bb-ac7b-4fc5a165a056:
+                          mute: false
+                          daily: false
+                        5112c772-bf78-4bf9-81a1-35e45ae2b915:
+                          mute: false
+                          daily: false
+                        515313ac-99a2-4961-a132-40beef6291b2:
+                          mute: false
+                          daily: false
+                          details: 90
+                        51a763db-716c-4bfa-b721-2f303d203b3b:
+                          mute: false
+                          daily: false
+                          details: '0'
+                        52ad1967-3d00-4cb3-93c4-92b49b95a446:
+                          mute: false
+                          daily: false
+                        56171a5e-27e5-4d6e-86cf-8956ca3b7bca:
+                          mute: false
+                          daily: false
+                        58513f4e-be5b-4726-8ed5-a9b337bbd973:
+                          mute: false
+                          daily: false
+                        5d25c667-0635-4525-b400-fa93841b42e9:
+                          mute: false
+                          daily: false
+                        5d78eebc-8552-4f9a-8236-44b9e7a4bff2:
+                          mute: false
+                          daily: false
+                          details: '0'
+                        6d268d72-3859-458c-a413-9a7210b89719:
+                          mute: false
+                          daily: false
+                        6e82a850-901a-47ec-9b4e-03393af029c9:
+                          mute: false
+                          daily: false
+                          details: 365
+                        776f1c86-54ea-4876-a226-a0a07040fec0:
+                          mute: false
+                          daily: false
+                          details:
+                            type: text
+                            value: This system is reserved for authorized use only, and the use of this system may be monitored.
+                        7888dff6-ad41-41f2-8f07-0f7c43a1c993:
+                          mute: false
+                          daily: false
+                        7a49b60a-7793-4fb7-854d-aa12829a8e57:
+                          mute: false
+                          daily: false
+                        7c368d56-88c9-45b4-b9a0-d389febbe027:
+                          mute: false
+                          daily: false
+                        86e70b82-c7d6-4266-8a89-104e9dde6a30:
+                          mute: false
+                          daily: false
+                        8c6b6864-3faa-47f1-b599-e13bb04682ed:
+                          mute: false
+                          daily: false
+                          details: '1'
+                        8ed38311-50d7-4165-890e-ac3bdf55047e:
+                          mute: false
+                          daily: false
+                        91e86fb9-1c25-45b0-b1ed-064f8a478409:
+                          mute: false
+                          daily: false
+                          details:
+                          - flag: lo
+                            prefix: none
+                          - flag: ad
+                            prefix: none
+                          - flag: fd
+                            prefix: none
+                          - flag: fm
+                            prefix: none
+                          - flag: all
+                            prefix: '-'
+                        93384921-61aa-46f6-a7d9-d45908babccc:
+                          mute: false
+                          daily: false
+                          details: false
+                        986a50bc-7cea-4874-b61c-4b2b9b1c318b:
+                          mute: false
+                          daily: false
+                        a1674edc-f788-424d-addc-dea91f3053f3:
+                          mute: false
+                          daily: false
+                          details: 30
+                        a189df03-cdfd-4c55-b429-95e7df5a7521:
+                          mute: false
+                          daily: false
+                        af5c6286-f084-4369-a14b-7af9b5797aa8:
+                          mute: false
+                          daily: false
+                        b3aed88b-199d-465c-9277-df152cdb0d5b:
+                          mute: false
+                          daily: false
+                        b648790a-0fac-43b8-bd96-5682f60f467e:
+                          mute: false
+                          daily: false
+                        b8fa043f-80bd-43d5-aea6-a94626d92c3a:
+                          mute: false
+                          daily: false
+                        c248f070-6bce-42b1-9688-27d9bf4c1513:
+                          mute: false
+                          daily: false
+                        c2f95015-c14e-49bd-8d89-27c3f5963dc1:
+                          mute: false
+                          daily: false
+                        cbb3b9c5-2db4-476a-9faa-0c61b7354ec1:
+                          mute: false
+                          daily: false
+                          details:
+                            days: 60
+                            size: 1024
+                            unit: MB
+                            modifier: or
+                        cc59e3c1-eb02-4021-afa2-50977a30cf0a:
+                          mute: false
+                          daily: false
+                        cf19344c-572a-4359-a7f1-b02db1df1a43:
+                          mute: false
+                          daily: false
+                        d011e3a4-eebe-4af2-adf8-aa41c11efacf:
+                          mute: false
+                          daily: false
+                          details: time.apple.com
+                        d19e2f27-6ddb-41b1-b76a-1662b6330cd1:
+                          mute: false
+                          daily: false
+                        da3834d5-c315-4ce0-980e-b650f675b630:
+                          mute: false
+                          daily: false
+                        e5d41a12-a0be-42c8-ada8-0bc0cec1b465:
+                          mute: false
+                          daily: false
+                        e5decad7-7cbf-49b4-99b0-d7e94a21fa47:
+                          mute: false
+                          daily: false
+                        e5fbd8ad-e45b-4fa1-b900-21969fefd2ac:
+                          mute: false
+                          daily: false
+                        ea3bb880-de67-4988-8266-ae2f4f81a05c:
+                          mute: false
+                          daily: false
+                        f1f19efe-75a1-4ade-8456-8da539433728:
+                          mute: false
+                          daily: false
+                        f228e471-2a6c-4046-b676-02b133a6239d:
+                          mute: false
+                          daily: false
+                        f6b09eeb-a213-4fb5-8b09-1bb4d81583ab:
+                          mute: false
+                          daily: false
+                        fb3b7d49-3ed4-4aa7-9c95-b60857783626:
+                          mute: false
+                          daily: false
+                        fb63a562-062d-4679-9e16-3dd2453e726d:
+                          mute: false
+                          daily: false
+                      rating: 90
+                    - id: 10
+                      name: Kandji Level II
+                      description: 'All of the parameters enabled in Kandji Level I with additional items that include bolstered authentication, password complexity, logging, and data security.
+
+
+                        Important: Always review and test thoroughly before deploying. Users day to day impact will be affected. It is recommended that you review these changes with end-users before deployment.'
+                      category: 1
+                      icon: ss-files
+                      color: aqua-800
+                      params:
+                        0264078c-4555-4b7a-bd90-888eae867830:
+                          mute: false
+                          daily: false
+                        0f692ac3-670e-4ee2-b207-3604bd54e32c:
+                          mute: false
+                          daily: false
+                        135b1c65-a665-431b-b919-39e984d6d29d:
+                          mute: true
+                          daily: false
+                        1e4be748-e072-4c1f-b1ff-a98f076b8e8e:
+                          mute: false
+                          daily: false
+                        1fb8d435-3205-429c-9394-868add3e4822:
+                          mute: false
+                          daily: false
+                        1fd6eac1-2db4-4520-bfc1-b5f972e392fc:
+                          mute: false
+                          daily: false
+                        2ab1b190-c3b2-4f79-8fea-c5a147a0e564:
+                          mute: false
+                          daily: false
+                        34e7d714-5772-416d-9aff-c467504b45eb:
+                          mute: false
+                          daily: false
+                        370625c0-77fe-4972-bac3-6be812fa4dd7:
+                          mute: false
+                          daily: false
+                        3b176bde-d7bc-4086-9cfa-1cf8a6d32757:
+                          mute: false
+                          daily: false
+                        428d99a1-5ab0-4198-b248-7603d1c2e258:
+                          mute: false
+                          daily: false
+                        5112c772-bf78-4bf9-81a1-35e45ae2b915:
+                          mute: false
+                          daily: false
+                        52ad1967-3d00-4cb3-93c4-92b49b95a446:
+                          mute: false
+                          daily: false
+                        56171a5e-27e5-4d6e-86cf-8956ca3b7bca:
+                          mute: false
+                          daily: false
+                        58513f4e-be5b-4726-8ed5-a9b337bbd973:
+                          mute: false
+                          daily: false
+                        5d78eebc-8552-4f9a-8236-44b9e7a4bff2:
+                          mute: false
+                          daily: false
+                          details: '0'
+                        6d268d72-3859-458c-a413-9a7210b89719:
+                          mute: false
+                          daily: false
+                        6e82a850-901a-47ec-9b4e-03393af029c9:
+                          mute: false
+                          daily: false
+                          details: 365
+                        7888dff6-ad41-41f2-8f07-0f7c43a1c993:
+                          mute: false
+                          daily: false
+                        7c368d56-88c9-45b4-b9a0-d389febbe027:
+                          mute: false
+                          daily: false
+                        86e70b82-c7d6-4266-8a89-104e9dde6a30:
+                          mute: false
+                          daily: false
+                        8c6b6864-3faa-47f1-b599-e13bb04682ed:
+                          mute: false
+                          daily: false
+                          details: '0'
+                        8ed38311-50d7-4165-890e-ac3bdf55047e:
+                          mute: false
+                          daily: false
+                        91e86fb9-1c25-45b0-b1ed-064f8a478409:
+                          mute: false
+                          daily: false
+                          details:
+                          - flag: lo
+                            prefix: none
+                          - flag: ad
+                            prefix: none
+                          - flag: fd
+                            prefix: none
+                          - flag: fm
+                            prefix: none
+                          - flag: all
+                            prefix: '-'
+                        93384921-61aa-46f6-a7d9-d45908babccc:
+                          mute: false
+                          daily: false
+                          details: false
+                        986a50bc-7cea-4874-b61c-4b2b9b1c318b:
+                          mute: false
+                          daily: false
+                        b648790a-0fac-43b8-bd96-5682f60f467e:
+                          mute: false
+                          daily: false
+                        cbb3b9c5-2db4-476a-9faa-0c61b7354ec1:
+                          mute: false
+                          daily: false
+                          details:
+                            days: 60
+                            size: 1024
+                            unit: MB
+                            modifier: or
+                        cc59e3c1-eb02-4021-afa2-50977a30cf0a:
+                          mute: false
+                          daily: false
+                        cf19344c-572a-4359-a7f1-b02db1df1a43:
+                          mute: false
+                          daily: false
+                        d011e3a4-eebe-4af2-adf8-aa41c11efacf:
+                          mute: false
+                          daily: false
+                          details: time.apple.com
+                        d19e2f27-6ddb-41b1-b76a-1662b6330cd1:
+                          mute: false
+                          daily: false
+                        da3834d5-c315-4ce0-980e-b650f675b630:
+                          mute: false
+                          daily: false
+                        e5d41a12-a0be-42c8-ada8-0bc0cec1b465:
+                          mute: false
+                          daily: false
+                        ea3bb880-de67-4988-8266-ae2f4f81a05c:
+                          mute: false
+                          daily: false
+                        f1f19efe-75a1-4ade-8456-8da539433728:
+                          mute: false
+                          daily: false
+                        f6b09eeb-a213-4fb5-8b09-1bb4d81583ab:
+                          mute: false
+                          daily: false
+                        fb63a562-062d-4679-9e16-3dd2453e726d:
+                          mute: false
+                          daily: false
+                      rating: 50
+                    - id: 9
+                      name: Kandji Level I
+                      description: "A minimum level of security that is recommended for all businesses. Minimal user impact can be expected. \n\nImportant: Always review and test thoroughly before deploying. Users day to day impact will be affected. It is recommended that you review these changes with end-users before deployment."
+                      category: 1
+                      icon: ss-files
+                      color: aqua-800
+                      params:
+                        0264078c-4555-4b7a-bd90-888eae867830:
+                          mute: false
+                          daily: false
+                        0f692ac3-670e-4ee2-b207-3604bd54e32c:
+                          mute: false
+                          daily: false
+                        1e4be748-e072-4c1f-b1ff-a98f076b8e8e:
+                          mute: false
+                          daily: false
+                        1fb8d435-3205-429c-9394-868add3e4822:
+                          mute: false
+                          daily: false
+                        1fd6eac1-2db4-4520-bfc1-b5f972e392fc:
+                          mute: false
+                          daily: false
+                        2ab1b190-c3b2-4f79-8fea-c5a147a0e564:
+                          mute: false
+                          daily: false
+                        34e7d714-5772-416d-9aff-c467504b45eb:
+                          mute: false
+                          daily: false
+                        428d99a1-5ab0-4198-b248-7603d1c2e258:
+                          mute: false
+                          daily: false
+                        52ad1967-3d00-4cb3-93c4-92b49b95a446:
+                          mute: false
+                          daily: false
+                        58513f4e-be5b-4726-8ed5-a9b337bbd973:
+                          mute: false
+                          daily: false
+                        5d78eebc-8552-4f9a-8236-44b9e7a4bff2:
+                          mute: false
+                          daily: false
+                          details: '0'
+                        6d268d72-3859-458c-a413-9a7210b89719:
+                          mute: false
+                          daily: false
+                        6e82a850-901a-47ec-9b4e-03393af029c9:
+                          mute: false
+                          daily: false
+                          details: 365
+                        7888dff6-ad41-41f2-8f07-0f7c43a1c993:
+                          mute: false
+                          daily: false
+                        86e70b82-c7d6-4266-8a89-104e9dde6a30:
+                          mute: false
+                          daily: false
+                        8ed38311-50d7-4165-890e-ac3bdf55047e:
+                          mute: false
+                          daily: false
+                        b648790a-0fac-43b8-bd96-5682f60f467e:
+                          mute: false
+                          daily: false
+                        cbb3b9c5-2db4-476a-9faa-0c61b7354ec1:
+                          mute: false
+                          daily: false
+                          details:
+                            days: 60
+                            size: 1024
+                            unit: MB
+                            modifier: or
+                        cf19344c-572a-4359-a7f1-b02db1df1a43:
+                          mute: false
+                          daily: false
+                        d011e3a4-eebe-4af2-adf8-aa41c11efacf:
+                          mute: false
+                          daily: false
+                          details: time.apple.com
+                        d19e2f27-6ddb-41b1-b76a-1662b6330cd1:
+                          mute: false
+                          daily: false
+                        e5d41a12-a0be-42c8-ada8-0bc0cec1b465:
+                          mute: false
+                          daily: false
+                        ea3bb880-de67-4988-8266-ae2f4f81a05c:
+                          mute: false
+                          daily: false
+                        f1f19efe-75a1-4ade-8456-8da539433728:
+                          mute: false
+                          daily: false
+                        f6b09eeb-a213-4fb5-8b09-1bb4d81583ab:
+                          mute: false
+                          daily: false
+                        fb63a562-062d-4679-9e16-3dd2453e726d:
+                          mute: false
+                          daily: false
+                      rating: 30
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    example: Bad Request
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    example: Unauthorized
+        '404':
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    example: Not Found
+      tags:
+      - Blueprints
+  /api/v1/blueprints/{blueprint_id}:
+    patch:
+      summary: Update Blueprint
+      description: This request allows updating of the name, icon, icon color, description, enrollment code, and active status on an existing blueprint.
+      parameters:
+      - name: blueprint_id
+        in: path
+        required: true
+        schema:
+          type: string
+        description: The unique identifier of the blueprint.
+      responses:
+        '200':
+          description: success
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  id: 6391086e-85a1-4820-813c-f9c75025fff4
+                  name: Default Blueprint
+                  icon: ss-quote
+                  color: orange-500
+                  description: An example blueprint description
+                  params: {}
+                  computers_count: 1
+                  missing_computers_count: 1
+                  enrollment_code:
+                    code: '999858'
+                    is_active: false
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    example: Bad Request
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    example: Unauthorized
+        '404':
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    example: Not Found
+      requestBody:
+        required: false
+        content:
+          application/x-www-form-urlencoded:
+            schema:
+              type: object
+              properties:
+                name:
+                  type: string
+                  description: Update the name of the Blueprint
+                color:
+                  type: string
+                  description: Update the color of the Blueprint icon. A list of possible color codes can be found at https://github.com/kandji-inc/support/wiki/Blueprint-API---Color-Codes. Color will be ignored for the map type.
+                description:
+                  type: string
+                  description: Update the description of the Blueprint
+                enrollment_code.code:
+                  type: string
+                  description: Update the enrollment code of the Blueprint
+                enrollment_code.is_active:
+                  type: boolean
+                  description: Disable the Blueprint for manual device enrollment from the enrollment portal
+                icon:
+                  type: string
+                  description: Update the Blueprint icon. A list of possible icon codes can be found at https://github.com/kandji-inc/support/wiki/Blueprint-API-Icon-Codes. Icon will be ignored for the map type.
+      tags:
+      - Blueprints
+    get:
+      summary: Get Blueprint
+      description: This request returns information about a specific blueprint based on blueprint ID.
+      parameters:
+      - name: blueprint_id
+        in: path
+        required: true
+        schema:
+          type: string
+        description: The unique identifier of the blueprint.
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  id: b38787e4-401c-4c4b-86dc-f1cca2072531
+                  name: auto_app_testing
+                  icon: ss-paintdisabled
+                  color: aqua-500
+                  description: ''
+                  params: {}
+                  computers_count: 0
+                  enrollment_code:
+                    code: '752477'
+                    is_active: true
+                  type: classic
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    example: Bad Request
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    example: Unauthorized
+        '404':
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    example: Not Found
+      tags:
+      - Blueprints
+    delete:
+      summary: Delete Blueprint
+      description: This is a HIGHLY destructive action - deleting a Blueprint will un-manage ALL devices assigned to the Blueprint.
+      parameters:
+      - name: blueprint_id
+        in: path
+        required: true
+        schema:
+          type: string
+        description: The unique identifier of the blueprint.
+      responses:
+        '204':
+          description: Blueprint deleted successfully
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    example: Bad Request
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    example: Unauthorized
+        '404':
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    example: Not Found
+      tags:
+      - Blueprints
+  /api/v1/blueprints/{blueprint_id}/assign-library-item:
+    post:
+      summary: Assign Library Item
+      description: This endpoint allows assigning a library item to a specific blueprint (classic and maps).
+      parameters:
+      - name: blueprint_id
+        in: path
+        required: true
+        schema:
+          type: string
+        description: The unique identifier of the blueprint.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                library_item_id:
+                  type: string
+                  description: 'The unique identifier of the library item to assign. Example: `12345678-1234-1234-1234-123456789012`'
+                assignment_node_id:
+                  type: string
+                  description: 'The assignment node ID for maps. Not required for classic blueprints or maps without conditional logic. Example: `node-123`'
+              required:
+              - library_item_id
+            example:
+              library_item_id: 12345678-1234-1234-1234-123456789012
+              assignment_node_id: node-123
+      responses:
+        '200':
+          description: success - classic
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                - c0148e35-c734-4402-b2fb-1c61aab72550
+                - a6063468-48aa-4e52-a098-fd9c7902201e
+                - e3d94912-d8bd-474b-9b90-c32288f84f99
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    example: Bad Request
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    example: Unauthorized
+        '404':
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    example: Not Found
+      tags:
+      - Blueprints
+  /api/v1/blueprints/{blueprint_id}/list-library-items:
+    get:
+      summary: List Library Items
+      description: This API endpoint retrieves a list of library items associated with a specific blueprint (classic and maps).
+      parameters:
+      - name: blueprint_id
+        in: path
+        required: true
+        schema:
+          type: string
+        description: The unique identifier of the blueprint.
+      responses:
+        '200':
+          description: success
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  count:
+                    type: integer
+                    description: The total count of library items
+                  next:
+                    type:
+                    - string
+                    - 'null'
+                    description: The URL for the next page of results, if available. If not available will value will be null
+                  previous:
+                    type:
+                    - string
+                    - 'null'
+                    description: The URL for the previous page of results, if available. If not available will value will be null
+                  results:
+                    type: array
+                    description: An array containing library item objects
+                    items:
+                      type: object
+                      properties:
+                        id:
+                          type: string
+                          description: The ID of the library item
+                        name:
+                          type: string
+                          description: The name of the library item
+              example:
+                count: 3
+                next: null
+                previous: null
+                results:
+                - id: 12345678-1234-1234-1234-123456789012
+                  name: Custom App Example
+                - id: 87654321-4321-4321-4321-210987654321
+                  name: Custom Profile Example
+                - id: 11111111-2222-3333-4444-555555555555
+                  name: Custom Script Example
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    example: Bad Request
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    example: Unauthorized
+        '404':
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    example: Not Found
+      tags:
+      - Blueprints
+components:
+  securitySchemes:
+    BearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT

@@ -1,0 +1,178 @@
+openapi: 3.2.0
+info:
+  title: Iru Endpoint Management Threat Details API
+  description: "# Welcome to the Iru Endpoint Management API Documentation\n\n**Note:** Kandji is in the process of changing to Iru. Many URLs and notes within this documentation will continue to reference Kandji for some time.\n\nYou can find your API URL in Settings > Access. The API URL will follow the below formats.\n\n- US - `https://SubDomain.api.kandji.io`\n    \n- EU - `https://SubDomain.api.eu.kandji.io`\n    \n\nFor information on how to obtain an API token, please refer to the Iru docs.\n\n[https://docs.iru.com/](https://docs.iru.com/)\n\n#### Rate Limit\n\nThe Iru Endpoint Management API currently has an API rate limit of 10,000 requests per hour per customer.\n\n#### Request Methods\n\nHTTP request methods supported by the API.\n\n| Method | Definition |\n| --- | --- |\n| GET | The `GET` method requests a representation of the specified resource. |\n| POST | The `POST` method submits an entity to the specified resource. |\n| PATCH | The `PATCH` method applies partial modifications to a resource. |\n| DELETE | The `DELETE` method deletes the specified resource. |\n\n#### Response codes\n\nNot all response codes apply to every endpoint.\n\n| Code | Response |\n| --- | --- |\n| 200 | OK |\n| 201 | Created |\n| 204 | No content |\n|  | Typical response when sending the DELETE method. |\n| 400 | Bad Request |\n|  | \"Command already running\" - The command may already be running in a _Pending_ state waiting on the device. |\n|  | \"Command is not allowed for current device\" - The command may not be compatible with the target device. |\n|  | \"JSON parse error - Expecting ',' delimiter: line 3 column 2 (char 65)\" |\n| 401 | Unauthorized |\n|  | This error can occur if the token is incorrect, was revoked, or the token has expired. |\n| 403 | Forbidden |\n|  | The request was understood but cannot be authorized. |\n| 404 | Not found |\n|  | Unable to locate the resource in the Iru tenant. |\n| 415 | Unsupported Media Type |\n|  | The request contains a media type which the server or resource does not support. |\n| 500 | Internal server error |\n| 503 | Service unavailable |\n|  | This error can occur if a file upload is still being processed via the custom apps API. |\n\n#### Data structure\n\nThe API returns all structured responses in JSON schema format.\n\n#### Examples\n\nCode examples using the API can be found in the Iru Endpoint Management support [GitHub](https://github.com/kandji-inc/support/tree/main/api-tools)."
+  version: 1.0.0
+servers:
+- url: https://{subdomain}.api.kandji.io
+  description: US Server
+  variables:
+    subdomain:
+      default: your-subdomain
+      description: Your Iru Endpoint Management subdomain
+- url: https://{subdomain}.api.eu.kandji.io
+  description: EU Server
+  variables:
+    subdomain:
+      default: your-subdomain
+      description: Your Iru Endpoint Management subdomain
+security:
+- BearerAuth: []
+tags:
+- name: Threat Details
+paths:
+  /api/v1/threat-details:
+    get:
+      summary: Get Threat Details
+      description: Get threat details.
+      parameters:
+      - name: classification
+        in: query
+        required: false
+        description: 'Return all records matching a specified classification. The following classification options are available: `malware` and `pup`. Leave this parameter empty to return all classification types. Example: `malware`'
+        schema:
+          type: string
+          enum:
+          - malware
+          - pup
+        example: malware
+      - name: date_range
+        in: query
+        required: false
+        description: 'Return all records within a specified number of days. Any positive number of days may be specified. Examples: `7`, `30`, `60`, `90`, `180`, or `365`. Example: `7`'
+        schema:
+          type: integer
+          minimum: 1
+        example: 7
+      - name: device_id
+        in: query
+        required: false
+        description: 'Search for a specific device by the device id (uuid). Example: `15fcec08-xxxx-xxxx-xxxx-7c2f950910eb`'
+        schema:
+          type: string
+        example: 15fcec08-xxxx-xxxx-xxxx-7c2f950910eb
+      - name: status
+        in: query
+        required: false
+        description: 'Return all records matching a specified status. The following status options are available: `quarantined`, `not_quarantined`, or `released`. Leave this parameter empty to return all status types. Example: `quarantined`'
+        schema:
+          type: string
+          enum:
+          - quarantined
+          - not_quarantined
+          - released
+        example: quarantined
+      - name: sort_by
+        in: query
+        required: false
+        description: 'Results can be sorted with the following options: `threat_name`, `classification`, `device_name`, `process_name`, `process_owner`, `detection_date`, `status`. Prepending a dash (-) to the parameter value will reverse the order of the returned results. Example: `status` or `-device_name`'
+        schema:
+          type: string
+          enum:
+          - threat_name
+          - classification
+          - device_name
+          - process_name
+          - process_owner
+          - detection_date
+          - status
+        example: status
+      - name: term
+        in: query
+        required: false
+        description: 'Search term to filter threat results. The response will include anything matching the following fields: `device_name`, `file_hash`, and `file_path`. Example: `Chrome`'
+        schema:
+          type: string
+        example: Chrome
+      - name: limit
+        in: query
+        required: false
+        description: 'A hard upper `limit` is set at 1000 records returned per request. If more records are expected, pagination should be used using the `limit` and `offset` parameters. Example: `1000`'
+        schema:
+          type: integer
+          maximum: 1000
+          default: 1000
+        example: 1000
+      - name: offset
+        in: query
+        required: false
+        description: 'Specify the starting record to return. Example: `1`'
+        schema:
+          type: integer
+          minimum: 0
+          default: 0
+        example: 1
+      responses:
+        '200':
+          description: using term param
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  count: 24
+                  next: null
+                  previous: null
+                  malware_count: 24
+                  pup_count: 0
+                  results:
+                  - threat_name: malware_5
+                    classification: MALWARE
+                    status: QUARANTINED
+                    process_name: chmod
+                    process_owner: root
+                    device_name: accuhive MacBook Air
+                    device_id: df1badd0-1dc9-448b-9b2a-c614a844c69e
+                    detection_date: '2023-04-21T17:23:13.883134'
+                    date_of_quarantine: '2023-04-21T17:23:15.071621'
+                    date_of_release: ''
+                    released_by: ''
+                    release_note: ''
+                    file_path: /Users/Shared/malware/malware_5
+                    file_hash: 2ab79665b07b3be11dd1d4f2d0bafa886a4b393b28ffedb2a02f62efd0061858
+                    bundle_path: ''
+                    device_serial_number: FVFGHGK7Q6L7
+                    blueprint_id: 396cdae2-147e-4e61-8a27-2f6b6963da4f
+                    blueprint_name: Threat
+                    library_item_name: Avert
+                    library_item_id: d0afe50a-1102-4568-86ed-44863b757c85
+                    pup_posture: protect
+                    malware_posture: protect
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    example: Bad Request
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    example: Unauthorized
+        '404':
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    example: Not Found
+      tags:
+      - Threat Details
+components:
+  securitySchemes:
+    BearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT

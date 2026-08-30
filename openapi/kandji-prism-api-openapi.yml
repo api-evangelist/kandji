@@ -1,0 +1,2281 @@
+openapi: 3.2.0
+info:
+  title: Iru Endpoint Management Prism API
+  description: "# Welcome to the Iru Endpoint Management API Documentation\n\n**Note:** Kandji is in the process of changing to Iru. Many URLs and notes within this documentation will continue to reference Kandji for some time.\n\nYou can find your API URL in Settings > Access. The API URL will follow the below formats.\n\n- US - `https://SubDomain.api.kandji.io`\n    \n- EU - `https://SubDomain.api.eu.kandji.io`\n    \n\nFor information on how to obtain an API token, please refer to the Iru docs.\n\n[https://docs.iru.com/](https://docs.iru.com/)\n\n#### Rate Limit\n\nThe Iru Endpoint Management API currently has an API rate limit of 10,000 requests per hour per customer.\n\n#### Request Methods\n\nHTTP request methods supported by the API.\n\n| Method | Definition |\n| --- | --- |\n| GET | The `GET` method requests a representation of the specified resource. |\n| POST | The `POST` method submits an entity to the specified resource. |\n| PATCH | The `PATCH` method applies partial modifications to a resource. |\n| DELETE | The `DELETE` method deletes the specified resource. |\n\n#### Response codes\n\nNot all response codes apply to every endpoint.\n\n| Code | Response |\n| --- | --- |\n| 200 | OK |\n| 201 | Created |\n| 204 | No content |\n|  | Typical response when sending the DELETE method. |\n| 400 | Bad Request |\n|  | \"Command already running\" - The command may already be running in a _Pending_ state waiting on the device. |\n|  | \"Command is not allowed for current device\" - The command may not be compatible with the target device. |\n|  | \"JSON parse error - Expecting ',' delimiter: line 3 column 2 (char 65)\" |\n| 401 | Unauthorized |\n|  | This error can occur if the token is incorrect, was revoked, or the token has expired. |\n| 403 | Forbidden |\n|  | The request was understood but cannot be authorized. |\n| 404 | Not found |\n|  | Unable to locate the resource in the Iru tenant. |\n| 415 | Unsupported Media Type |\n|  | The request contains a media type which the server or resource does not support. |\n| 500 | Internal server error |\n| 503 | Service unavailable |\n|  | This error can occur if a file upload is still being processed via the custom apps API. |\n\n#### Data structure\n\nThe API returns all structured responses in JSON schema format.\n\n#### Examples\n\nCode examples using the API can be found in the Iru Endpoint Management support [GitHub](https://github.com/kandji-inc/support/tree/main/api-tools)."
+  version: 1.0.0
+servers:
+- url: https://{subdomain}.api.kandji.io
+  description: US Server
+  variables:
+    subdomain:
+      default: your-subdomain
+      description: Your Iru Endpoint Management subdomain
+- url: https://{subdomain}.api.eu.kandji.io
+  description: EU Server
+  variables:
+    subdomain:
+      default: your-subdomain
+      description: Your Iru Endpoint Management subdomain
+security:
+- BearerAuth: []
+tags:
+- name: Prism
+paths:
+  /api/v1/prism/activation_lock:
+    get:
+      summary: Activation lock
+      description: This request returns activation lock attributes for devices.
+      parameters:
+      - name: blueprint_ids
+        in: query
+        required: false
+        description: Filter results by one or more blueprint IDs separated by commas.
+        schema:
+          type: string
+        example: blueprint_id, blueprint_id,blueprint_id
+      - name: device_families
+        in: query
+        required: false
+        description: Filter results by one or more device families separated by commas (`Mac`, `iPhone`, `iPad`, `tvOS`).
+        schema:
+          type: string
+        example: Mac,iPhone,iPad,tvOS
+      - name: filter
+        in: query
+        required: false
+        description: 'JSON schema object containing one or more key value pairs. Note: For detailed information on filters, see the Filters section at the beginning of the Visibility API endpoints in this doc.'
+        schema:
+          type: string
+      - name: sort_by
+        in: query
+        required: false
+        description: Sort results by the name of a given response body key in either ascending (default behavior) or descending(-) order.
+        schema:
+          type: string
+      - name: limit
+        in: query
+        required: false
+        description: A hard upper limit is set at 300 device records returned per request. If more device records are expected, pagination should be used using the limit and offset parameters. Additionally, parameter queries can be added to a request to limit the results.
+        schema:
+          type: string
+      - name: offset
+        in: query
+        required: false
+        description: Specify the starting record to return.
+        schema:
+          type: string
+      responses:
+        '200':
+          description: success
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  offset: null
+                  limit: 25
+                  total: 10
+                  data:
+                  - device_id: d6ac2d8c-3852-4dc1-afe7-d5a32306ee39
+                    device__name: 14_1_1_23B81_as_adcs_testing
+                    device__family: Mac
+                    device__user_id: ''
+                    device__user_name: null
+                    device__user_email: null
+                    blueprint_id: 449ec92a-186a-44f2-9421-d5ac6e465eb5
+                    blueprint_name: demo
+                    tags: null
+                    asset_tag: ''
+                    serial_number: Z6V0YW4M1C
+                    model_id: VirtualMac2,1
+                    count: null
+                    created_at: '2023-11-30T16:45:23.389926+00:00'
+                    updated_at: '2025-03-18T19:06:43.216114+00:00'
+                    last_changed_at: '2025-03-18T19:06:43.316369+00:00'
+                    last_collected_at: '2025-03-18T19:06:43.216115+00:00'
+                    device_capacity: 47
+                    host_name: 14_1_1_23B81_as_adcs_testing
+                    local_hostname: ankas-Virtual-Machine
+                    apple_silicon: true
+                    model: Virtual Machine
+                    model_name: Virtual Machine
+                    shared_ipad: null
+                    cellular_technology: null
+                    data_roaming: null
+                    hotspot: null
+                    first_enrollment_date: '2023-11-30T16:44:13.890383+00:00'
+                    last_enrollment_date: '2023-11-30T16:44:13.890383+00:00'
+                    agent_version: 4.3.3 (4811)
+                    mdm_enabled: true
+                    agent_installed: true
+                    os_version: 14.1.1
+                    os_build: 23B81
+                    marketing_name: Sonoma
+                    supplemental_build_version: 23B81
+                    supplemental_os_version_extra: null
+                    display_os_version: 14.1.1
+                    last_checkin: '2023-12-24T22:00:58.374320+00:00'
+                    last_checkin_agent: '2023-12-24T22:00:58.374320+00:00'
+                    last_checkin_mdm: '2023-12-24T21:39:38.077864+00:00'
+                    battery_health: null
+                    lost_mode_status: null
+                  cursor: null
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    example: Bad Request
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    example: Unauthorized
+        '404':
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    example: Not Found
+      tags:
+      - Prism
+  /api/v1/prism/apps:
+    get:
+      summary: Applications
+      description: This request returns the applications installed on macOS, iOS, iPadOS, and tvOS devices.
+      parameters:
+      - name: blueprint_ids
+        in: query
+        required: false
+        description: Filter results by one or more blueprint IDs separated by commas.
+        schema:
+          type: string
+        example: blueprint_id, blueprint_id,blueprint_id
+      - name: device_families
+        in: query
+        required: false
+        description: Filter results by one or more device families separated by commas (`Mac`, `iPhone`, `iPad`, `tvOS`).
+        schema:
+          type: string
+        example: Mac,iPhone,iPad,tvOS
+      - name: filter
+        in: query
+        required: false
+        description: 'JSON schema object containing one or more key value pairs. Note: For detailed information on filters, see the Filters section at the beginning of the Visibility API endpoints in this doc.'
+        schema:
+          type: string
+        example: '{"name":{"not_in":["Okta Verify"]},"device__name":{"not_in":["testuser’s MacBook Air"]}}'
+      - name: sort_by
+        in: query
+        required: false
+        description: Sort results by the name of a given response body key in either ascending (default behavior) or descending() order.
+        schema:
+          type: string
+      - name: limit
+        in: query
+        required: false
+        description: A hard upper limit is set at 300 device records returned per request. If more device records are expected, pagination should be used using the limit and offset parameters. Additionally, parameter queries can be added to a request to limit the results.
+        schema:
+          type: integer
+          minimum: 1
+          maximum: 300
+          default: 300
+        example: 300
+      - name: offset
+        in: query
+        required: false
+        description: Specify the starting record to return.
+        schema:
+          type: integer
+          minimum: 0
+          default: 0
+        example: 0
+      responses:
+        '200':
+          description: success
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  offset: null
+                  limit: 25
+                  total: 165
+                  data:
+                  - device_id: aa79459d-8566-4655-b09a-8f5c6bcf8b43
+                    device__name: accuhive_admin
+                    device__family: Mac
+                    device__user_id: '36600'
+                    device__user_name: Accuhive Admin
+                    device__user_email: accuhive@accuhive.io
+                    blueprint_id: 9b1ce867-83dd-46bb-b79a-ba2b5c3a4acc
+                    blueprint_name: _testing_something
+                    tags: null
+                    asset_tag: ''
+                    serial_number: FVHHFKF7Q6L4
+                    model_id: MacBookAir10,1
+                    count: null
+                    created_at: '2024-11-18T23:04:43.852118+00:00'
+                    updated_at: '2024-11-18T23:04:43.852118+00:00'
+                    last_changed_at: null
+                    last_collected_at: '2024-12-18T22:24:03.861846+00:00'
+                    path: /Applications/1Password 7.app
+                    obtained_from: Identified Developer
+                    bundle_size: null
+                    bundle_id: com.agilebits.onepassword7
+                    name: 1Password 7
+                    short_version: '70911000'
+                    signature: 'Developer ID Application: AgileBits Inc. (2BUA8C4S2C), Developer ID Certification Authority, Apple Root CA'
+                    ad_hoc_code_signed: null
+                    app_store_vendable: null
+                    beta_app: null
+                    device_based_vpp: null
+                    download_canceled: null
+                    download_failed: null
+                    download_paused: null
+                    download_waiting: null
+                    dynamic_size: null
+                    external_version_identifier: null
+                    has_update_available: null
+                    installing: null
+                    version: 7.9.11
+                    app_clip: null
+                    validated: null
+                    executable: 1Password 7
+                    bundle_name: 1Password 7
+                    bundle_type: APPL
+                    environment_variables: null
+                    compiler: com.apple.compilers.llvm.clang.1_0
+                    bundle_region: en
+                    bundle_display_name: null
+                    info: null
+                    minimum_system_version: '10.13'
+                    category: public.app-category.productivity
+                    apple_scriptable: null
+                    copyright: Copyright © AgileBits Inc. All rights reserved.
+                    developer_name: AgileBits Inc.
+                    team_id: 2BUA8C4S2C
+                  - device_id: aa79459d-8566-4655-b09a-8f5c6bcf8b43
+                    device__name: accuhive_admin
+                    device__family: Mac
+                    device__user_id: '36600'
+                    device__user_name: Accuhive Admin
+                    device__user_email: accuhive@kandjidev.onmicrosoft.com
+                    blueprint_id: 9b1ce867-83dd-46bb-b79a-ba2b5c3a4acc
+                    blueprint_name: _testing_something
+                    tags: null
+                    asset_tag: ''
+                    serial_number: FVHHFKF7Q6L4
+                    model_id: MacBookAir10,1
+                    count: null
+                    created_at: '2024-11-18T23:05:16.300608+00:00'
+                    updated_at: '2024-11-18T23:05:16.300608+00:00'
+                    last_changed_at: null
+                    last_collected_at: '2024-12-18T22:24:03.861891+00:00'
+                    path: /Applications/1Password 7.app/Contents/Library/LoginItems/1Password Extension Helper.app
+                    obtained_from: Identified Developer
+                    bundle_size: null
+                    bundle_id: 2BUA8C4S2C.com.agilebits.onepassword7-helper
+                    name: 1Password Extension Helper
+                    short_version: '70911000'
+                    signature: 'Developer ID Application: AgileBits Inc. (2BUA8C4S2C), Developer ID Certification Authority, Apple Root CA'
+                    ad_hoc_code_signed: null
+                    app_store_vendable: null
+                    beta_app: null
+                    device_based_vpp: null
+                    download_canceled: null
+                    download_failed: null
+                    download_paused: null
+                    download_waiting: null
+                    dynamic_size: null
+                    external_version_identifier: null
+                    has_update_available: null
+                    installing: null
+                    version: 7.9.11
+                    app_clip: null
+                    validated: null
+                    executable: 1Password Extension Helper
+                    bundle_name: 1Password Extension Helper
+                    bundle_type: APPL
+                    environment_variables: null
+                    compiler: com.apple.compilers.llvm.clang.1_0
+                    bundle_region: en
+                    bundle_display_name: null
+                    info: null
+                    minimum_system_version: '10.13'
+                    category: public.app-category.utilities
+                    apple_scriptable: null
+                    copyright: Copyright © AgileBits Inc. All rights reserved.
+                    developer_name: AgileBits Inc.
+                    team_id: 2BUA8C4S2C
+                  cursor: null
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    example: Bad Request
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    example: Unauthorized
+        '404':
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    example: Not Found
+      tags:
+      - Prism
+  /api/v1/prism/application_firewall:
+    get:
+      summary: Application firewall
+      description: This request returns Application Firewall details for macOS.
+      parameters:
+      - name: blueprint_ids
+        in: query
+        required: false
+        description: Filter results by one or more blueprint IDs separated by commas.
+        schema:
+          type: string
+        example: blueprint_id, blueprint_id,blueprint_id
+      - name: device_families
+        in: query
+        required: false
+        description: Filter results by one or more device families separated by commas (`Mac`, `iPhone`, `iPad`, `tvOS`).
+        schema:
+          type: string
+        example: Mac,iPhone,iPad,tvOS
+      - name: filter
+        in: query
+        required: false
+        description: 'JSON schema object containing one or more key value pairs. Note: For detailed information on filters, see the Filters section at the beginning of the Visibility API endpoints in this doc.'
+        schema:
+          type: string
+      - name: sort_by
+        in: query
+        required: false
+        description: Sort results by the name of a given response body key in either ascending (default behavior) or descending(-) order.
+        schema:
+          type: string
+      - name: limit
+        in: query
+        required: false
+        description: A hard upper limit is set at 300 device records returned per request. If more device records are expected, pagination should be used using the limit and offset parameters. Additionally, parameter queries can be added to a request to limit the results.
+        schema:
+          type: string
+      - name: offset
+        in: query
+        required: false
+        description: Specify the starting record to return.
+        schema:
+          type: string
+      responses:
+        '200':
+          description: success
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  offset: 0
+                  limit: 25
+                  total: null
+                  data:
+                  - device_id: aa79459d-8566-4655-b09a-8f5c6bcf8b43
+                    device__name: accuhive_admin
+                    device__family: Mac
+                    device__user_id: '36600'
+                    device__user_name: Accuhive Admin
+                    device__user_email: accuhive@accuhive.io
+                    blueprint_id: 9b1ce867-83dd-46bb-b79a-ba2b5c3a4acc
+                    blueprint_name: _testing_something
+                    tags: null
+                    asset_tag: ''
+                    serial_number: FVHHFKF7Q6L4
+                    model_id: MacBookAir10,1
+                    count: null
+                    created_at: '2024-11-18T21:02:58.411377+00:00'
+                    updated_at: '2024-12-10T16:24:07.767954+00:00'
+                    last_changed_at: null
+                    last_collected_at: '2024-12-10T16:24:07.767955+00:00'
+                    status: false
+                    block_all_incoming: false
+                    logging: true
+                    logging_option: throttled
+                    stealth_mode: false
+                    version: '1.7'
+                    allow_signed_applications: true
+                    unloading: false
+                  cursor: null
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    example: Bad Request
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    example: Unauthorized
+        '404':
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    example: Not Found
+      tags:
+      - Prism
+  /api/v1/prism/cellular:
+    get:
+      summary: Cellular
+      description: This request returns Cellular attributes for devices.
+      parameters:
+      - name: blueprint_ids
+        in: query
+        required: false
+        description: Filter results by one or more blueprint IDs separated by commas.
+        schema:
+          type: string
+        example: blueprint_id, blueprint_id,blueprint_id
+      - name: device_families
+        in: query
+        required: false
+        description: Filter results by one or more device families separated by commas (`Mac`, `iPhone`, `iPad`, `tvOS`).
+        schema:
+          type: string
+        example: Mac,iPhone,iPad,tvOS
+      - name: filter
+        in: query
+        required: false
+        description: 'JSON schema object containing one or more key value pairs. Note: For detailed information on filters, see the Filters section at the beginning of the Visibility API endpoints in this doc.'
+        schema:
+          type: string
+      - name: sort_by
+        in: query
+        required: false
+        description: Sort results by the name of a given response body key in either ascending (default behavior) or descending(-) order.
+        schema:
+          type: string
+      - name: limit
+        in: query
+        required: false
+        description: A hard upper limit is set at 300 device records returned per request. If more device records are expected, pagination should be used using the limit and offset parameters. Additionally, parameter queries can be added to a request to limit the results.
+        schema:
+          type: string
+      - name: offset
+        in: query
+        required: false
+        description: Specify the starting record to return.
+        schema:
+          type: string
+      responses:
+        '200':
+          description: success
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  offset: 0
+                  limit: 25
+                  total: null
+                  data:
+                  - device_id: 387a369d-5d12-4dfe-9ac0-d5af8780b959
+                    device__name: iPhone
+                    device__family: iPhone
+                    device__user_id: ''
+                    device__user_name: null
+                    device__user_email: null
+                    blueprint_id: 9c2a1219-deeb-4b37-845e-b61418275ba1
+                    blueprint_name: accuhive
+                    tags: null
+                    asset_tag: ''
+                    serial_number: F4GVJ4Q9JC6H
+                    model_id: iPhone10,1
+                    count: null
+                    created_at: '2025-02-08T00:55:45.808993+00:00'
+                    updated_at: '2025-02-12T17:33:35.626695+00:00'
+                    last_changed_at: null
+                    last_collected_at: '2025-02-12T17:33:35.626695+00:00'
+                    cellular_technology: GSM and CDMA
+                    data_roaming_enabled: false
+                    voice_roaming_enabled: false
+                    modem_firmware_version: 6.21.01
+                    personal_hotspot_enabled: false
+                    meid: '35673008397160'
+                    carrier_settings_version_slot_1: null
+                    current_carrier_network_slot_1: null
+                    current_mcc_slot_1: null
+                    current_mnc_slot_1: null
+                    eid_slot_1: null
+                    iccid_slot_1: null
+                    imei_slot_1: 35 673008 397160 8
+                    is_data_preferred_slot_1: null
+                    is_roaming_slot_1: null
+                    is_voice_preferred_slot_1: null
+                    label_slot_1: null
+                    label_id_slot_1: null
+                    phone_number_slot_1: null
+                    slot_1: CTSubscriptionSlotOne
+                    subscriber_carrier_network_slot_1: null
+                    carrier_settings_version_slot_2: null
+                    current_carrier_network_slot_2: null
+                    current_mcc_slot_2: null
+                    current_mnc_slot_2: null
+                    eid_slot_2: null
+                    iccid_slot_2: null
+                    imei_slot_2: null
+                    is_data_preferred_slot_2: null
+                    is_roaming_slot_2: null
+                    is_voice_preferred_slot_2: null
+                    label_slot_2: null
+                    label_id_slot_2: null
+                    phone_number_slot_2: null
+                    slot_2: null
+                    subscriber_carrier_network_slot_2: null
+                  cursor: null
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    example: Bad Request
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    example: Unauthorized
+        '404':
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    example: Not Found
+      tags:
+      - Prism
+  /api/v1/prism/certificates:
+    get:
+      summary: Certificates
+      description: This request returns certificate details.
+      parameters:
+      - name: blueprint_ids
+        in: query
+        required: false
+        description: Filter results by one or more blueprint IDs separated by commas.
+        schema:
+          type: string
+        example: blueprint_id, blueprint_id,blueprint_id
+      - name: device_families
+        in: query
+        required: false
+        description: Filter results by one or more device families separated by commas (`Mac`, `iPhone`, `iPad`, `tvOS`).
+        schema:
+          type: string
+        example: Mac,iPhone,iPad,tvOS
+      - name: filter
+        in: query
+        required: false
+        description: 'JSON schema object containing one or more key value pairs. Note: For detailed information on filters, see the Filters section at the beginning of the Visibility API endpoints in this doc.'
+        schema:
+          type: string
+      - name: sort_by
+        in: query
+        required: false
+        description: Sort results by the name of a given response body key in either ascending (default behavior) or descending(-) order.
+        schema:
+          type: string
+      - name: limit
+        in: query
+        required: false
+        description: A hard upper limit is set at 300 device records returned per request. If more device records are expected, pagination should be used using the limit and offset parameters. Additionally, parameter queries can be added to a request to limit the results.
+        schema:
+          type: string
+      - name: offset
+        in: query
+        required: false
+        description: Specify the starting record to return.
+        schema:
+          type: string
+      responses:
+        '200':
+          description: success
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  offset: 0
+                  limit: 25
+                  total: null
+                  data:
+                  - device_id: aa79459d-8566-4655-b09a-8f5c6bcf8b43
+                    device__name: accuhive_admin
+                    device__family: Mac
+                    device__user_id: '36600'
+                    device__user_name: Accuhive Admin
+                    device__user_email: accuhive@accuhive.io
+                    blueprint_id: 9b1ce867-83dd-46bb-b79a-ba2b5c3a4acc
+                    blueprint_name: _testing_something
+                    tags: null
+                    asset_tag: ''
+                    serial_number: FVHHFKF7Q6L4
+                    model_id: MacBookAir10,1
+                    count: null
+                    created_at: '2024-11-18T21:03:05.323348+00:00'
+                    updated_at: '2024-12-10T14:39:34.950229+00:00'
+                    last_changed_at: null
+                    last_collected_at: '2024-12-10T14:39:34.950229+00:00'
+                    common_name: com.apple.kerberos.kdc
+                    identity_certificate: true
+                  - device_id: aa79459d-8566-4655-b09a-8f5c6bcf8b43
+                    device__name: accuhive_admin
+                    device__family: Mac
+                    device__user_id: '36600'
+                    device__user_name: Accuhive Admin
+                    device__user_email: accuhive@accuhive.io
+                    blueprint_id: 9b1ce867-83dd-46bb-b79a-ba2b5c3a4acc
+                    blueprint_name: _testing_something
+                    tags: null
+                    asset_tag: ''
+                    serial_number: FVHHFKF7Q6L4
+                    model_id: MacBookAir10,1
+                    count: null
+                    created_at: '2024-11-18T21:03:05.323348+00:00'
+                    updated_at: '2024-12-10T14:39:34.950256+00:00'
+                    last_changed_at: null
+                    last_collected_at: '2024-12-10T14:39:34.950256+00:00'
+                    common_name: com.apple.systemdefault
+                    identity_certificate: true
+                  - device_id: aa79459d-8566-4655-b09a-8f5c6bcf8b43
+                    device__name: accuhive_admin
+                    device__family: Mac
+                    device__user_id: '36600'
+                    device__user_name: Accuhive Admin
+                    device__user_email: accuhive@accuhive.io
+                    blueprint_id: 9b1ce867-83dd-46bb-b79a-ba2b5c3a4acc
+                    blueprint_name: _testing_something
+                    tags: null
+                    asset_tag: ''
+                    serial_number: FVHHFKF7Q6L4
+                    model_id: MacBookAir10,1
+                    count: null
+                    created_at: '2024-12-05T21:11:17.891381+00:00'
+                    updated_at: '2024-12-10T14:39:34.950276+00:00'
+                    last_changed_at: null
+                    last_collected_at: '2024-12-10T14:39:34.950276+00:00'
+                    common_name: MDM SCEP VERIFIER ...
+                    identity_certificate: true
+                  cursor: null
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    example: Bad Request
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    example: Unauthorized
+        '404':
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    example: Not Found
+      tags:
+      - Prism
+  /api/v1/prism/desktop_and_screensaver:
+    get:
+      summary: Desktop and Screensaver
+      description: This request returns Desktop and Screensaver details for macOS.
+      parameters:
+      - name: blueprint_ids
+        in: query
+        required: false
+        description: Filter results by one or more blueprint IDs separated by commas.
+        schema:
+          type: string
+        example: blueprint_id, blueprint_id,blueprint_id
+      - name: device_families
+        in: query
+        required: false
+        description: Filter results by one or more device families separated by commas (`Mac`, `iPhone`, `iPad`, `tvOS`).
+        schema:
+          type: string
+        example: Mac,iPhone,iPad,tvOS
+      - name: filter
+        in: query
+        required: false
+        description: 'JSON schema object containing one or more key value pairs. Note: For detailed information on filters, see the Filters section at the beginning of the Visibility API endpoints in this doc.'
+        schema:
+          type: string
+      - name: sort_by
+        in: query
+        required: false
+        description: Sort results by the name of a given response body key in either ascending (default behavior) or descending(-) order.
+        schema:
+          type: string
+      - name: limit
+        in: query
+        required: false
+        description: A hard upper limit is set at 300 device records returned per request. If more device records are expected, pagination should be used using the limit and offset parameters. Additionally, parameter queries can be added to a request to limit the results.
+        schema:
+          type: string
+      - name: offset
+        in: query
+        required: false
+        description: Specify the starting record to return.
+        schema:
+          type: string
+      responses:
+        '200':
+          description: success
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  offset: null
+                  limit: 25
+                  total: 3
+                  data:
+                  - device_id: d6ac2d8c-3852-4dc1-afe7-d5a32306ee39
+                    device__name: 14_1_1_23B81_as_adcs_testing
+                    device__family: Mac
+                    device__user_id: ''
+                    device__user_name: null
+                    device__user_email: null
+                    blueprint_id: 449ec92a-186a-44f2-9421-d5ac6e465eb5
+                    blueprint_name: demo
+                    tags: null
+                    asset_tag: ''
+                    serial_number: Z6V0YW4M1C
+                    model_id: VirtualMac2,1
+                    count: null
+                    created_at: '2023-11-30T16:45:23.389926+00:00'
+                    updated_at: '2025-03-18T19:06:43.216114+00:00'
+                    last_changed_at: '2025-03-18T19:06:43.316369+00:00'
+                    last_collected_at: '2025-03-18T19:06:43.216115+00:00'
+                    device_capacity: 47
+                    host_name: 14_1_1_23B81_as_adcs_testing
+                    local_hostname: ankas-Virtual-Machine
+                    apple_silicon: true
+                    model: Virtual Machine
+                    model_name: Virtual Machine
+                    shared_ipad: null
+                    cellular_technology: null
+                    data_roaming: null
+                    hotspot: null
+                    first_enrollment_date: '2023-11-30T16:44:13.890383+00:00'
+                    last_enrollment_date: '2023-11-30T16:44:13.890383+00:00'
+                    agent_version: 4.3.3 (4811)
+                    mdm_enabled: true
+                    agent_installed: true
+                    os_version: 14.1.1
+                    os_build: 23B81
+                    marketing_name: Sonoma
+                    supplemental_build_version: 23B81
+                    supplemental_os_version_extra: null
+                    display_os_version: 14.1.1
+                    last_checkin: '2023-12-24T22:00:58.374320+00:00'
+                    last_checkin_agent: '2023-12-24T22:00:58.374320+00:00'
+                    last_checkin_mdm: '2023-12-24T21:39:38.077864+00:00'
+                    battery_health: null
+                    lost_mode_status: null
+                  cursor: null
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    example: Bad Request
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    example: Unauthorized
+        '404':
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    example: Not Found
+      tags:
+      - Prism
+  /api/v1/prism/device_information:
+    get:
+      summary: Device information
+      description: This request returns device information attributes.
+      parameters:
+      - name: blueprint_ids
+        in: query
+        required: false
+        description: Filter results by one or more blueprint IDs separated by commas.
+        schema:
+          type: string
+        example: 14afabf2-7599-47af-a942-bf7f0b8fedf8
+      - name: device_families
+        in: query
+        required: false
+        description: Filter results by one or more device families separated by commas (`Mac`, `iPhone`, `iPad`, `tvOS`).
+        schema:
+          type: string
+        example: Mac,iPhone,iPad,tvOS
+      - name: filter
+        in: query
+        required: false
+        description: 'JSON schema object containing one or more key value pairs. Note: For detailed information on filters, see the Filters section at the beginning of the Visibility API endpoints in this doc.'
+        schema:
+          type: string
+        example: '{"device__name":{"in":["testusers''s MacBook Air"]},"updated_at":{"gte":"2023-09-03T04:00:00.000Z","lte":"2023-09-04T04:00:00.000Z"}}'
+      - name: sort_by
+        in: query
+        required: false
+        description: Sort results by the name of a given response body key in either ascending (default behavior) or descending(-) order.
+        schema:
+          type: string
+        example: serial_number
+      - name: limit
+        in: query
+        required: false
+        description: A hard upper limit is set at 300 device records returned per request. If more device records are expected, pagination should be used using the limit and offset parameters. Additionally, parameter queries can be added to a request to limit the results.
+        schema:
+          type: string
+      - name: offset
+        in: query
+        required: false
+        description: Specify the starting record to return.
+        schema:
+          type: string
+      responses:
+        '200':
+          description: Get devices by assigned user name
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  offset: null
+                  limit: 25
+                  total: 1
+                  data:
+                  - device_id: 00008347-0695-4145-b0dc-ca800a1332f9
+                    device__name: g-473141e
+                    device__family: Mac
+                    device__user_id: '31250'
+                    device__user_name: Thor Odinson
+                    device__user_email: thor.odinson@accuhive.io
+                    blueprint_id: 9c74bc56-9452-4c41-81ad-4bed3fe3f857
+                    blueprint_name: 2000 Devices - Okta
+                    tags: null
+                    asset_tag: ''
+                    serial_number: ZGFRNNQGQD
+                    model_id: MacBookPro16,1
+                    count: null
+                    created_at: '2023-12-01T23:38:29.671124+00:00'
+                    updated_at: '2025-02-13T18:47:49.933506+00:00'
+                    last_changed_at: '2025-02-13T14:33:00.034349+00:00'
+                    last_collected_at: '2023-12-01T23:38:29.169707+00:00'
+                    device_capacity: 49
+                    host_name: null
+                    local_hostname: null
+                    apple_silicon: null
+                    model: Mac
+                    model_name: MacBook Pro (16-inch, 2019)
+                    shared_ipad: true
+                    cellular_technology: ''
+                    data_roaming: false
+                    hotspot: false
+                    first_enrollment_date: '2023-12-01T23:38:24.723570+00:00'
+                    last_enrollment_date: '2023-12-01T23:38:24.723570+00:00'
+                    agent_version: null
+                    mdm_enabled: true
+                    agent_installed: null
+                    os_version: 11.0.1
+                    os_build: 20B29
+                    marketing_name: Big Sur
+                    supplemental_build_version: null
+                    supplemental_os_version_extra: null
+                    display_os_version: 11.0.1
+                    last_checkin: '2023-12-01T23:38:54.367429+00:00'
+                    last_checkin_agent: null
+                    last_checkin_mdm: '2023-12-01T23:38:54.367429+00:00'
+                    battery_health: null
+                    lost_mode_status: null
+                  cursor: null
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    example: Bad Request
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    example: Unauthorized
+        '404':
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    example: Not Found
+      tags:
+      - Prism
+  /api/v1/prism/filevault:
+    get:
+      summary: FileVault
+      description: This request returns FileVault information for macOS.
+      parameters:
+      - name: blueprint_ids
+        in: query
+        required: false
+        description: Filter results by one or more blueprint IDs separated by commas.
+        schema:
+          type: string
+        example: blueprint_id, blueprint_id,blueprint_id
+      - name: device_families
+        in: query
+        required: false
+        description: Filter results by one or more device families separated by commas (`Mac`, `iPhone`, `iPad`, `tvOS`).
+        schema:
+          type: string
+        example: Mac,iPhone,iPad,tvOS
+      - name: filter
+        in: query
+        required: false
+        description: 'JSON schema object containing one or more key value pairs. Note: For detailed information on filters, see the Filters section at the beginning of the Visibility API endpoints in this doc.'
+        schema:
+          type: string
+      - name: sort_by
+        in: query
+        required: false
+        description: Sort results by the name of a given response body key in either ascending (default behavior) or descending(-) order.
+        schema:
+          type: string
+      - name: limit
+        in: query
+        required: false
+        description: A hard upper limit is set at 300 device records returned per request. If more device records are expected, pagination should be used using the limit and offset parameters. Additionally, parameter queries can be added to a request to limit the results.
+        schema:
+          type: string
+      - name: offset
+        in: query
+        required: false
+        description: Specify the starting record to return.
+        schema:
+          type: string
+      responses:
+        '200':
+          description: success
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  offset: 0
+                  limit: 25
+                  total: null
+                  data:
+                  - device_id: aa79459d-8566-4655-b09a-8f5c6bcf8b43
+                    device__name: accuhive_admin
+                    device__family: Mac
+                    device__user_id: '36600'
+                    device__user_name: Accuhive Admin
+                    device__user_email: accuhive@accuhive.io
+                    blueprint_id: 9b1ce867-83dd-46bb-b79a-ba2b5c3a4acc
+                    blueprint_name: _testing_something
+                    tags: null
+                    asset_tag: ''
+                    serial_number: FVHHFKF7Q6L4
+                    model_id: MacBookAir10,1
+                    count: null
+                    created_at: '2024-11-18T21:02:58.179622+00:00'
+                    updated_at: '2024-12-10T14:39:34.740791+00:00'
+                    last_changed_at: null
+                    last_collected_at: '2024-12-10T14:39:34.740791+00:00'
+                    status: false
+                    key_type: null
+                    key_escrowed: false
+                    regeneration_needed: null
+                    scheduled_key_rotation: null
+                  cursor: null
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    example: Bad Request
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    example: Unauthorized
+        '404':
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    example: Not Found
+      tags:
+      - Prism
+  /api/v1/prism/gatekeeper_and_xprotect:
+    get:
+      summary: Gatekeeper and XProtect
+      description: This request returns Gatekeeper and XProtect attributes for macOS.
+      parameters:
+      - name: blueprint_ids
+        in: query
+        required: false
+        description: Filter results by one or more blueprint IDs separated by commas.
+        schema:
+          type: string
+        example: blueprint_id, blueprint_id,blueprint_id
+      - name: device_families
+        in: query
+        required: false
+        description: Filter results by one or more device families separated by commas (`Mac`, `iPhone`, `iPad`, `tvOS`).
+        schema:
+          type: string
+        example: Mac,iPhone,iPad,tvOS
+      - name: filter
+        in: query
+        required: false
+        description: 'JSON schema object containing one or more key value pairs. Note: For detailed information on filters, see the Filters section at the beginning of the Visibility API endpoints in this doc.'
+        schema:
+          type: string
+      - name: sort_by
+        in: query
+        required: false
+        description: Sort results by the name of a given response body key in either ascending (default behavior) or descending(-) order.
+        schema:
+          type: string
+      - name: limit
+        in: query
+        required: false
+        description: A hard upper limit is set at 300 device records returned per request. If more device records are expected, pagination should be used using the limit and offset parameters. Additionally, parameter queries can be added to a request to limit the results.
+        schema:
+          type: string
+      - name: offset
+        in: query
+        required: false
+        description: Specify the starting record to return.
+        schema:
+          type: string
+      responses:
+        '200':
+          description: success
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  offset: 0
+                  limit: 25
+                  total: null
+                  data:
+                  - device_id: aa79459d-8566-4655-b09a-8f5c6bcf8b43
+                    device__name: accuhive_admin
+                    device__family: Mac
+                    device__user_id: '36600'
+                    device__user_name: Accuhive Admin
+                    device__user_email: accuhive@accuhive.io
+                    blueprint_id: 9b1ce867-83dd-46bb-b79a-ba2b5c3a4acc
+                    blueprint_name: _testing_something
+                    tags: null
+                    asset_tag: ''
+                    serial_number: FVHHFKF7Q6L4
+                    model_id: MacBookAir10,1
+                    count: null
+                    created_at: '2024-11-18T21:04:10.947254+00:00'
+                    updated_at: '2024-12-10T16:24:07.770055+00:00'
+                    last_changed_at: '2024-11-20T10:15:31.850834+00:00'
+                    last_collected_at: '2024-12-10T16:24:07.770055+00:00'
+                    gatekeeper_status: true
+                    trusted_developers: true
+                    gatekeeper_version: '8.0'
+                    gatekeeper_opaque_version: '94'
+                    xprotect_version: '5283'
+                    malware_removal_tool_version: '1.93'
+                  cursor: null
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    example: Bad Request
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    example: Unauthorized
+        '404':
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    example: Not Found
+      tags:
+      - Prism
+  /api/v1/prism/installed_profiles:
+    get:
+      summary: Installed profiles
+      description: This request returns Installed Profiles attributes for macOS, iOS, iPadOS, and tvOS.
+      parameters:
+      - name: blueprint_ids
+        in: query
+        required: false
+        description: Filter results by one or more blueprint IDs separated by commas.
+        schema:
+          type: string
+        example: blueprint_id, blueprint_id,blueprint_id
+      - name: device_families
+        in: query
+        required: false
+        description: Filter results by one or more device families separated by commas (`Mac`, `iPhone`, `iPad`, `tvOS`).
+        schema:
+          type: string
+        example: Mac,iPhone,iPad,tvOS
+      - name: filter
+        in: query
+        required: false
+        description: 'JSON schema object containing one or more key value pairs. Note: For detailed information on filters, see the Filters section at the beginning of the Visibility API endpoints in this doc.'
+        schema:
+          type: string
+      - name: sort_by
+        in: query
+        required: false
+        description: Sort results by the name of a given response body key in either ascending (default behavior) or descending(-) order.
+        schema:
+          type: string
+      - name: limit
+        in: query
+        required: false
+        description: A hard upper limit is set at 300 device records returned per request. If more device records are expected, pagination should be used using the limit and offset parameters. Additionally, parameter queries can be added to a request to limit the results.
+        schema:
+          type: string
+      - name: offset
+        in: query
+        required: false
+        description: Specify the starting record to return.
+        schema:
+          type: string
+      responses:
+        '200':
+          description: success
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  offset: null
+                  limit: 25
+                  total: 17
+                  data:
+                  - device_id: aa79459d-8566-4655-b09a-8f5c6bcf8b43
+                    device__name: accuhive_admin
+                    device__family: Mac
+                    device__user_id: '36600'
+                    device__user_name: Accuhive Admin
+                    device__user_email: accuhive@accuhive.io
+                    blueprint_id: 9b1ce867-83dd-46bb-b79a-ba2b5c3a4acc
+                    blueprint_name: _testing_something
+                    tags: null
+                    asset_tag: ''
+                    serial_number: FVHHFKF7Q6L4
+                    model_id: MacBookAir10,1
+                    count: null
+                    created_at: '2024-12-09T15:57:24.580116+00:00'
+                    updated_at: '2024-12-10T14:39:35.670546+00:00'
+                    last_changed_at: null
+                    last_collected_at: '2024-12-10T14:39:35.670547+00:00'
+                    profile_display_name: Microsoft Company Portal Settings
+                    payload_identifier: com.kandji.profile.autoapp.814351ef-d9ee-4ebe-bf3e-5fb6cc3086bc.Configuration
+                    payload_uuid: e9643534-3ef3-5b97-84be-779edbca63bf
+                    removal_passcode: false
+                    encrypted: false
+                    managed: true
+                    profile_description: null
+                    organization: Kandji, Inc.
+                    removable: false
+                    signed: true
+                    profile_data:
+                    - type: com.apple.servicemanagement
+                      uuid: 8a545c11-80f0-5721-b973-88f19bebbaa0
+                      version: 1
+                      identifier: com.kandji.profile.autoapp.814351ef-d9ee-4ebe-bf3e-5fb6cc3086bc.com.apple.servicemanagement.42085371-8d8c-5fa1-a4c0-0d63a7b93753
+                      display_name: Background Service Management
+                      organization: Kandji, Inc.
+                  cursor: null
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    example: Bad Request
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    example: Unauthorized
+        '404':
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    example: Not Found
+      tags:
+      - Prism
+  /api/v1/prism/kernel_extensions:
+    get:
+      summary: Kernel Extensions
+      description: This request returns Kernel Extension attributes for macOS.
+      parameters:
+      - name: blueprint_ids
+        in: query
+        required: false
+        description: Filter results by one or more blueprint IDs separated by commas.
+        schema:
+          type: string
+        example: blueprint_id, blueprint_id,blueprint_id
+      - name: device_families
+        in: query
+        required: false
+        description: Filter results by one or more device families separated by commas (`Mac`, `iPhone`, `iPad`, `tvOS`).
+        schema:
+          type: string
+        example: Mac,iPhone,iPad,tvOS
+      - name: filter
+        in: query
+        required: false
+        description: 'JSON schema object containing one or more key value pairs. Note: For detailed information on filters, see the Filters section at the beginning of the Visibility API endpoints in this doc.'
+        schema:
+          type: string
+      - name: sort_by
+        in: query
+        required: false
+        description: Sort results by the name of a given response body key in either ascending (default behavior) or descending(-) order.
+        schema:
+          type: string
+      - name: limit
+        in: query
+        required: false
+        description: A hard upper limit is set at 300 device records returned per request. If more device records are expected, pagination should be used using the limit and offset parameters. Additionally, parameter queries can be added to a request to limit the results.
+        schema:
+          type: string
+      - name: offset
+        in: query
+        required: false
+        description: Specify the starting record to return.
+        schema:
+          type: string
+      responses:
+        '200':
+          description: success - no kernel extensions
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  offset: null
+                  limit: 25
+                  total: 0
+                  data: []
+                  cursor: null
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    example: Bad Request
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    example: Unauthorized
+        '404':
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    example: Not Found
+      tags:
+      - Prism
+  /api/v1/prism/launch_agents_and_daemons:
+    get:
+      summary: Launch Agents and Daemons
+      description: This request returns Launch Agents and Daemons installed on macOS.
+      parameters:
+      - name: blueprint_ids
+        in: query
+        required: false
+        description: Filter results by one or more blueprint IDs separated by commas.
+        schema:
+          type: string
+        example: blueprint_id, blueprint_id,blueprint_id
+      - name: device_families
+        in: query
+        required: false
+        description: Filter results by one or more device families separated by commas (`Mac`, `iPhone`, `iPad`, `tvOS`).
+        schema:
+          type: string
+        example: Mac,iPhone,iPad,tvOS
+      - name: filter
+        in: query
+        required: false
+        description: 'JSON schema object containing one or more key value pairs. Note: For detailed information on filters, see the Filters section at the beginning of the Visibility API endpoints in this doc.'
+        schema:
+          type: string
+      - name: sort_by
+        in: query
+        required: false
+        description: Sort results by the name of a given response body key in either ascending (default behavior) or descending(-) order.
+        schema:
+          type: string
+      - name: limit
+        in: query
+        required: false
+        description: A hard upper limit is set at 300 device records returned per request. If more device records are expected, pagination should be used using the limit and offset parameters. Additionally, parameter queries can be added to a request to limit the results.
+        schema:
+          type: string
+      - name: offset
+        in: query
+        required: false
+        description: Specify the starting record to return.
+        schema:
+          type: string
+      responses:
+        '200':
+          description: success
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  offset: null
+                  limit: 25
+                  total: 10
+                  data:
+                  - device_id: aa79459d-8566-4655-b09a-8f5c6bcf8b43
+                    device__name: accuhive_admin
+                    device__family: Mac
+                    device__user_id: '36600'
+                    device__user_name: Accuhive Admin
+                    device__user_email: accuhive@accuhive.io
+                    blueprint_id: 9b1ce867-83dd-46bb-b79a-ba2b5c3a4acc
+                    blueprint_name: _testing_something
+                    tags: null
+                    asset_tag: ''
+                    serial_number: FVHHFKF7Q6L4
+                    model_id: MacBookAir10,1
+                    count: null
+                    created_at: '2024-11-18T21:04:10.693829+00:00'
+                    updated_at: '2024-12-10T19:58:32.506905+00:00'
+                    last_changed_at: null
+                    last_collected_at: '2024-12-10T19:58:32.506905+00:00'
+                    path: /Library/LaunchAgents/com.microsoft.update.agent.plist
+                    file_name: com.microsoft.update.agent.plist
+                    label: com.microsoft.update.agent
+                    program: null
+                    run_at_load: true
+                    keep_alive: false
+                    disabled: false
+                    is_disabled: false
+                    is_loaded: true
+                    group_name: null
+                    user_name: null
+                    standard_out_path: null
+                    standard_error_path: null
+                    start_interval: 7200
+                    program_arguments: /Library/Application Support/Microsoft/MAU2.0/Microsoft AutoUpdate.app/Contents/MacOS/Microsoft Update Assistant.app/Contents/MacOS/Microsoft Update Assistant, --launchByAgent
+                    watch_paths: null
+                    queue_directories: null
+                    start_on_mount: null
+                    root_directory: null
+                    working_directory: null
+                    process_type: null
+                    domain:
+                      system_agent:
+                        loaded_users:
+                        - uid: 501
+                          username: testuser
+                        disabled_users: []
+                    service_domain: System Agent
+                    pid: null
+                    user_agent_local_user: null
+                    user_agent_local_user_id: null
+                  cursor: null
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    example: Bad Request
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    example: Unauthorized
+        '404':
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    example: Not Found
+      tags:
+      - Prism
+  /api/v1/prism/local_users:
+    get:
+      summary: Local users
+      description: This request returns Local Users details for macOS.
+      parameters:
+      - name: blueprint_ids
+        in: query
+        required: false
+        description: Filter results by one or more blueprint IDs separated by commas.
+        schema:
+          type: string
+        example: blueprint_id, blueprint_id,blueprint_id
+      - name: device_families
+        in: query
+        required: false
+        description: Filter results by one or more device families separated by commas (`Mac`, `iPhone`, `iPad`, `tvOS`).
+        schema:
+          type: string
+        example: Mac,iPhone,iPad,tvOS
+      - name: filter
+        in: query
+        required: false
+        description: 'JSON schema object containing one or more key value pairs. Note: For detailed information on filters, see the Filters section at the beginning of the Visibility API endpoints in this doc.'
+        schema:
+          type: string
+      - name: sort_by
+        in: query
+        required: false
+        description: Sort results by the name of a given response body key in either ascending (default behavior) or descending(-) order.
+        schema:
+          type: string
+      - name: limit
+        in: query
+        required: false
+        description: A hard upper limit is set at 300 device records returned per request. If more device records are expected, pagination should be used using the limit and offset parameters. Additionally, parameter queries can be added to a request to limit the results.
+        schema:
+          type: string
+      - name: offset
+        in: query
+        required: false
+        description: Specify the starting record to return.
+        schema:
+          type: string
+      responses:
+        '200':
+          description: success
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  offset: 0
+                  limit: 25
+                  total: 117
+                  data:
+                  - device_id: aa79459d-8566-4655-b09a-8f5c6bcf8b43
+                    device__name: accuhive_admin
+                    device__family: Mac
+                    device__user_id: '36600'
+                    device__user_name: Accuhive Admin
+                    device__user_email: accuhive@accuhive.io
+                    blueprint_id: 9b1ce867-83dd-46bb-b79a-ba2b5c3a4acc
+                    blueprint_name: _testing_something
+                    tags: null
+                    asset_tag: ''
+                    serial_number: FVHHFKF7Q6L4
+                    model_id: MacBookAir10,1
+                    count: null
+                    created_at: '2024-11-18T21:04:10.961862+00:00'
+                    updated_at: '2024-11-18T21:04:10.867144+00:00'
+                    last_changed_at: null
+                    last_collected_at: '2024-11-18T21:04:10.867144+00:00'
+                    uid: 1
+                    user_created_at: null
+                    failed_logins: null
+                    failed_login_time: null
+                    password_last_set: null
+                    generated_uid: FFFFEEEE-DDDD-CCCC-BBBB-AAAA00000001
+                    directory: /Local/Default
+                    home_directory: /var/root
+                    shell: /usr/bin/false
+                    type: Standard
+                    hidden_user: false
+                    secure_token: null
+                    filevault_user: false
+                    volume_owner: false
+                    full_name: System Services
+                    username: daemon
+                    logged_in: false
+                    logged_in_time: null
+                    mobile_account: false
+                    home_folder_secure: false
+                  cursor: NzgyZjQwNTQtYjk3MS00YmVjLTg1MGItN2JmMTNjZTgwNmZlfDc4
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    example: Bad Request
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    example: Unauthorized
+        '404':
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    example: Not Found
+      tags:
+      - Prism
+  /api/v1/prism/startup_settings:
+    get:
+      summary: Startup settings
+      description: This request returns Startup settings for macOS.
+      parameters:
+      - name: blueprint_ids
+        in: query
+        required: false
+        description: Filter results by one or more blueprint IDs separated by commas.
+        schema:
+          type: string
+        example: blueprint_id, blueprint_id,blueprint_id
+      - name: device_families
+        in: query
+        required: false
+        description: Filter results by one or more device families separated by commas (`Mac`, `iPhone`, `iPad`, `tvOS`).
+        schema:
+          type: string
+        example: Mac,iPhone,iPad,tvOS
+      - name: filter
+        in: query
+        required: false
+        description: 'JSON schema object containing one or more key value pairs. Note: For detailed information on filters, see the Filters section at the beginning of the Visibility API endpoints in this doc.'
+        schema:
+          type: string
+      - name: sort_by
+        in: query
+        required: false
+        description: Sort results by the name of a given response body key in either ascending (default behavior) or descending(-) order.
+        schema:
+          type: string
+      - name: limit
+        in: query
+        required: false
+        description: A hard upper limit is set at 300 device records returned per request. If more device records are expected, pagination should be used using the limit and offset parameters. Additionally, parameter queries can be added to a request to limit the results.
+        schema:
+          type: string
+      - name: offset
+        in: query
+        required: false
+        description: Specify the starting record to return.
+        schema:
+          type: string
+      responses:
+        '200':
+          description: Startup settings
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  offset: null
+                  limit: 25
+                  total: 9
+                  data:
+                  - device_id: aa79459d-8566-4655-b09a-8f5c6bcf8b43
+                    device__name: accuhive_admin
+                    device__family: Mac
+                    device__user_id: '36600'
+                    device__user_name: Accuhive Admin
+                    device__user_email: accuhive@accuhive.io
+                    blueprint_id: 9b1ce867-83dd-46bb-b79a-ba2b5c3a4acc
+                    blueprint_name: _testing_something
+                    tags: null
+                    asset_tag: ''
+                    serial_number: FVHHFKF7Q6L4
+                    model_id: MacBookAir10,1
+                    count: null
+                    created_at: '2024-11-18T21:02:30.624669+00:00'
+                    updated_at: '2025-01-16T15:59:47.247958+00:00'
+                    last_changed_at: '2024-12-05T21:10:28.712257+00:00'
+                    last_collected_at: '2025-01-16T15:59:47.247958+00:00'
+                    sip: true
+                    ssv: true
+                    bootstrap_token_auth: false
+                    kext_requires_bst: true
+                    software_update_requires_bst: true
+                    bootstrap_token_escrowed: true
+                    external_boot_level: allowed
+                    secure_boot_level: full
+                    any_signed_os: null
+                    mdm_manages_kext: null
+                    user_manages_kext: null
+                  cursor: null
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    example: Bad Request
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    example: Unauthorized
+        '404':
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    example: Not Found
+      tags:
+      - Prism
+  /api/v1/prism/system_extensions:
+    get:
+      summary: System Extensions
+      description: This request returns System Extension attributes for macOS.
+      parameters:
+      - name: blueprint_ids
+        in: query
+        required: false
+        description: Filter results by one or more blueprint IDs separated by commas.
+        schema:
+          type: string
+        example: blueprint_id, blueprint_id,blueprint_id
+      - name: device_families
+        in: query
+        required: false
+        description: Filter results by one or more device families separated by commas (`Mac`, `iPhone`, `iPad`, `tvOS`).
+        schema:
+          type: string
+        example: Mac,iPhone,iPad,tvOS
+      - name: filter
+        in: query
+        required: false
+        description: 'JSON schema object containing one or more key value pairs. Note: For detailed information on filters, see the Filters section at the beginning of the Visibility API endpoints in this doc.'
+        schema:
+          type: string
+      - name: sort_by
+        in: query
+        required: false
+        description: Sort results by the name of a given response body key in either ascending (default behavior) or descending(-) order.
+        schema:
+          type: string
+      - name: limit
+        in: query
+        required: false
+        description: A hard upper limit is set at 300 device records returned per request. If more device records are expected, pagination should be used using the limit and offset parameters. Additionally, parameter queries can be added to a request to limit the results.
+        schema:
+          type: string
+      - name: offset
+        in: query
+        required: false
+        description: Specify the starting record to return.
+        schema:
+          type: string
+      responses:
+        '200':
+          description: System Extensions
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  offset: null
+                  limit: 25
+                  total: 9
+                  data:
+                  - device_id: aa79459d-8566-4655-b09a-8f5c6bcf8b43
+                    device__name: accuhive_admin
+                    device__family: Mac
+                    device__user_id: '36600'
+                    device__user_name: Accuhive Admin
+                    device__user_email: accuhive@accuhive.io
+                    blueprint_id: 9b1ce867-83dd-46bb-b79a-ba2b5c3a4acc
+                    blueprint_name: _testing_something
+                    tags: null
+                    asset_tag: ''
+                    serial_number: FVHHFKF7Q6L4
+                    model_id: MacBookAir10,1
+                    count: null
+                    created_at: '2024-11-18T21:04:09.788902+00:00'
+                    updated_at: '2024-12-10T16:24:08.495938+00:00'
+                    last_changed_at: '2024-12-05T21:17:27.933277+00:00'
+                    last_collected_at: '2024-12-10T16:24:08.495938+00:00'
+                    path: /Applications/Utilities/..
+                    identifier: io.kandji.KandjiAgent.ESF
+                    state: terminated_waiting_to_uninstall_on_reboot
+                    name: Kandji ESF Extension
+                    short_version: 1.8.24
+                    bundle_version: '779'
+                    categories: com.apple.system_extension.endpoint_security
+                    bundle_path: /Applications/Utilities/..
+                    team_id: P3FGV63VK7
+                    is_mdm_managed: true
+                  cursor: null
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    example: Bad Request
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    example: Unauthorized
+        '404':
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    example: Not Found
+      tags:
+      - Prism
+  /api/v1/prism/transparency_database:
+    get:
+      summary: Transparency database
+      description: This request returns Transparency Database (TCC) attributes for macOS.
+      parameters:
+      - name: blueprint_ids
+        in: query
+        required: false
+        description: Filter results by one or more blueprint IDs separated by commas.
+        schema:
+          type: string
+        example: blueprint_id, blueprint_id,blueprint_id
+      - name: device_families
+        in: query
+        required: false
+        description: Filter results by one or more device families separated by commas (`Mac`, `iPhone`, `iPad`, `tvOS`).
+        schema:
+          type: string
+        example: Mac,iPhone,iPad,tvOS
+      - name: filter
+        in: query
+        required: false
+        description: 'JSON schema object containing one or more key value pairs. Note: For detailed information on filters, see the Filters section at the beginning of the Visibility API endpoints in this doc.'
+        schema:
+          type: string
+      - name: sort_by
+        in: query
+        required: false
+        description: Sort results by the name of a given response body key in either ascending (default behavior) or descending(-) order.
+        schema:
+          type: string
+      - name: limit
+        in: query
+        required: false
+        description: A hard upper limit is set at 300 device records returned per request. If more device records are expected, pagination should be used using the limit and offset parameters. Additionally, parameter queries can be added to a request to limit the results.
+        schema:
+          type: string
+      - name: offset
+        in: query
+        required: false
+        description: Specify the starting record to return.
+        schema:
+          type: string
+      responses:
+        '200':
+          description: Transparency database
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  offset: null
+                  limit: 25
+                  total: 8
+                  data:
+                  - device_id: aa79459d-8566-4655-b09a-8f5c6bcf8b43
+                    device__name: accuhive_admin
+                    device__family: Mac
+                    device__user_id: '36600'
+                    device__user_name: Accuhive Admin
+                    device__user_email: accuhive@accuhive.io
+                    blueprint_id: 9b1ce867-83dd-46bb-b79a-ba2b5c3a4acc
+                    blueprint_name: _testing_something
+                    tags: null
+                    asset_tag: ''
+                    serial_number: FVHHFKF7Q6L4
+                    model_id: MacBookAir10,1
+                    count: null
+                    created_at: '2024-11-18T21:08:21.491325+00:00'
+                    updated_at: '2024-12-10T16:24:07.802225+00:00'
+                    last_changed_at: null
+                    last_collected_at: '2024-12-10T16:24:07.802226+00:00'
+                    service: BluetoothAlways
+                    application: com.okta.mobile
+                    client_type: Bundle Identifier
+                    status: Allowed
+                    status_reason: User Consent
+                    last_modified: '2024-06-14T00:36:21.000042+00:00'
+                    local_user: testuser
+                  cursor: null
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    example: Bad Request
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    example: Unauthorized
+        '404':
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    example: Not Found
+      tags:
+      - Prism
+  /api/v1/prism/export:
+    post:
+      summary: Request category export
+      description: Request export of a category.
+      parameters: []
+      responses:
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    example: Bad Request
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    example: Unauthorized
+        '404':
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    example: Not Found
+      requestBody:
+        required: true
+        description: JSON payload containing the export request configuration
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                blueprint_ids:
+                  type: array
+                  items:
+                    type: string
+                  description: List of one or more comma separate blueprint IDs.
+                  example:
+                  - string
+                  - string
+                  - string
+                category:
+                  type: string
+                  description: Only one category per export request.
+                  enum:
+                  - apps
+                  - activation_lock
+                  - desktop_and_screensaver
+                  - device_information
+                  - gatekeeper_and_xprotect
+                  - installed_profiles
+                  - kernel_extensions
+                  - local_users
+                  - launch_agents_and_daemons
+                  - system_extensions
+                  - startup_settings
+                  - transparency_database
+                  example: device_information
+                device_families:
+                  type: array
+                  items:
+                    type: string
+                    enum:
+                    - Mac
+                    - iPhone
+                    - iPad
+                    - tvOS
+                  description: List of one or more comma separated string values for device families.
+                  example:
+                  - Mac
+                  - iPhone
+                  - iPad
+                  - tvOS
+                filter:
+                  type: object
+                  description: JSON schema object containing one or more key value pairs. For detailed information on filters, see the Filters section at the beginning of the Visibility API endpoints in this doc.
+                  example:
+                    apple_silicon:
+                      eq: true
+                    device__name:
+                      like:
+                      - this
+                      - or_this
+                sort_by:
+                  type: string
+                  description: Sort results by the name of a given response body key in either ascending (default behavior) or descending(`-`) order.
+                  example: device__name
+              required:
+              - category
+      tags:
+      - Prism
+  /api/v1/prism/export/{export_id}:
+    get:
+      summary: Get category export
+      description: Get an export request's status.
+      parameters:
+      - name: export_id
+        in: path
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: success
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  id: 64cb5d3d-b180-4847-8b8a-34b14d8bc8d9
+                  status: success
+                  category: apps
+                  args:
+                    filter: {}
+                    columns: []
+                    sort_by: ''
+                    blueprint_ids: []
+                    device_families: []
+                  error_msg: null
+                  path: visibility-export-dev/28344fcc-579a-4d42-bcf7-cdbf97585066/export-2023-09-14-apps-64cb5d3d-b180-4847-8b8a-34b14d8bc8d9.csv
+                  signed_url: https://amazonaws.com/28344fcc-579a-4d42-bcf7-cdbf97585066/export-2023-09-14-apps-64cb5d3d-b180-4847-8b8a-34b14d8bc8d9.csv?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=ASIASFTUYWXKYCKI2RPA%2F20230914%2Fus-west-2%2Fs3%2Faws4_request&X-Amz-Date=20230914T205848Z&X-Amz-Expires=172800&X-Amz-SignedHeaders=host&X-Amz-Security-Token=IQoJb3JpZ2luX2VjEGUaCXVzLXdlc3QtMiJIMEYCIQD0Dnaf2gYxvGQXoouHEXGvIYwTOBzF5o5wFKFZwdNekAIhAIuzzarePTLat3Bb8Sof1ihyivS2dQHDWW5L7nUEhAHCKv8ECE4QAxoMMTQ5NDk1MDAyNTgxIgzdFKz6tJU%2BiEwY%2BBEq3ASeotuDFH3Ta%2F8hN34J%2BJjR3xGfmeh8N2c9mwJpWoOWrnVJ0he9aJL44C8tBnm%2FWfRbR3Co%2B9a5f2%2BlH83P83CoEij%2FIRX7XJ3qjpt2LYxZ4GOoME%2FSNP2cno3LMWGnOev5yctX2VkSFo8nVuB0r5a85SUxZq9ZkCiJ9DwYaArcKc5kmGjQ7dtZE3PM0oT4lyHiap5Qupn08ZYpPrAHZP%2BGooCn377hHwQfqAeWT%2BzT%2FLagR%2FGWWWNlaAEMGIkiso0rULgPAZ9tNxDbxTwBoitq0bTXed2wuMHtpiWiUEbs4MLkJh%2B6VbxO58hKFLOapuoKeOS%2FKZsc63Ohi2%2B7s%2BhIAe2cx%2BhzUi%2BQSIDn2RLAXGq0HOF5KWaXKVgGsRDXPGXoXCeiOljgcbPncnl0yEsaRkRitRjA7OJmcfeQc5vSpiGX0NkEOhnPHITtlg4ZEF7q1FG5gT92HLI0feuSwbP45e2o82Uod51lrQWpkaj5E3dCL1i0c5wdc4Um0HqTkXvBTy0wn%2BrMm%2FmbbFP0sA3i5c%2FM0tCHKQ9MKR2C5fI0zgCsT8MZc0c5AtFB76EuOk4xnSdWMlis4ISDF312vbxa6648QVknopJe9J1p8Huc%2FOaJxp0SmUw1a7X5yjlkyeDkol9WyObC8R%2BwA5%2BgxLQyhCE8odmr0LbD0D0xTKSshHYbH71uLWMbnn0HChkQGoqbDcohIxEkxePjF0VFYDizUKfEjgvom%2F6AvJeAe4yIJzgXxAa7DvkwCHE0nLxfioVc6FdinZ3jwvs2pnCYK8qjvU7kjObReYgubBUhMIjojagGOpkBY%2BVVHQWBiKn1ZlgcWyC3ufoMTo75qiz4P0mlvsc%2FLlPei0V5jZVga0KzA%2Bz5lz6JmKaDwww65fFRwVtoz1X7zD6L4HKWQ086EbvJGTjbQtuVfUrDtYHCfVkQfHOF%2Fo9gLXZ5ul7B35Uz7jmvLsf0VfsRxgqVSSI9glVkolZuvwAqwjkezmOBqGkTNxxtBKe8olNGd1Intj8l&X-Amz-Signature=4ad3bea9b06aacc6fe78657e86d80a24cadbc6866bb365d1b8fd8235ccc39020
+                  created_at: '2023-09-14T20:57:59.298293+00:00'
+                  updated_at: '2023-09-14T20:58:00.341603+00:00'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    example: Bad Request
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    example: Unauthorized
+        '404':
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    example: Not Found
+      tags:
+      - Prism
+  /api/v1/prism/count:
+    get:
+      summary: Count
+      description: This request returns the total record count for the specified Prism category.
+      parameters:
+      - name: category
+        in: query
+        required: false
+        description: "Return the count of records for the specified category. \nIf a category contains spaces substitute the spaces for underscores (\"_\") when using the API query.\n\nExamples:\napps\ndevice_information\nkernel_extensions\nsystem_extensions"
+        schema:
+          type: string
+        example: apps
+      responses:
+        '200':
+          description: success
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  count: 82
+                  approximate: false
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    example: Bad Request
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    example: Unauthorized
+        '404':
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    example: Not Found
+      tags:
+      - Prism
+components:
+  securitySchemes:
+    BearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT

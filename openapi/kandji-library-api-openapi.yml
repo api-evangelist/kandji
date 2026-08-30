@@ -1,0 +1,2183 @@
+openapi: 3.2.0
+info:
+  title: Iru Endpoint Management Library API
+  description: "# Welcome to the Iru Endpoint Management API Documentation\n\n**Note:** Kandji is in the process of changing to Iru. Many URLs and notes within this documentation will continue to reference Kandji for some time.\n\nYou can find your API URL in Settings > Access. The API URL will follow the below formats.\n\n- US - `https://SubDomain.api.kandji.io`\n    \n- EU - `https://SubDomain.api.eu.kandji.io`\n    \n\nFor information on how to obtain an API token, please refer to the Iru docs.\n\n[https://docs.iru.com/](https://docs.iru.com/)\n\n#### Rate Limit\n\nThe Iru Endpoint Management API currently has an API rate limit of 10,000 requests per hour per customer.\n\n#### Request Methods\n\nHTTP request methods supported by the API.\n\n| Method | Definition |\n| --- | --- |\n| GET | The `GET` method requests a representation of the specified resource. |\n| POST | The `POST` method submits an entity to the specified resource. |\n| PATCH | The `PATCH` method applies partial modifications to a resource. |\n| DELETE | The `DELETE` method deletes the specified resource. |\n\n#### Response codes\n\nNot all response codes apply to every endpoint.\n\n| Code | Response |\n| --- | --- |\n| 200 | OK |\n| 201 | Created |\n| 204 | No content |\n|  | Typical response when sending the DELETE method. |\n| 400 | Bad Request |\n|  | \"Command already running\" - The command may already be running in a _Pending_ state waiting on the device. |\n|  | \"Command is not allowed for current device\" - The command may not be compatible with the target device. |\n|  | \"JSON parse error - Expecting ',' delimiter: line 3 column 2 (char 65)\" |\n| 401 | Unauthorized |\n|  | This error can occur if the token is incorrect, was revoked, or the token has expired. |\n| 403 | Forbidden |\n|  | The request was understood but cannot be authorized. |\n| 404 | Not found |\n|  | Unable to locate the resource in the Iru tenant. |\n| 415 | Unsupported Media Type |\n|  | The request contains a media type which the server or resource does not support. |\n| 500 | Internal server error |\n| 503 | Service unavailable |\n|  | This error can occur if a file upload is still being processed via the custom apps API. |\n\n#### Data structure\n\nThe API returns all structured responses in JSON schema format.\n\n#### Examples\n\nCode examples using the API can be found in the Iru Endpoint Management support [GitHub](https://github.com/kandji-inc/support/tree/main/api-tools)."
+  version: 1.0.0
+servers:
+- url: https://{subdomain}.api.kandji.io
+  description: US Server
+  variables:
+    subdomain:
+      default: your-subdomain
+      description: Your Iru Endpoint Management subdomain
+- url: https://{subdomain}.api.eu.kandji.io
+  description: EU Server
+  variables:
+    subdomain:
+      default: your-subdomain
+      description: Your Iru Endpoint Management subdomain
+security:
+- BearerAuth: []
+tags:
+- name: Library
+paths:
+  /api/v1/library/custom-apps:
+    get:
+      summary: List Custom Apps
+      description: This endpoint makes a request to retrieve a list of custom apps from the Iru Endpoint Management library.
+      parameters:
+      - name: page
+        in: query
+        required: false
+        description: Optional page number. Used when results exceed pagination threshold. A hard upper limit is set at 300 device records returned per request.
+        schema:
+          type: integer
+          minimum: 1
+          default: 1
+        example: 1
+      - name: limit
+        in: query
+        required: false
+        description: Number of results to return per page. A hard upper limit is set at 300 records returned per request.
+        schema:
+          type: integer
+          minimum: 1
+          maximum: 300
+          default: 300
+        example: 300
+      - name: offset
+        in: query
+        required: false
+        description: The initial index from which to return the results. Used for offset-based pagination.
+        schema:
+          type: integer
+          minimum: 0
+          default: 0
+        example: 0
+      responses:
+        '200':
+          description: success
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  count: 2
+                  next: null
+                  previous: null
+                  results:
+                  - id: 03fd3564-1e29-433f-8e67-6f987f3d242d
+                    name: ms_company_portal
+                    file_key: companies/companies/28344fcc-579a-4d42-bcf7-cdbf97585066/library/custom_apps/CompanyPortal_5.2310.5-Installer_0f04055b.pkg
+                    install_type: package
+                    install_enforcement: install_once
+                    audit_script: ''
+                    unzip_location: ''
+                    active: true
+                    restart: false
+                    preinstall_script: ''
+                    postinstall_script: ''
+                    file_url: shortlived S3 URL
+                    file_size: 42375997
+                    file_updated: '2024-01-20T20:07:48Z'
+                    created_at: '2024-01-20T20:07:53.612150Z'
+                    updated_at: '2024-02-26T22:31:53.632505Z'
+                    show_in_self_service: false
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    example: Bad Request
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    example: Unauthorized
+        '404':
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    example: Not Found
+      tags:
+      - Library
+    post:
+      summary: Create Custom App
+      description: This request allows you to create a custom app in the Iru Endpoint Management library.
+      parameters: []
+      requestBody:
+        required: true
+        content:
+          application/x-www-form-urlencoded:
+            schema:
+              type: object
+              properties:
+                name:
+                  type: string
+                  description: The name for this Custom App
+                file_key:
+                  type: string
+                  description: The S3 key from the Upload Custom App endpoint used to upload the custom app file.
+                install_type:
+                  type: string
+                  description: Options are package, zip, image
+                install_enforcement:
+                  type: string
+                  description: Options are install_once, continuously_enforce, no_enforcement
+                audit_script:
+                  type: string
+                  description: Optional audit script for the custom app.
+                unzip_location:
+                  type: string
+                  description: Optional unzip location for the custom app.
+                active:
+                  type: boolean
+                  description: Whether the custom app is active.
+                restart:
+                  type: boolean
+                  description: Whether to restart after installation.
+                preinstall_script:
+                  type: string
+                  description: Optional preinstall script.
+                postinstall_script:
+                  type: string
+                  description: Optional postinstall script.
+              required:
+              - name
+              - file_key
+              - install_type
+              - install_enforcement
+            example:
+              name: Custom Apps Test
+              file_key: companies/companies/d934a231-e183-4951-b0a0-763e20572c1d/library/custom_apps/test_18cf0dfc.pkg
+              install_type: package
+              install_enforcement: install_once
+              audit_script: ''
+              unzip_location: ''
+              active: 'true'
+              restart: 'false'
+              preinstall_script: ''
+              postinstall_script: ''
+      responses:
+        '201':
+          description: success
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  id: 58429143-b55c-42d3-a9a3-7c699ddd0ce1
+                  name: Custom Apps Test
+                  file_key: companies/companies/d934a231-e183-4951-b0a0-763e20572c1d/library/custom_apps/test_18cf0dfc.pkg
+                  install_type: package
+                  install_enforcement: install_once
+                  audit_script: ''
+                  unzip_location: ''
+                  active: true
+                  restart: false
+                  preinstall_script: ''
+                  postinstall_script: ''
+                  file_url: (temporary download link from S3)
+                  sha256: 30e14955ebf1352266dc2ff8067e68104607e750abb9d3b36582b8af909fcb58
+                  file_size: 1048576
+                  file_updated: '2023-10-05T21:25:19Z'
+                  created_at: '2023-10-13T17:25:45.868709Z'
+                  updated_at: '2023-10-13T17:25:45.868789Z'
+                  show_in_self_service: true
+                  self_service_category_id: e6f6d5b4-0659-4b37-872c-5471115d453b
+                  self_service_recommended: true
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    example: Bad Request
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    example: Unauthorized
+        '404':
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    example: Not Found
+      tags:
+      - Library
+  /api/v1/library/custom-apps/{library_item_id}:
+    get:
+      summary: Get Custom App
+      description: This endpoint retrieves details about a specific custom app from the Kandji library.
+      parameters:
+      - name: library_item_id
+        in: path
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: success
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  id: 03fd3564-1e29-433f-8e67-6f987f3d242d
+                  name: ms_company_portal
+                  file_key: companies/companies/28344fcc-579a-4d42-bcf7-cdbf97585066/library/custom_apps/CompanyPortal_5.2310.5-Installer_0f04055b.pkg
+                  install_type: package
+                  install_enforcement: install_once
+                  audit_script: ''
+                  unzip_location: ''
+                  active: true
+                  restart: false
+                  preinstall_script: ''
+                  postinstall_script: ''
+                  file_url: shortlived S3 URL
+                  file_size: 42375997
+                  file_updated: '2024-01-20T20:07:48Z'
+                  created_at: '2024-01-20T20:07:53.612150Z'
+                  updated_at: '2024-02-26T22:31:53.632505Z'
+                  show_in_self_service: false
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    example: Bad Request
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    example: Unauthorized
+        '404':
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    example: Not Found
+      tags:
+      - Library
+    patch:
+      summary: Update Custom App
+      description: This request allows you to update a custom app in the Iru Endpoint Management library.
+      parameters:
+      - name: library_item_id
+        in: path
+        required: true
+        schema:
+          type: string
+      requestBody:
+        required: true
+        content:
+          application/x-www-form-urlencoded:
+            schema:
+              type: object
+              properties:
+                name:
+                  type: string
+                  description: The name for this Custom App
+                install_enforcement:
+                  type: string
+                  description: Options are install_once, continuously_enforce, no_enforcement
+                file_key:
+                  type: string
+                  description: The S3 key used to upload the file
+                install_type:
+                  type: string
+                  description: Options are package, zip, image
+                audit_script:
+                  type: string
+                  description: Optional audit script for the custom app.
+                unzip_location:
+                  type: string
+                  description: Optional unzip location for the custom app.
+                active:
+                  type: boolean
+                  description: Whether the custom app is active.
+                restart:
+                  type: boolean
+                  description: Whether to restart after installation.
+                preinstall_script:
+                  type: string
+                  description: Optional preinstall script.
+                postinstall_script:
+                  type: string
+                  description: Optional postinstall script.
+            example:
+              name: Custom App 3
+              install_enforcement: install_once
+              file_key: companies/companies/d934a231-e183-4951-b0a0-763e20572c1d/library/custom_apps/test_18cf0dfc.pkg
+              install_type: package
+              audit_script: ''
+              unzip_location: ''
+              active: 'true'
+              restart: 'false'
+              preinstall_script: ''
+              postinstall_script: ''
+      responses:
+        '200':
+          description: success
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  id: 58429143-b55c-42d3-a9a3-7c699ddd0ce1
+                  name: New Custom App Test Name
+                  file_key: companies/companies/d934a231-e183-4951-b0a0-763e20572c1d/library/custom_apps/test_18cf0dfc.pkg
+                  install_type: package
+                  install_enforcement: install_once
+                  audit_script: ''
+                  unzip_location: ''
+                  active: true
+                  restart: false
+                  preinstall_script: ''
+                  postinstall_script: ''
+                  file_url: (temporary S3 download URL)
+                  sha256: 30e14955ebf1352266dc2ff8067e68104607e750abb9d3b36582b8af909fcb58
+                  file_size: 1048576
+                  file_updated: '2023-10-05T21:25:19Z'
+                  created_at: '2023-10-13T17:25:45.868709Z'
+                  updated_at: '2023-10-13T17:28:30.388475Z'
+                  show_in_self_service: true
+                  self_service_category_id: e6f6d5b4-0659-4b37-872c-5471115d453b
+                  self_service_recommended: true
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    example: Bad Request
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    example: Unauthorized
+        '404':
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    example: Not Found
+      tags:
+      - Library
+    delete:
+      summary: Delete Custom App
+      description: This endpoint sends a request to delete a specific custom app from the Kandji library.
+      parameters:
+      - name: library_item_id
+        in: path
+        required: true
+        schema:
+          type: string
+      responses:
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    example: Bad Request
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    example: Unauthorized
+        '404':
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    example: Not Found
+      tags:
+      - Library
+  /api/v1/library/custom-apps/upload:
+    post:
+      summary: Upload Custom App
+      description: This request retrieves the S3 upload details need for uploading the app to Amazon S3.
+      parameters: []
+      responses:
+        '201':
+          description: success - create s3 upload
+          content:
+            application/json:
+              schema:
+                type: object
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    example: Bad Request
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    example: Unauthorized
+        '404':
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    example: Not Found
+      requestBody:
+        required: true
+        description: JSON payload containing the name of the file being uploaded
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                name:
+                  type: string
+                  description: Required - name of file being uploaded
+                  example: example.pkg
+              required:
+              - name
+            example:
+              name: example.pkg
+      tags:
+      - Library
+  /api/v1/library/ipa-apps:
+    get:
+      summary: List In-House Apps
+      description: This endpoint returns a list of In-House App Library Items in your Iru Endpoint Management tenant.
+      parameters:
+      - name: page
+        in: query
+        required: false
+        description: Optional page number. Used when results exceed pagination threshold. A hard upper limit is set at 300 app records returned per request.
+        schema:
+          type: integer
+          minimum: 1
+          default: 1
+        example: 1
+      - name: limit
+        in: query
+        required: false
+        description: Number of results to return per page. A hard upper limit is set at 300 records returned per request.
+        schema:
+          type: integer
+          minimum: 1
+          maximum: 300
+          default: 300
+        example: 300
+      - name: offset
+        in: query
+        required: false
+        description: The initial index from which to return the results. Used for offset-based pagination.
+        schema:
+          type: integer
+          minimum: 0
+          default: 0
+        example: 0
+      responses:
+        '200':
+          description: success
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  count: 2
+                  next: null
+                  previous: null
+                  results:
+                  - id: 13cc4ab7-0380-4d64-b80f-d2c22136e522
+                    name: Sammy 1.0.1
+                    file_key: tenants/d934a231-e183-4951-b0a0-763e20572c1d/library/ipa_apps/Sammy_f206bbce.ipa
+                    active: true
+                    icon: tenants/d934a231-e183-4951-b0a0-763e20572c1d/library/ipa_apps/Sammy_f206bbce-Icon.png
+                    ipad_icon: tenants/d934a231-e183-4951-b0a0-763e20572c1d/library/ipa_apps/Sammy_f206bbce-IpadIcon.png
+                    identifier: io.kandji.sammy
+                    app_identifier: io.kandji.sammy
+                    app_name: Sammy
+                    app_version: 1.0.1
+                    supported_device_families:
+                    - iPhone
+                    - iPad
+                    minimum_os_version: '17.5'
+                    file_url: https://{sub_domain}.api.kandji.io/tenants/d934a231-e183-4951-b0a0-763e20572c1d/library/ipa_apps/Sammy_f206bbce.ipa?auth=eyJhbGci...ubVg
+                    sha256: 862031764fc7368cde2a2267c4891b212b4bbc94aa0534b89be2f6294b8547f0
+                    file_size: 2191516
+                    file_updated: '2024-10-22T19:45:42Z'
+                    created_at: '2024-10-22T19:46:13.080681Z'
+                    updated_at: '2024-10-22T19:46:13.080707Z'
+                    runs_on_iphone: true
+                    runs_on_ipad: true
+                    runs_on_tv: false
+                    runs_on_mac: false
+                    runs_on_ipod: false
+                    runs_on_watch: false
+                  - id: 26403d86-146c-4b34-ae05-e44f08ee5807
+                    name: Sammy 1.0.4
+                    file_key: tenants/d934a231-e183-4951-b0a0-763e20572c1d/library/ipa_apps/Sammy_1.0.4_48b8d621.ipa
+                    active: true
+                    icon: tenants/d934a231-e183-4951-b0a0-763e20572c1d/library/ipa_apps/Sammy_1.0.4_48b8d621-Icon.png
+                    ipad_icon: tenants/d934a231-e183-4951-b0a0-763e20572c1d/library/ipa_apps/Sammy_1.0.4_48b8d621-IpadIcon.png
+                    identifier: io.kandji.sammy
+                    app_identifier: io.kandji.sammy
+                    app_name: Sammy
+                    app_version: 1.0.4
+                    supported_device_families:
+                    - iPhone
+                    - iPad
+                    minimum_os_version: '17.5'
+                    file_url: https://{sub_domain}.api.kandji.io/tenants/d934a231-e183-4951-b0a0-763e20572c1d/library/ipa_apps/Sammy_1.0.4_48b8d621.ipa?auth=eyJhbGci...9HaQ
+                    sha256: a502ada7d4b6f5eace779889a9149229fa1d385444b008fe752e43d2c8ea1863
+                    file_size: 2191525
+                    file_updated: '2024-10-30T15:50:37Z'
+                    created_at: '2024-10-30T15:50:50.642163Z'
+                    updated_at: '2024-10-30T15:50:50.642182Z'
+                    runs_on_iphone: true
+                    runs_on_ipad: true
+                    runs_on_tv: false
+                    runs_on_mac: false
+                    runs_on_ipod: false
+                    runs_on_watch: false
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    example: Bad Request
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    example: Unauthorized
+        '404':
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    example: Not Found
+      tags:
+      - Library
+    post:
+      summary: Create In-House App
+      description: This endpoint creates a new In-House App Library Item in the Kandji library.
+      parameters: []
+      responses:
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    example: Bad Request
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    example: Unauthorized
+        '404':
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    example: Not Found
+      requestBody:
+        required: true
+        description: JSON payload containing the in-house app configuration
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                file_key:
+                  type: string
+                  description: The file key generated from the Upload In-House App to S3 endpoint
+                  example: companies/companies/d934a231-e183-4951-b0a0-763e20572c1d/library/ipa_apps/test_app_18cf0dfc.ipa
+                name:
+                  type: string
+                  description: Arbitrary value used for setting the name of the Library Item as it appears in Iru Endpoint Management
+                  example: My In-House App
+                runs_on_iphone:
+                  type: boolean
+                  description: Whether the app runs on iPhone
+                  example: true
+                runs_on_ipad:
+                  type: boolean
+                  description: Whether the app runs on iPad
+                  example: true
+                runs_on_tv:
+                  type: boolean
+                  description: Whether the app runs on Apple TV
+                  example: false
+                active:
+                  type: boolean
+                  description: Whether the app is active
+                  example: true
+              required:
+              - file_key
+              - name
+            example:
+              file_key: companies/companies/d934a231-e183-4951-b0a0-763e20572c1d/library/ipa_apps/test_app_18cf0dfc.ipa
+              name: My In-House App
+              runs_on_iphone: true
+              runs_on_ipad: true
+              runs_on_tv: false
+              active: true
+      tags:
+      - Library
+  /api/v1/library/ipa-apps/{library_item_id}:
+    get:
+      summary: Get In-House App
+      description: This endpoint retrieves information about a specific In-House App Library Item.
+      parameters:
+      - name: library_item_id
+        in: path
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: success
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  id: 13cc4ab7-0380-4d64-b80f-d2c22136e522
+                  name: Sammy 1.0.1
+                  file_key: tenants/d934a231-e183-4951-b0a0-763e20572c1d/library/ipa_apps/Sammy_f206bbce.ipa
+                  active: true
+                  icon: tenants/d934a231-e183-4951-b0a0-763e20572c1d/library/ipa_apps/Sammy_f206bbce-Icon.png
+                  ipad_icon: tenants/d934a231-e183-4951-b0a0-763e20572c1d/library/ipa_apps/Sammy_f206bbce-IpadIcon.png
+                  identifier: io.kandji.sammy
+                  app_identifier: io.kandji.sammy
+                  app_name: Sammy
+                  app_version: 1.0.1
+                  supported_device_families:
+                  - iPhone
+                  - iPad
+                  minimum_os_version: '17.5'
+                  file_url: https://{sub_domain}.api.kandji.io/tenants/d934a231-e183-4951-b0a0-763e20572c1d/library/ipa_apps/Sammy_f206bbce.ipa?auth=eyJhbGci...ubVg
+                  sha256: 862031764fc7368cde2a2267c4891b212b4bbc94aa0534b89be2f6294b8547f0
+                  file_size: 2191516
+                  file_updated: '2024-10-22T19:45:42Z'
+                  created_at: '2024-10-22T19:46:13.080681Z'
+                  updated_at: '2024-10-22T19:46:13.080707Z'
+                  runs_on_iphone: true
+                  runs_on_ipad: true
+                  runs_on_tv: false
+                  runs_on_mac: false
+                  runs_on_ipod: false
+                  runs_on_watch: false
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    example: Bad Request
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    example: Unauthorized
+        '404':
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    example: Not Found
+      tags:
+      - Library
+    patch:
+      summary: Update In-House App
+      description: This request allows you to update an existing In-House App in the Kandji library.
+      parameters:
+      - name: library_item_id
+        in: path
+        required: true
+        schema:
+          type: string
+        description: The unique identifier of the library item
+        example: 13cc4ab7-0380-4d64-b80f-d2c22136e522
+      responses:
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    example: Bad Request
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    example: Unauthorized
+        '404':
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    example: Not Found
+      requestBody:
+        required: true
+        description: JSON payload containing the in-house app update configuration
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                file_key:
+                  type: string
+                  description: The file key generated from the Upload In-House App to S3 endpoint
+                  example: companies/companies/d934a231-e183-4951-b0a0-763e20572c1d/library/ipa_apps/test_app_18cf0dfc.ipa
+                name:
+                  type: string
+                  description: Name of your Library Item
+                  example: Name of your Library Item here
+                runs_on_iphone:
+                  type: boolean
+                  description: Whether the app runs on iPhone
+                  example: true
+                runs_on_ipad:
+                  type: boolean
+                  description: Whether the app runs on iPad
+                  example: true
+                runs_on_tv:
+                  type: boolean
+                  description: Whether the app runs on Apple TV
+                  example: false
+                active:
+                  type: boolean
+                  description: Whether the app is active
+                  example: true
+            example:
+              file_key: file_key
+              name: Name of your Library Item here
+              runs_on_iphone: true
+              runs_on_ipad: true
+              runs_on_tv: false
+              active: true
+      tags:
+      - Library
+    delete:
+      summary: Delete In-House App
+      description: This endpoint sends a request to delete a specific In-House App Library Item from Kandji.
+      parameters:
+      - name: library_item_id
+        in: path
+        required: true
+        schema:
+          type: string
+        description: The unique identifier of the Library Item
+        example: 13cc4ab7-0380-4d64-b80f-d2c22136e522
+      responses:
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    example: Bad Request
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    example: Unauthorized
+        '404':
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    example: Not Found
+      tags:
+      - Library
+  /api/v1/library/ipa-apps/upload:
+    post:
+      summary: Upload In-House App
+      description: Creates a pre-signed post_url to upload a new In-House App to S3.
+      parameters: []
+      responses:
+        '201':
+          description: success - create s3 upload
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  id: 3603e636-ab6b-48e0-ad7e-cb7ab24bc6bc
+                  filename: Sammy_2a450666.ipa
+                  sha256: null
+                  expires: '2024-10-31T16:51:13.156205Z'
+                  post_url: https://kandji-prod.s3.amazonaws.com/
+                  post_data:
+                    key: tenants/d934a231-e183-4951-b0a0-763e20572c1d/library/ipa_apps/Sammy_2a450666.ipa
+                    x-amz-algorithm: AWS4-HMAC-SHA256
+                    x-amz-credential: ASI...RDLC/20241030/us-west-2/s3/aws4_request
+                    x-amz-date: 20241030T165113Z
+                    x-amz-security-token: IQoJb3Jp...Hgg==
+                    policy: eyJleHBp...6482
+                    x-amz-signature: 75df0e9b...ddd5
+                  file_key: tenants/d934a231-e183-4951-b0a0-763e20572c1d/library/ipa_apps/Sammy_2a450666.ipa
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    example: Bad Request
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    example: Unauthorized
+        '404':
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    example: Not Found
+      requestBody:
+        required: true
+        description: JSON payload containing the filename for the in-house app upload
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                filename:
+                  type: string
+                  description: The filename of the in-house app to upload
+                  example: example.ipa
+              required:
+              - filename
+            example:
+              filename: example.ipa
+      tags:
+      - Library
+  /api/v1/library/ipa-apps/upload/{pending_upload_id}/status:
+    get:
+      summary: Upload In-House App Status
+      description: This endpoint retrieves the current upload status of an In-House App .ipa file to Amazon S3.
+      parameters:
+      - name: pending_upload_id
+        in: path
+        required: true
+        schema:
+          type: string
+        description: This should be the id from the [Upload In-House App](/en/endpoint/api/upload-in-house-app) API response
+      responses:
+        '200':
+          description: validate failed - validation failed
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  reason: The IPA file validation timed out
+                  status: VALIDATE_FAILED
+                  sha256: 9bbdeac4fd91ea4ac231f6320821e51a706d56219884bc071a834a08d3ecf99d
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    example: Bad Request
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    example: Unauthorized
+        '404':
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    example: Not Found
+      tags:
+      - Library
+  /api/v1/library/custom-profiles:
+    get:
+      summary: List Custom Profiles
+      description: This endpoint makes a request to retrieve a list of custom profiles from the Iru Endpoint Management library.
+      parameters:
+      - name: page
+        in: query
+        required: false
+        description: Optional page number. Used when results exceed pagination threshold. A hard upper limit is set at 300 device records returned per request.
+        schema:
+          type: string
+      responses:
+        '200':
+          description: success
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  count: 2
+                  next: null
+                  previous: null
+                  results:
+                  - id: a403f056-b1ec-4053-a79d-72ad2fe92485
+                    name: odt-sso-ext-test
+                    active: false
+                    profile: <xml payload>
+                    mdm_identifier: com.kandji.profile.custom.a403f056-b1ec-4053-a79d-72ad2fe92485
+                    runs_on_mac: false
+                    runs_on_iphone: true
+                    runs_on_ipad: true
+                    runs_on_tv: false
+                    runs_on_vision: false
+                    created_at: '2023-03-10T19:27:58.677287Z'
+                    updated_at: '2023-03-10T20:06:28.622392Z'
+                  - id: fdf05e37-f157-4cbf-9eab-2e2ef43938ab
+                    name: Custom Profile New Name
+                    active: false
+                    profile: <xml payload>
+                    mdm_identifier: com.kandji.profile.custom.fdf05e37-f157-4cbf-9eab-2e2ef43938ab
+                    runs_on_mac: false
+                    runs_on_iphone: true
+                    runs_on_ipad: true
+                    runs_on_tv: false
+                    runs_on_vision: false
+                    created_at: '2024-01-28T12:12:40.716224Z'
+                    updated_at: '2024-01-28T12:19:47.897192Z'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    example: Bad Request
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    example: Unauthorized
+        '404':
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    example: Not Found
+      tags:
+      - Library
+    post:
+      summary: Create Custom Profile
+      description: This request allows you to create a custom profile in the Kandji library.
+      parameters: []
+      responses:
+        '201':
+          description: success
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  id: e8f93d8e-77da-45a3-b5bf-ede2cf1a330d
+                  name: Custom Profile Test
+                  active: true
+                  profile: (XML contents of profile)
+                  mdm_identifier: com.kandji.profile.custom.e8f93d8e-77da-45a3-b5bf-ede2cf1a330d
+                  runs_on_mac: true
+                  runs_on_iphone: false
+                  runs_on_ipad: false
+                  runs_on_tv: false
+                  runs_on_vision: false
+                  created_at: '2023-10-13T17:29:57.339336Z'
+                  updated_at: '2023-10-13T17:29:57.339416Z'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    example: Bad Request
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    example: Unauthorized
+        '404':
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    example: Not Found
+      requestBody:
+        required: true
+        description: Form data payload containing the custom profile configuration
+        content:
+          multipart/form-data:
+            schema:
+              type: object
+              properties:
+                name:
+                  type: string
+                  description: The profile name
+                  example: Custom Profile Test
+                file:
+                  type: string
+                  format: binary
+                  description: The path to the profile's .mobileconfig file
+                active:
+                  type: boolean
+                  description: Whether this library item is active (default=true)
+                  default: true
+                  example: false
+                runs_on_mac:
+                  type: boolean
+                  description: Whether the profile runs on Mac
+                  example: true
+                runs_on_iphone:
+                  type: boolean
+                  description: Whether the profile runs on iPhone
+                  example: true
+                runs_on_ipad:
+                  type: boolean
+                  description: Whether the profile runs on iPad
+                  example: true
+                runs_on_tv:
+                  type: boolean
+                  description: Whether the profile runs on Apple TV
+                  example: true
+              required:
+              - name
+              - file
+      tags:
+      - Library
+  /api/v1/library/custom-profiles/{library_item_id}:
+    get:
+      summary: Get Custom Profile
+      description: This endpoint retrieves details about a specific custom profile from the Kandji library.
+      parameters:
+      - name: library_item_id
+        in: path
+        required: true
+        schema:
+          type: string
+        description: The unique identifier of the library item
+        example: a403f056-b1ec-4053-a79d-72ad2fe92485
+      responses:
+        '200':
+          description: success
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  id: a403f056-b1ec-4053-a79d-72ad2fe92485
+                  name: odt-sso-ext-test
+                  active: false
+                  profile: <xml_payload>
+                  mdm_identifier: com.kandji.profile.custom.a403f056-b1ec-4053-a79d-72ad2fe92485
+                  runs_on_mac: false
+                  runs_on_iphone: true
+                  runs_on_ipad: true
+                  runs_on_tv: false
+                  runs_on_vision: false
+                  created_at: '2023-03-10T19:27:58.677287Z'
+                  updated_at: '2023-03-10T20:06:28.622392Z'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    example: Bad Request
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    example: Unauthorized
+        '404':
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    example: Not Found
+      tags:
+      - Library
+    patch:
+      summary: Update Custom Profile
+      description: This request allows you to update a custom profile in the Kandji library.
+      parameters:
+      - name: library_item_id
+        in: path
+        required: true
+        schema:
+          type: string
+        description: The unique identifier of the library item
+        example: a403f056-b1ec-4053-a79d-72ad2fe92485
+      responses:
+        '200':
+          description: success
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  id: e8f93d8e-77da-45a3-b5bf-ede2cf1a330d
+                  name: Custom Profile New Name
+                  active: true
+                  profile: (XML of profile, including new name)
+                  mdm_identifier: com.kandji.profile.custom.e8f93d8e-77da-45a3-b5bf-ede2cf1a330d
+                  runs_on_mac: true
+                  runs_on_iphone: false
+                  runs_on_ipad: false
+                  runs_on_tv: false
+                  runs_on_vision: false
+                  created_at: '2023-10-13T17:29:57.339336Z'
+                  updated_at: '2023-10-13T17:31:08.086441Z'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    example: Bad Request
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    example: Unauthorized
+        '404':
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    example: Not Found
+      requestBody:
+        required: true
+        description: Form data payload containing the custom profile update configuration
+        content:
+          multipart/form-data:
+            schema:
+              type: object
+              properties:
+                name:
+                  type: string
+                  description: The profile name
+                  example: Custom Profile New Name
+                file:
+                  type: string
+                  format: binary
+                  description: The path to the profile's .mobileconfig file
+                active:
+                  type: boolean
+                  description: Whether this library item is active
+                  example: false
+                runs_on_mac:
+                  type: boolean
+                  description: Whether the profile runs on Mac
+                  example: true
+                runs_on_iphone:
+                  type: boolean
+                  description: Whether the profile runs on iPhone
+                  example: true
+                runs_on_ipad:
+                  type: boolean
+                  description: Whether the profile runs on iPad
+                  example: true
+                runs_on_tv:
+                  type: boolean
+                  description: Whether the profile runs on Apple TV
+                  example: true
+      tags:
+      - Library
+    delete:
+      summary: Delete Custom Profile
+      description: This endpoint sends a request to delete a specific custom profile from the Kandji library.
+      parameters:
+      - name: library_item_id
+        in: path
+        required: true
+        schema:
+          type: string
+        description: The unique identifier of the library item
+        example: e8f93d8e-77da-45a3-b5bf-ede2cf1a330d
+      responses:
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    example: Bad Request
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    example: Unauthorized
+        '404':
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    example: Not Found
+      tags:
+      - Library
+  /api/v1/library/custom-scripts:
+    get:
+      summary: List Custom Scripts
+      description: This endpoint makes a request to retrieve a list of custom scripts from the Iru Endpoint Management library.
+      parameters:
+      - name: page
+        in: query
+        required: false
+        description: Optional page number. Used when results exceed pagination threshold. A hard upper limit is set at 300 device records returned per request.
+        schema:
+          type: string
+      responses:
+        '200':
+          description: success
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  count: 2
+                  next: null
+                  previous: null
+                  results:
+                  - id: a155ffb7-ab75-4e5f-ab1d-1334153efad3
+                    name: Custom Script One
+                    active: true
+                    execution_frequency: no_enforcement
+                    restart: false
+                    script: echo "Hello World!"
+                    remediation_script: ''
+                    created_at: '2022-03-24T17:30:26.625839Z'
+                    updated_at: '2022-03-24T17:30:26.625856Z'
+                  - id: 2b1aa89d-88f8-4fca-a075-af774615015a
+                    name: Custom Script Two
+                    active: true
+                    execution_frequency: every_day
+                    restart: false
+                    script: echo "Test script"
+                    remediation_script: ''
+                    created_at: '2023-08-02T16:25:38.479746Z'
+                    updated_at: '2023-08-02T16:28:17.209484Z'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    example: Bad Request
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    example: Unauthorized
+        '404':
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    example: Not Found
+      tags:
+      - Library
+    post:
+      summary: Create Custom Script
+      description: This request allows you to create a custom script in the Kandji library.
+      parameters: []
+      responses:
+        '201':
+          description: success
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  id: 1cdbbf21-682b-4573-aa22-5aff027a337b
+                  name: new_custom_script
+                  active: false
+                  execution_frequency: once
+                  restart: false
+                  script: '/usr/bin/env zsh
+
+                    echo "hi, hello world!"'
+                  remediation_script: ''
+                  created_at: '2024-05-08T23:06:49.419056Z'
+                  updated_at: '2024-05-08T23:06:49.419071Z'
+                  show_in_self_service: false
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    example: Bad Request
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    example: Unauthorized
+        '404':
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    example: Not Found
+      requestBody:
+        required: true
+        description: JSON payload containing the custom script configuration
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                name:
+                  type: string
+                  description: The name of the custom script
+                  example: new_custom_script
+                execution_frequency:
+                  type: string
+                  description: How often the script should be executed
+                  enum:
+                  - once
+                  - every_15_min
+                  - every_day
+                  - no_enforcement
+                  example: once
+                script:
+                  type: string
+                  description: The script content to execute
+                  example: '/usr/bin/env zsh
+
+                    echo "hi, hello world!"'
+                remediation_script:
+                  type: string
+                  description: Optional remediation script to run if the main script fails
+                  example: echo "goodbye"
+                show_in_self_service:
+                  type: boolean
+                  description: Whether to show this script in self service
+                  example: false
+                self_service_category_id:
+                  type: string
+                  description: The ID of the self service category (from List Self Service Categories endpoint)
+                  example: e6f6d5b4-0659-4b37-872c-5471115d453b
+                self_service_recommended:
+                  type: boolean
+                  description: Whether this script is recommended in self service
+                  example: false
+                active:
+                  type: boolean
+                  description: Whether the script is active
+                  example: false
+                restart:
+                  type: boolean
+                  description: Whether to restart the device after script execution
+                  example: false
+              required:
+              - name
+              - execution_frequency
+              - script
+            example:
+              name: new_custom_script
+              execution_frequency: once
+              script: '/usr/bin/env zsh
+
+                echo "hi, hello world!"'
+              remediation_script: echo "goodbye"
+              show_in_self_service: false
+              self_service_category_id: e6f6d5b4-0659-4b37-872c-5471115d453b
+              self_service_recommended: false
+              active: false
+              restart: false
+      tags:
+      - Library
+  /api/v1/library/custom-scripts/{library_item_id}:
+    get:
+      summary: Get Custom Script
+      description: This endpoint retrieves details about a specific custom script from the Kandji library.
+      parameters:
+      - name: library_item_id
+        in: path
+        required: true
+        schema:
+          type: string
+        description: The unique identifier of the library item
+        example: 1cdbbf21-682b-4573-aa22-5aff027a337b
+      responses:
+        '200':
+          description: success
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  id: a155ffb7-ab75-4e5f-ab1d-1334153efad3
+                  name: Custom Script One
+                  active: true
+                  execution_frequency: no_enforcement
+                  restart: false
+                  script: echo "Hello World!"
+                  remediation_script: ''
+                  created_at: '2022-03-24T17:30:26.625839Z'
+                  updated_at: '2022-03-24T17:30:26.625856Z'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    example: Bad Request
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    example: Unauthorized
+        '404':
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    example: Not Found
+      tags:
+      - Library
+    patch:
+      summary: Update Custom Script
+      description: This request allows you to update a custom script in the Kandji library.
+      parameters:
+      - name: library_item_id
+        in: path
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: success - zsh example
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  id: f673d61c-a174-43c5-8e85-412442fb0a2a
+                  name: updated_custom_script
+                  active: false
+                  execution_frequency: once
+                  restart: false
+                  script: '/usr/bin/env zsh
+
+                    echo "hi, hello world!"'
+                  remediation_script: ''
+                  created_at: '2024-05-06T23:32:44.597037Z'
+                  updated_at: '2024-05-08T23:05:39.462672Z'
+                  show_in_self_service: false
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    example: Bad Request
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    example: Unauthorized
+        '404':
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    example: Not Found
+      requestBody:
+        required: true
+        description: JSON payload containing the custom script update configuration
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                name:
+                  type: string
+                  description: The name of the custom script
+                  example: updated_custom_script
+                execution_frequency:
+                  type: string
+                  description: How often the script should be executed
+                  enum:
+                  - once
+                  - every_15_min
+                  - every_day
+                  - no_enforcement
+                  example: once
+                script:
+                  type: string
+                  description: The script content to execute
+                  example: echo "hi, hello world!"
+                remediation_script:
+                  type: string
+                  description: Optional remediation script to run if the main script fails
+                  example: echo "goodbye"
+                show_in_self_service:
+                  type: boolean
+                  description: Whether to show this script in self service
+                  example: false
+                self_service_category_id:
+                  type: string
+                  description: The ID of the self service category (from List Self Service Categories endpoint)
+                  example: e6f6d5b4-0659-4b37-872c-5471115d453b
+                self_service_recommended:
+                  type: boolean
+                  description: Whether this script is recommended in self service
+                  example: false
+                active:
+                  type: boolean
+                  description: Whether the script is active
+                  example: false
+                restart:
+                  type: boolean
+                  description: Whether to restart the device after script execution
+                  example: false
+            example:
+              name: updated_custom_script
+              execution_frequency: once
+              script: echo "hi, hello world!"
+              remediation_script: echo "goodbye"
+              show_in_self_service: false
+              self_service_category_id: e6f6d5b4-0659-4b37-872c-5471115d453b
+              self_service_recommended: false
+              active: false
+              restart: false
+      tags:
+      - Library
+    delete:
+      summary: Delete Custom Script
+      description: This endpoint sends a request to delete a specific custom script from the Kandji library.
+      parameters:
+      - name: library_item_id
+        in: path
+        required: true
+        schema:
+          type: string
+        description: The unique identifier of the library item
+        example: 1cdbbf21-682b-4573-aa22-5aff027a337b
+      responses:
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    example: Bad Request
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    example: Unauthorized
+        '404':
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    example: Not Found
+      tags:
+      - Library
+  /api/v1/library/library-items/{library_item_id}/activity:
+    get:
+      summary: Get Library Item Activity
+      description: This endpoint retrieves the activity related to a specific library item. Activity is listed from newest to oldest.
+      parameters:
+      - name: library_item_id
+        in: path
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: success
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  count: 8
+                  next: null
+                  previous: null
+                  results:
+                  - id: 1862
+                    activity_time: '2024-01-20T20:31:30.325831Z'
+                    activity_type: library_item_assignment_changed
+                    user_id: 4b9b080b-f82b-41e9-814b-a5668fdd8a3e
+                    user_email: accuhive@kandji.io
+                    details: null
+                  - id: 1860
+                    activity_time: '2024-01-20T20:31:28.430284Z'
+                    activity_type: library_item_assignment_changed
+                    user_id: 4b9b080b-f82b-41e9-814b-a5668fdd8a3e
+                    user_email: accuhive@kandji.io
+                    details: null
+                  - id: 1858
+                    activity_time: '2024-01-20T20:27:34.379144Z'
+                    activity_type: library_item_assignment_changed
+                    user_id: 4b9b080b-f82b-41e9-814b-a5668fdd8a3e
+                    user_email: accuhive@kandji.io
+                    details: null
+                  - id: 1856
+                    activity_time: '2024-01-20T20:20:20.845315Z'
+                    activity_type: library_item_assignment_changed
+                    user_id: 4b9b080b-f82b-41e9-814b-a5668fdd8a3e
+                    user_email: accuhive@kandji.io
+                    details: null
+                  - id: 1854
+                    activity_time: '2024-01-20T20:20:14.628260Z'
+                    activity_type: library_item_assignment_changed
+                    user_id: 4b9b080b-f82b-41e9-814b-a5668fdd8a3e
+                    user_email: accuhive@kandji.io
+                    details: null
+                  - id: 1852
+                    activity_time: '2024-01-20T20:09:09.539169Z'
+                    activity_type: library_item_edited
+                    user_id: 4b9b080b-f82b-41e9-814b-a5668fdd8a3e
+                    user_email: accuhive@kandji.io
+                    details:
+                    - 'Name: test_custom_app → ms_company_portal'
+                  - id: 1851
+                    activity_time: '2024-01-20T20:08:19.874100Z'
+                    activity_type: library_item_assignment_changed
+                    user_id: 4b9b080b-f82b-41e9-814b-a5668fdd8a3e
+                    user_email: accuhive@kandji.io
+                    details: null
+                  - id: 1849
+                    activity_time: '2024-01-20T20:07:53.701713Z'
+                    activity_type: library_item_created
+                    user_id: 4b9b080b-f82b-41e9-814b-a5668fdd8a3e
+                    user_email: accuhive@kandji.io`
+                    details: null
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    example: Bad Request
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    example: Unauthorized
+        '404':
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    example: Not Found
+      tags:
+      - Library
+  /api/v1/library/library-items/{library_item_id}/status:
+    get:
+      summary: Get Library Item Statuses
+      description: This endpoint retrieves the statuses related to a specific library item.
+      parameters:
+      - name: library_item_id
+        in: path
+        required: true
+        schema:
+          type: string
+      - name: computer_id
+        in: query
+        required: false
+        description: Query for the status of one device.
+        schema:
+          type: string
+      - name: limit
+        in: query
+        required: false
+        description: A hard upper limit is set at 300 device records returned per request. If more device records are expected, pagination should be used using the limit and offset parameters.
+        schema:
+          type: integer
+          maximum: 300
+          default: 300
+      - name: offset
+        in: query
+        required: false
+        description: Specify the starting record to return
+        schema:
+          type: integer
+          minimum: 0
+          default: 0
+      responses:
+        '200':
+          description: edr status
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  count: 3
+                  next: null
+                  previous: null
+                  results:
+                  - id: 14603
+                    blueprint:
+                      id: ab102b9d-8e9c-420d-a498-f2a1123091c7
+                      name: _test_something
+                    computer:
+                      id: 912bc505-a7ee-4d0b-906d-2102f332a4b3
+                      name: testuser’s MacBook Air
+                    status: PENDING
+                    reported_at: null
+                    log: null
+                    last_audit_run: null
+                    last_audit_log: null
+                    control_log: null
+                    control_reported_at: null
+                    edr_status:
+                      status: enabled
+                      malware_posture: Protect
+                      pup_posture: Protect
+                      last_baseline_scan: Feb 27, 2024 at 7:34:21 AM
+                      next_baseline_scan: Mar 26, 2024 at 5:48:10 AM
+                      baseline_scan_runtime: Kandji checked 339,254 files in 3 minutes, 41 seconds.
+                    type: threat-security-policy
+                  - id: 14602
+                    blueprint:
+                      id: ab102b9d-8e9c-420d-a498-f2a1123091c7
+                      name: _test_something
+                    computer:
+                      id: 977942ac-8303-4ec9-b7bf-439f4e9f18dd
+                      name: as_13_4_dummy_vm_009
+                    status: PENDING
+                    reported_at: null
+                    log: null
+                    last_audit_run: null
+                    last_audit_log: null
+                    control_log: null
+                    control_reported_at: null
+                    edr_status: null
+                    type: threat-security-policy
+                  - id: 14600
+                    blueprint:
+                      id: ab102b9d-8e9c-420d-a498-f2a1123091c7
+                      name: _test_something
+                    computer:
+                      id: 2f25e13e-3b1c-4717-bf7e-7d23e61bb68c
+                      name: Mac mini
+                    status: PENDING
+                    reported_at: null
+                    log: null
+                    last_audit_run: null
+                    last_audit_log: null
+                    control_log: null
+                    control_reported_at: null
+                    edr_status: null
+                    type: threat-security-policy
+              example:
+                count: 5
+                next: null
+                previous: null
+                results:
+                - id: 13908
+                  blueprint:
+                    id: ab102b9d-8e9c-420d-a498-f2a1123091c7
+                    name: _test_something
+                  computer:
+                    id: 2f25e13e-3b1c-4717-bf7e-7d23e61bb68c
+                    name: Mac mini
+                  status: PENDING
+                  reported_at: null
+                  log: null
+                  last_audit_run: null
+                  last_audit_log: null
+                  control_log: null
+                  control_reported_at: null
+                - id: 13907
+                  blueprint:
+                    id: ab102b9d-8e9c-420d-a498-f2a1123091c7
+                    name: _test_something
+                  computer:
+                    id: 912bc505-a7ee-4d0b-906d-2102f332a4b3
+                    name: testuser's MacBook Air
+                  status: PENDING
+                  reported_at: null
+                  log: null
+                  last_audit_run: null
+                  last_audit_log: null
+                  control_log: null
+                  control_reported_at: null
+                - id: 13906
+                  blueprint:
+                    id: ab102b9d-8e9c-420d-a498-f2a1123091c7
+                    name: _test_something
+                  computer:
+                    id: 977942ac-8303-4ec9-b7bf-439f4e9f18dd
+                    name: as_13_4_dummy_vm_009
+                  status: PENDING
+                  reported_at: null
+                  log: null
+                  last_audit_run: null
+                  last_audit_log: null
+                  control_log: null
+                  control_reported_at: null
+                - id: 13905
+                  blueprint:
+                    id: ab102b9d-8e9c-420d-a498-f2a1123091c7
+                    name: _test_something
+                  computer:
+                    id: 83b91e8a-23ad-4883-99fb-ffea6d10a049
+                    name: dev_odt_testing_01
+                  status: PENDING
+                  reported_at: null
+                  log: null
+                  last_audit_run: null
+                  last_audit_log: null
+                  control_log: null
+                  control_reported_at: null
+                - id: 13904
+                  blueprint:
+                    id: d238e6c6-2b9d-4d38-acba-03893a66ef20
+                    name: managed_os_macos
+                  computer:
+                    id: ce0e6bbc-1665-471a-9c4c-1c47237c773e
+                    name: testuser's MacBook Air
+                  status: PASS
+                  reported_at: '2023-10-23T19:47:33Z'
+                  log: 'Executing agent_debug_logging...
+
+                    Exit code: 0
+
+                    Script results:
+
+                    Kandji Agent log level set to DEBUG already ...'
+                  last_audit_run: null
+                  last_audit_log: null
+                  control_log: null
+                  control_reported_at: null
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    example: Bad Request
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    example: Unauthorized
+        '404':
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    example: Not Found
+      tags:
+      - Library
+components:
+  securitySchemes:
+    BearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT

@@ -1,0 +1,2477 @@
+openapi: 3.2.0
+info:
+  title: Iru Endpoint Management Devices API
+  description: "# Welcome to the Iru Endpoint Management API Documentation\n\n**Note:** Kandji is in the process of changing to Iru. Many URLs and notes within this documentation will continue to reference Kandji for some time.\n\nYou can find your API URL in Settings > Access. The API URL will follow the below formats.\n\n- US - `https://SubDomain.api.kandji.io`\n    \n- EU - `https://SubDomain.api.eu.kandji.io`\n    \n\nFor information on how to obtain an API token, please refer to the Iru docs.\n\n[https://docs.iru.com/](https://docs.iru.com/)\n\n#### Rate Limit\n\nThe Iru Endpoint Management API currently has an API rate limit of 10,000 requests per hour per customer.\n\n#### Request Methods\n\nHTTP request methods supported by the API.\n\n| Method | Definition |\n| --- | --- |\n| GET | The `GET` method requests a representation of the specified resource. |\n| POST | The `POST` method submits an entity to the specified resource. |\n| PATCH | The `PATCH` method applies partial modifications to a resource. |\n| DELETE | The `DELETE` method deletes the specified resource. |\n\n#### Response codes\n\nNot all response codes apply to every endpoint.\n\n| Code | Response |\n| --- | --- |\n| 200 | OK |\n| 201 | Created |\n| 204 | No content |\n|  | Typical response when sending the DELETE method. |\n| 400 | Bad Request |\n|  | \"Command already running\" - The command may already be running in a _Pending_ state waiting on the device. |\n|  | \"Command is not allowed for current device\" - The command may not be compatible with the target device. |\n|  | \"JSON parse error - Expecting ',' delimiter: line 3 column 2 (char 65)\" |\n| 401 | Unauthorized |\n|  | This error can occur if the token is incorrect, was revoked, or the token has expired. |\n| 403 | Forbidden |\n|  | The request was understood but cannot be authorized. |\n| 404 | Not found |\n|  | Unable to locate the resource in the Iru tenant. |\n| 415 | Unsupported Media Type |\n|  | The request contains a media type which the server or resource does not support. |\n| 500 | Internal server error |\n| 503 | Service unavailable |\n|  | This error can occur if a file upload is still being processed via the custom apps API. |\n\n#### Data structure\n\nThe API returns all structured responses in JSON schema format.\n\n#### Examples\n\nCode examples using the API can be found in the Iru Endpoint Management support [GitHub](https://github.com/kandji-inc/support/tree/main/api-tools)."
+  version: 1.0.0
+servers:
+- url: https://{subdomain}.api.kandji.io
+  description: US Server
+  variables:
+    subdomain:
+      default: your-subdomain
+      description: Your Iru Endpoint Management subdomain
+- url: https://{subdomain}.api.eu.kandji.io
+  description: EU Server
+  variables:
+    subdomain:
+      default: your-subdomain
+      description: Your Iru Endpoint Management subdomain
+security:
+- BearerAuth: []
+tags:
+- name: Devices
+paths:
+  /api/v1/devices/{device_id}/action/enablelostmode:
+    post:
+      summary: Enable Lost Mode
+      description: This endpoint sends an MDM command to remotely turn on lost mode on iOS and iPadOS.
+      parameters:
+      - name: device_id
+        in: path
+        required: true
+        schema:
+          type: string
+      requestBody:
+        required: false
+        description: Optional JSON payload to set lock message, phone number, and footnote on the target device
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                Message:
+                  type: string
+                  description: Lock screen message to display on the device
+                PhoneNumber:
+                  type: string
+                  description: Phone number to display on the lock screen
+                Footnote:
+                  type: string
+                  description: Footnote text to display on the lock screen
+            example:
+              Message: Hey i just did this from the enable lost mode API
+              PhoneNumber: '1234567890'
+              Footnote: This is an example footnote.
+      responses:
+        '200':
+          description: Enable Lost Mode
+          content:
+            application/json:
+              schema:
+                type: object
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    example: Bad Request
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    example: Unauthorized
+        '404':
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    example: Not Found
+      tags:
+      - Devices
+  /api/v1/devices/{device_id}/action/disablelostmode:
+    post:
+      summary: Disable Lost Mode
+      description: This command will send a request to turn off lost mode on iOS and iPadOS.
+      parameters:
+      - name: device_id
+        in: path
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: Disable Lost Mode
+          content:
+            application/json:
+              schema:
+                type: object
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    example: Bad Request
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    example: Unauthorized
+        '404':
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    example: Not Found
+      tags:
+      - Devices
+  /api/v1/devices/{device_id}/action/playlostmodesound:
+    post:
+      summary: Play Lost Mode Sound
+      description: This command will tell the target iOS or iPadOS device to play the lost mode sound.
+      parameters:
+      - name: device_id
+        in: path
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: Play Lost Mode Sound
+          content:
+            application/json:
+              schema:
+                type: object
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    example: Bad Request
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    example: Unauthorized
+        '404':
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    example: Not Found
+      tags:
+      - Devices
+  /api/v1/devices/{device_id}/action/updatelocation:
+    post:
+      summary: Update Location
+      description: This endpoint sends an MDM command to update the location data on iOS and iPadOS.
+      parameters:
+      - name: device_id
+        in: path
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: Update Location
+          content:
+            application/json:
+              schema:
+                type: object
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    example: Bad Request
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    example: Unauthorized
+        '404':
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    example: Not Found
+      tags:
+      - Devices
+  /api/v1/devices/{device_id}/action/clearpasscode:
+    post:
+      summary: Clear Passcode
+      description: This endpoint sends an MDM command to clear a device passcode. Available for iPhone and iPad.
+      parameters:
+      - name: device_id
+        in: path
+        required: true
+        schema:
+          type: string
+      responses:
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    example: Bad Request
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    example: Unauthorized
+        '404':
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    example: Not Found
+      tags:
+      - Devices
+  /api/v1/devices/{device_id}:
+    get:
+      summary: Get Device
+      description: This request returns the high-level information for a specified Device ID.
+      parameters:
+      - name: device_id
+        in: path
+        required: true
+        schema:
+          type: string
+      responses:
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    example: Bad Request
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    example: Unauthorized
+        '404':
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    example: Not Found
+      tags:
+      - Devices
+    patch:
+      summary: Update Device
+      description: 'This request allows you to update device information, such as the assigned blueprint, user, Asset Tag, '
+      parameters:
+      - name: device_id
+        in: path
+        required: true
+        schema:
+          type: string
+      requestBody:
+        required: false
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                user:
+                  type: string
+                  description: The user ID (UUID or deprecated integer value). Can be set to null to clear the assigned user.
+                asset_tag:
+                  type: string
+                  description: The asset tag for the device. Can be set to null to clear the asset tag.
+                blueprint_id:
+                  type: string
+                  description: The blueprint ID to assign to the device.
+                tags:
+                  type: array
+                  items:
+                    type: string
+                  description: Array of tag names to assign to the device. Can be set to [] to clear all tags.
+      responses:
+        '200':
+          description: Clear all tags
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  device_id: bd4eb679-d679-4071-a395-5855807b6829
+                  device_name: avenger-test
+                  model: MacBook Air (M1, 2020)
+                  serial_number: C02FL5YXQ6LC
+                  platform: Mac
+                  os_version: 13.2.1
+                  last_check_in: '2023-03-24T00:45:18.674561Z'
+                  user: ''
+                  asset_tag: ''
+                  blueprint_id: 97e4e175-1631-43f6-a02b-33fd1c748ab8
+                  mdm_enabled: true
+                  agent_installed: true
+                  is_missing: false
+                  is_removed: false
+                  agent_version: 4.1.3 (3795)
+                  first_enrollment: '2022-07-21 15:00:06.470889+00:00'
+                  last_enrollment: '2023-03-13 17:29:41.167646+00:00'
+                  blueprint_name: _testing_apple_silicon
+                  lost_mode_status: ''
+                  tags: []
+              example:
+                device_id: bd4eb679-d679-4071-a395-5855807b6829
+                device_name: avenger-test
+                model: MacBook Air (M1, 2020)
+                serial_number: C02FL5YXQ6LC
+                platform: Mac
+                os_version: 13.2.1
+                last_check_in: '2023-03-24T00:45:18.674561Z'
+                user: ''
+                asset_tag: ''
+                blueprint_id: 97e4e175-1631-43f6-a02b-33fd1c748ab8
+                mdm_enabled: true
+                agent_installed: true
+                is_missing: false
+                is_removed: false
+                agent_version: 4.1.3 (3795)
+                first_enrollment: '2022-07-21 15:00:06.470889+00:00'
+                last_enrollment: '2023-03-13 17:29:41.167646+00:00'
+                blueprint_name: _testing_apple_silicon
+                lost_mode_status: ''
+                tags: []
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    example: Bad Request
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    example: Unauthorized
+        '404':
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    example: Not Found
+      tags:
+      - Devices
+    delete:
+      summary: Delete device
+      description: This endpoint deletes a specific device.
+      parameters:
+      - name: device_id
+        in: path
+        required: true
+        schema:
+          type: string
+      responses:
+        '204':
+          description: Device deleted successfully
+      tags:
+      - Devices
+  /api/v1/devices/{device_id}/action/erase:
+    post:
+      summary: Erase Device
+      description: 'This endpoint sends an MDM command to erase the device.
+
+        iOS 4.0+, iPadOS 4.0+, macOS 10.7+, tvOS 10.2+'
+      parameters:
+      - name: device_id
+        in: path
+        required: true
+        schema:
+          type: string
+      requestBody:
+        required: false
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                PIN:
+                  type: string
+                  description: 'The six-character PIN for Find My. This value is available in macOS 10.8 and later. Note: This value will be ignored for iOS, iPadOS, and tvOS devices.'
+                PreserveDataPlan:
+                  type: boolean
+                  description: 'If true, preserve the data plan on an iPhone or iPad with eSIM functionality, if one exists. This value is available in iOS 11 and later. Default: true'
+                DisallowProximitySetup:
+                  type: boolean
+                  description: 'If true, disable Proximity Setup on the next reboot and skip the pane in Setup Assistant. This value is available in iOS 11 and later. Prior to iOS 14, don''t use this option with any other option. Default: false'
+                ReturnToService:
+                  type: object
+                  description: (iOS 17 and later and iPadOS 17 and later and with Shared iPad) When sending the erase device command to mobile devices, use this key to enable Return to Service. Include an optional Wi-Fi payload ProfileId to allow the device to connect to a Wi-Fi network automatically after being erased. If a Wi-Fi ProfileId is not provided and the mobile device is not tethered to a Mac to share the network connection, the end-user will be required to select a Wi-Fi network to complete the setup. If sent to any macOS computer or to mobile devices on iOS 16 or iPadOS 16 and below, the RTS keys will be ignored, and only the erase device command will be issued to the device.
+                  properties:
+                    Enabled:
+                      type: boolean
+                      description: (Required) If true, the device tries to re-enroll itself automatically after erasure. The user needs to deactivate all activation locks for this feature to work correctly.
+                    ProfileId:
+                      type: string
+                      description: Profile ID value associated with a Wi-Fi profile payload. This is required when the device doesn't have ethernet access.
+            example:
+              PIN: '123456'
+              PreserveDataPlan: true
+              DisallowProximitySetup: false
+              ReturnToService:
+                Enabled: false
+                ProfileId: ''
+      responses:
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    example: Bad Request
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    example: Unauthorized
+        '404':
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    example: Not Found
+      tags:
+      - Devices
+  /api/v1/devices/{device_id}/commands:
+    get:
+      summary: Get Device Commands
+      description: This endpoint sends a request to get information about the commands sent to a given device ID.
+      parameters:
+      - name: device_id
+        in: path
+        required: true
+        schema:
+          type: string
+      - name: limit
+        in: query
+        required: false
+        description: A hard upper `limit` is set at 300 device records returned per request. If more device records are expected, pagination should be used using the `limit` and `offset` parameters. Additionally, parameter queries can be added to a request to limit the results.
+        schema:
+          type: string
+      - name: offset
+        in: query
+        required: false
+        description: The initial index from which to return the results.
+        schema:
+          type: string
+      responses:
+        '200':
+          description: Get Device Commands
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  device_id: 0bc8f610-5b88-49a6-b9ef-a68bf04e1e59
+                  commands:
+                    count: 41
+                    next: null
+                    previous: null
+                    results:
+                    - uuid: d2b2eafe-2dc2-4b13-bd2b-f93735f0e59f
+                      error_chain: []
+                      command_type: ActivationLockBypassCode
+                      request_type: ActivationLockBypassCode
+                      metadata: {}
+                      request_requires_network_tether: false
+                      status: 3
+                      attempts: 1
+                      date_requested: '2022-08-18T15:07:22.133248Z'
+                      date_completed: '2022-08-18T15:07:23.240937Z'
+                      last_pushed: '2022-08-18T15:07:22.507520Z'
+                      user: null
+                      priority: 0
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    example: Bad Request
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    example: Unauthorized
+        '404':
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    example: Not Found
+      tags:
+      - Devices
+  /api/v1/devices/{device_id}/action/lock:
+    post:
+      summary: Lock Device
+      description: This endpoint sends an MDM command to remotely lock a device.
+      parameters:
+      - name: device_id
+        in: path
+        required: true
+        schema:
+          type: string
+      requestBody:
+        required: false
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                Message:
+                  type: string
+                  description: The lock message to display on the device.
+                PhoneNumber:
+                  type: string
+                  description: The phone number to display on the device.
+            example:
+              Message: This device is locked!
+              PhoneNumber: '1234567890'
+      responses:
+        '200':
+          description: success
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  PIN: '496406'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    example: Bad Request
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    example: Unauthorized
+        '404':
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    example: Not Found
+      tags:
+      - Devices
+  /api/v1/devices/{device_id}/action/reinstallagent:
+    post:
+      summary: Reinstall Agent
+      description: This endpoint sends an MDM command reinstall the Kandji Agent.
+      parameters:
+      - name: device_id
+        in: path
+        required: true
+        schema:
+          type: string
+      responses:
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    example: Bad Request
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    example: Unauthorized
+        '404':
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    example: Not Found
+      tags:
+      - Devices
+  /api/v1/devices/{device_id}/action/remotedesktop:
+    post:
+      summary: Remote Desktop
+      description: This endpoint sends an MDM command to control the Remote Management status on a Mac.
+      parameters:
+      - name: device_id
+        in: path
+        required: true
+        schema:
+          type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                EnableRemoteDesktop:
+                  type: boolean
+                  description: Enable or disable Remote Desktop on the device
+              required:
+              - EnableRemoteDesktop
+            example:
+              EnableRemoteDesktop: true
+      responses:
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    example: Bad Request
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    example: Unauthorized
+        '404':
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    example: Not Found
+      tags:
+      - Devices
+  /api/v1/devices/{device_id}/action/renewmdmprofile:
+    post:
+      summary: Renew MDM Profile
+      description: This endpoint sends an MDM command to re-install the existing root MDM profile for a given device ID.
+      parameters:
+      - name: device_id
+        in: path
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: Renew MDM Profile
+          content:
+            application/json:
+              schema:
+                type: object
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    example: Bad Request
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    example: Unauthorized
+        '404':
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    example: Not Found
+      tags:
+      - Devices
+  /api/v1/devices/{device_id}/action/restart:
+    post:
+      summary: Restart Device
+      description: This endpoint sends an MDM command to remotely restart a device.
+      parameters:
+      - name: device_id
+        in: path
+        required: true
+        schema:
+          type: string
+      requestBody:
+        required: false
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                RebuildKernelCache:
+                  type: boolean
+                  description: 'If `true`, the system rebuilds the kernel cache during a device restart. If `BootstrapTokenAllowedForAuthentication` is `true` in `SecurityInfoResponse.SecurityInfo`, the device requests the bootstrap token from MDM before executing this command. This value is available in macOS 11 and later. Default: false'
+                NotifyUser:
+                  type: boolean
+                  description: 'If `true`, notifies the user to restart the device at their convenience. Forced restart if the device is at `loginwindow` with no logged-in users. The user can dismiss the notification and ignore the request. No further notifications display unless you resend the command. This value is available in macOS 11.3 and later. Default: false'
+            example:
+              RebuildKernelCache: false
+              NotifyUser: false
+      responses:
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    example: Bad Request
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    example: Unauthorized
+        '404':
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    example: Not Found
+      tags:
+      - Devices
+  /api/v1/devices/{device_id}/action/blankpush:
+    post:
+      summary: Send Blankpush
+      description: This endpoint sends an MDM command to initiate a blank push.
+      parameters:
+      - name: device_id
+        in: path
+        required: true
+        schema:
+          type: string
+      responses:
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    example: Bad Request
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    example: Unauthorized
+        '404':
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    example: Not Found
+      tags:
+      - Devices
+  /api/v1/devices/{device_id}/action/setname:
+    post:
+      summary: Set Name
+      description: This endpoint sends an MDM command to set the device name.
+      parameters:
+      - name: device_id
+        in: path
+        required: true
+        schema:
+          type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                DeviceName:
+                  type: string
+                  description: The new device name to set.
+              required:
+              - DeviceName
+            example:
+              DeviceName: Test Mac Mini
+      responses:
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    example: Bad Request
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    example: Unauthorized
+        '404':
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    example: Not Found
+      tags:
+      - Devices
+  /api/v1/devices/{device_id}/action/shutdown:
+    post:
+      summary: Shutdown
+      description: This endpoint sends an MDM command to shutdown a device.
+      parameters:
+      - name: device_id
+        in: path
+        required: true
+        schema:
+          type: string
+      responses:
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    example: Bad Request
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    example: Unauthorized
+        '404':
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    example: Not Found
+      tags:
+      - Devices
+  /api/v1/devices/{device_id}/action/updateinventory:
+    post:
+      summary: Update Inventory
+      description: This endpoint sends an MDM command to start a check-in for a device, initiating the daily MDM commands and MDM logic.
+      parameters:
+      - name: device_id
+        in: path
+        required: true
+        schema:
+          type: string
+      responses:
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    example: Bad Request
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    example: Unauthorized
+        '404':
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    example: Not Found
+      tags:
+      - Devices
+  /api/v1/devices/{device_id}/action/unlockaccount:
+    post:
+      summary: Unlock Account
+      description: This endpoint sends an MDM command to unlock a user account that was locked by the system because of too many failed password attempts.
+      parameters:
+      - name: device_id
+        in: path
+        required: true
+        schema:
+          type: string
+      responses:
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    example: Bad Request
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    example: Unauthorized
+        '404':
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    example: Not Found
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              example:
+                UserName: LocalUserToUnlock
+      tags:
+      - Devices
+  /api/v1/devices/{device_id}/notes:
+    get:
+      summary: Get Device Notes
+      description: This request gets all notes for the specified Device ID.
+      parameters:
+      - name: device_id
+        in: path
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: Get All Device Notes
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                - note_id: e74f34b0-120b-4149-9c0d-3e2f0d08426c
+                  created_at: '2021-04-09T17:09:07.164617Z'
+                  updated_at: '2021-04-09T17:09:07.164635Z'
+                  author: Test User
+                  content: <p>This is an example note!&nbsp;</p>
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    example: Bad Request
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    example: Unauthorized
+        '404':
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    example: Not Found
+      tags:
+      - Devices
+    post:
+      summary: Create Device Note
+      description: This request creates a note for the specified device ID.
+      parameters:
+      - name: device_id
+        in: path
+        required: true
+        schema:
+          type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                content:
+                  type: string
+                  description: The content of the device note.
+              required:
+              - content
+      responses:
+        '201':
+          description: Create Device Note
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  note_id: c0f5ba78-06a2-4914-aa3c-e3415f3ee21b
+                  created_at: '2021-04-07T18:56:25.113229Z'
+                  updated_at: '2021-04-07T18:56:25.113254Z'
+                  author: Test User
+                  content: This is an example note!
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    example: Bad Request
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    example: Unauthorized
+        '404':
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    example: Not Found
+      tags:
+      - Devices
+  /api/v1/devices/{device_id}/notes/{note_id}:
+    get:
+      summary: Retrieve Device Note
+      description: This request retrieves a specified note (Note ID) for the specified Device ID.
+      parameters:
+      - name: device_id
+        in: path
+        required: true
+        schema:
+          type: string
+      - name: note_id
+        in: path
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: Retrieve Device Note
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  note_id: c0f5ba78-06a2-4914-aa3c-e3415f3ee21b
+                  created_at: '2021-04-07T18:56:25.113229Z'
+                  updated_at: '2021-04-07T18:56:25.113254Z'
+                  author: Nicholas McDonald
+                  content: This is an example note!
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    example: Bad Request
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    example: Unauthorized
+        '404':
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    example: Not Found
+      tags:
+      - Devices
+    patch:
+      summary: Update Device Note
+      description: This request patches a specified note (Note ID) for the specified Device ID.
+      parameters:
+      - name: device_id
+        in: path
+        required: true
+        schema:
+          type: string
+      - name: note_id
+        in: path
+        required: true
+        schema:
+          type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                content:
+                  type: string
+                  description: The updated content of the device note.
+              required:
+              - content
+      responses:
+        '200':
+          description: Update Device Note
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  note_id: c0f5ba78-06a2-4914-aa3c-e3415f3ee21b
+                  created_at: '2021-04-07T18:56:25.113229Z'
+                  updated_at: '2021-04-07T18:56:25.113254Z'
+                  author: Test User
+                  content: This is an example of updating a notes contents!
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    example: Bad Request
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    example: Unauthorized
+        '404':
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    example: Not Found
+      tags:
+      - Devices
+    delete:
+      summary: Delete Device Note
+      description: This request deletes a specified note (Note ID) for the specified Device ID.
+      parameters:
+      - name: device_id
+        in: path
+        required: true
+        schema:
+          type: string
+      - name: note_id
+        in: path
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: Delete Device Note
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  note_id: c0f5ba78-06a2-4914-aa3c-e3415f3ee21b
+                  deleted_at: '2021-04-07T18:59:17.734091Z'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    example: Bad Request
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    example: Unauthorized
+        '404':
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    example: Not Found
+      tags:
+      - Devices
+  /api/v1/devices:
+    get:
+      summary: List Devices
+      description: This request returns a list of devices in an Iru Endpoint Management tenant.
+      parameters:
+      - name: asset_tag
+        in: query
+        required: false
+        description: Filter by asset tag
+        schema:
+          type: string
+      - name: blueprint_id
+        in: query
+        required: false
+        description: Return results "containing" the specified blueprint id
+        schema:
+          type: string
+      - name: device_id
+        in: query
+        required: false
+        description: Filter by device ID
+        schema:
+          type: string
+      - name: device_name
+        in: query
+        required: false
+        description: Filter by device name
+        schema:
+          type: string
+      - name: filevault_enabled
+        in: query
+        required: false
+        description: Query for devices that either have FileVault on (true) or off (false). This parameter only applies to macOS. An empty list will be returned if no devices are found with the given parameter value.
+        schema:
+          type: string
+      - name: mac_address
+        in: query
+        required: false
+        description: Search for a specific device by MAC address
+        schema:
+          type: string
+      - name: model
+        in: query
+        required: false
+        description: Return model results "containing" the specified model string
+        schema:
+          type: string
+      - name: ordering
+        in: query
+        required: false
+        description: The ordering parameter can be used to define how the device records are ordered in the response. Prepending a dash (-) to the parameter value will reverse the order of the returned results. Possible values are asset_tag, blueprint_id, device_id, device_name, last_check_in, model, platform, os_version, serial_number, user. Multiple values can be combined in a comma separated list.
+        schema:
+          type: string
+      - name: os_version
+        in: query
+        required: false
+        description: Return all device records containing the specified OS version
+        schema:
+          type: string
+      - name: platform
+        in: query
+        required: false
+        description: Return all records matching a specific platform. Possible values are Mac, iPad, iPhone, AppleTV
+        schema:
+          type: string
+      - name: serial_number
+        in: query
+        required: false
+        description: Search for a specific device by Serial Number. If partial serial number is provided in the query, all device containing the partial string will be returned
+        schema:
+          type: string
+      - name: tag_name
+        in: query
+        required: false
+        description: Return results for given tag name. Case sensitive
+        schema:
+          type: string
+      - name: tag_name_in
+        in: query
+        required: false
+        description: Return results for given tag names separate by commas. Case sensitive
+        schema:
+          type: string
+      - name: tag_id
+        in: query
+        required: false
+        description: Search for a tag by its ID. Case sensitive
+        schema:
+          type: string
+      - name: tag_id_in
+        in: query
+        required: false
+        description: Return results for given tag IDs separated by commas. Case sensitive
+        schema:
+          type: string
+      - name: user
+        in: query
+        required: false
+        description: Return results "containing" the user name
+        schema:
+          type: string
+      - name: user_email
+        in: query
+        required: false
+        description: Return results "containing" search on email address
+        schema:
+          type: string
+      - name: user_email_exact
+        in: query
+        required: false
+        description: Return results "matching" the specified email address
+        schema:
+          type: string
+      - name: user_id
+        in: query
+        required: false
+        description: exact match on kandji user ID
+        schema:
+          type: string
+      - name: user_name
+        in: query
+        required: false
+        description: Return results "containing" the assigned user Display Name
+        schema:
+          type: string
+      - name: limit
+        in: query
+        required: true
+        description: A hard upper limit is set at 300 device records returned per request. If more device records are expected, pagination should be used using the limit and offset parameters. Additionally, parameter queries can be added to a request to limit the results.
+        schema:
+          type: string
+      - name: offset
+        in: query
+        required: false
+        description: Specify the starting record to return
+        schema:
+          type: string
+      responses:
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    example: Bad Request
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    example: Unauthorized
+        '404':
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    example: Not Found
+      tags:
+      - Devices
+  /api/v1/devices/{device_id}/details:
+    get:
+      summary: Get Device Details
+      description: This request returns the device details for a specified Device ID.
+      parameters:
+      - name: device_id
+        in: path
+        required: true
+        schema:
+          type: string
+      responses:
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    example: Bad Request
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    example: Unauthorized
+        '404':
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    example: Not Found
+      tags:
+      - Devices
+  /api/v1/devices/{device_id}/details/lostmode:
+    get:
+      summary: Get device lost mode details
+      description: This request returns lost mode details for a device.
+      parameters:
+      - name: device_id
+        in: path
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: Lost mode details
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  device_id:
+                    type: string
+                    description: The unique identifier of the device
+                  lost_mode:
+                    type: object
+                    properties:
+                      lost_mode_status:
+                        type: string
+                        description: The current status of Lost Mode
+                        enum:
+                        - ENABLED
+                        - DISABLED
+                      enabled_by:
+                        type: string
+                        description: The user who enabled Lost Mode
+                      enable_status_at:
+                        type: string
+                        format: date-time
+                        description: When Lost Mode was enabled
+                      lock_screen_message:
+                        type: string
+                        description: The message displayed on the lock screen
+                      lock_screen_phone_number:
+                        type: string
+                        description: The phone number displayed on the lock screen
+                      lock_screen_footnote:
+                        type: string
+                        description: The footnote displayed on the lock screen
+                      disable_status:
+                        type: string
+                        description: The status of disabling Lost Mode
+                      disabled_by:
+                        type: string
+                        description: The user who disabled Lost Mode
+                      disable_status_at:
+                        type: string
+                        format: date-time
+                        description: When Lost Mode was disabled
+                      last_location_status:
+                        type: string
+                        description: The status of the last location update
+                        enum:
+                        - SUCCESS
+                        - FAILED
+                      last_location_status_at:
+                        type: string
+                        format: date-time
+                        description: When the last location status was updated
+                      last_location:
+                        type: object
+                        properties:
+                          latitude:
+                            type: string
+                            description: The latitude of the last known location
+                          longitude:
+                            type: string
+                            description: The longitude of the last known location
+                      last_location_at:
+                        type: string
+                        format: date-time
+                        description: When the last location was recorded
+                      sound_status:
+                        type: string
+                        description: The status of the Lost Mode sound
+                        enum:
+                        - SUCCESS
+                        - FAILED
+                      sound_status_at:
+                        type: string
+                        format: date-time
+                        description: When the sound status was last updated
+              example:
+                device_id: 4820db3b-dec7-40b2-9c8f-eb771ac1a250
+                lost_mode:
+                  lost_mode_status: ENABLED
+                  enabled_by: Accuhive Admin
+                  enable_status_at: '2022-12-13T20:19:08.116096Z'
+                  lock_screen_message: Hey i just did this from the enable lost mode API
+                  lock_screen_phone_number: '1234567890'
+                  lock_screen_footnote: This is an example footnote.
+                  disable_status: ''
+                  disabled_by: ''
+                  disable_status_at: ''
+                  last_location_status: SUCCESS
+                  last_location_status_at: '2022-12-13T20:20:10.103693Z'
+                  last_location:
+                    latitude: '33.93410519355257'
+                    longitude: '-84.47411387632086'
+                  last_location_at: '2022-12-13T20:20:10.093380Z'
+                  sound_status: SUCCESS
+                  sound_status_at: '2022-12-13T20:21:38.992261Z'
+      tags:
+      - Devices
+    delete:
+      summary: Cancel Lost Mode
+      description: This endpoint can be used to send a cancelation request if Lost Mode is in an error state for a given iOS or iPadOS device.
+      parameters:
+      - name: device_id
+        in: path
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: Lost Mode cancellation request sent successfully
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    description: Success message
+      tags:
+      - Devices
+  /api/v1/devices/{device_id}/activity:
+    get:
+      summary: Get Device Activity
+      description: This request returns the device activity for a specified Device ID.
+      parameters:
+      - name: device_id
+        in: path
+        required: true
+        schema:
+          type: string
+      - name: limit
+        in: query
+        required: true
+        description: A hard upper limit is set at 300 device records returned per request. If more device records are expected, pagination should be used using the limit and offset parameters. Additionally, parameter queries can be added to a request to limit the results.
+        schema:
+          type: string
+      - name: offset
+        in: query
+        required: false
+        description: Specify the starting record to return
+        schema:
+          type: string
+      responses:
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    example: Bad Request
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    example: Unauthorized
+        '404':
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    example: Not Found
+      tags:
+      - Devices
+  /api/v1/devices/{device_id}/apps:
+    get:
+      summary: Get Device Apps
+      description: This request returns a list of all installed apps for a specified Device ID.
+      parameters:
+      - name: device_id
+        in: path
+        required: true
+        schema:
+          type: string
+      responses:
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    example: Bad Request
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    example: Unauthorized
+        '404':
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    example: Not Found
+      tags:
+      - Devices
+  /api/v1/devices/{device_id}/library-items:
+    get:
+      summary: Get Device Library Items
+      description: 'This request gets all library items and their statuses for a specified Device ID
+
+        #### Possible library item status values'
+      parameters:
+      - name: device_id
+        in: path
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: edr status
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  device_id: bd4eb679-d679-4071-a395-5855807b6829
+                  library_items:
+                  - id: 14603
+                    status: PENDING
+                    reported_at: null
+                    log: null
+                    last_audit_run: null
+                    last_audit_log: null
+                    control_log: null
+                    control_reported_at: null
+                    item_id: f16e7f13-ba73-4c30-9640-a31b2758bcbe
+                    name: Avert
+                    type: threat-security-policy
+                    computer:
+                      id: 912bc505-a7ee-4d0b-906d-2102f332a4b3
+                      name: testuser’s MacBook Air
+                    blueprint:
+                      id: ab102b9d-8e9c-420d-a498-f2a1123091c7
+                      name: _test_something
+                    rules_present: false
+                    edr_status:
+                      status: enabled
+                      malware_posture: Protect
+                      pup_posture: Protect
+                      last_baseline_scan: Feb 27, 2024 at 7:34:21 AM
+                      next_baseline_scan: Mar 26, 2024 at 5:48:10 AM
+                      baseline_scan_runtime: Kandji checked 339,254 files in 3 minutes, 41 seconds.
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    example: Bad Request
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    example: Unauthorized
+        '404':
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    example: Not Found
+      tags:
+      - Devices
+  /api/v1/devices/{device_id}/parameters:
+    get:
+      summary: Get Device Parameters
+      description: This request returns the parameters and their statuses for a specified Device ID
+      parameters:
+      - name: device_id
+        in: path
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: Get Device Parameters
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  device_id: 77883d40-5656-4a24-9d70-49b6e751a923
+                  parameters:
+                  - status: PASS
+                    item_id: 1e4be748-e072-4c1f-b1ff-a98f076b8e8e
+                    name: Disable the "root" user
+                    category: User Accounts & Authentication
+                    subcategory: User Accounts
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    example: Bad Request
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    example: Unauthorized
+        '404':
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    example: Not Found
+      tags:
+      - Devices
+  /api/v1/devices/{device_id}/status:
+    get:
+      summary: Get Device Status
+      description: This request returns the full status (parameters and library items) for a specified Device ID.
+      parameters:
+      - name: device_id
+        in: path
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: Get Device Status
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  device_id: 77883d40-5656-4a24-9d70-49b6e751a923
+                  library_items:
+                  - id: 1222
+                    item_id: 4a98cb3d-3b55-46bf-829d-7dd7bd6ed832
+                    name: zoom
+                    status: PASS
+                    reported_at: '2021-05-11T19:45:19Z'
+                    type: custom-app
+                    last_audit_log: 'Executing audit script...
+
+                      Script exited with non-zero status.'
+                    log: 'Executing audit script...
+
+                      Script exited with non-zero status.
+
+                      Downloading zoom
+
+                      Completed download in four minutes, fifty seconds.
+
+                      Installing zoom
+
+                      Completed package installation in four seconds.'
+                  - id: 1218
+                    item_id: b81b0ed6-c703-45a0-8d49-8255ff21d413
+                    name: Microsoft Edge
+                    status: PASS
+                    reported_at: '2021-05-10T17:20:55Z'
+                    type: automatic-app
+                    last_audit_log: 'Kandji is set to automatically enforce updates for Microsoft Edge two weeks after they are released.
+
+                      Microsoft Edge 90.0.818.56 is installed, which is newer than the version being enforced.'
+                    log: 'Downloading Microsoft Edge
+
+                      Completed download in six seconds.
+
+                      Installing Microsoft Edge
+
+                      Completed package installation in twenty-three seconds.
+
+                      Added icon to end of Dock for all users.'
+                  - id: 1224
+                    item_id: 59be1e8e-5ba5-4bbc-bead-8b3e2006c3e5
+                    name: Custom Script
+                    status: PASS
+                    reported_at: '2021-05-10T17:20:55Z'
+                    type: custom-script
+                    last_audit_log: null
+                    log: 'Executing Custom Script...
+
+                      Exit code: 0'
+                  - id: 1220
+                    item_id: e517e593-5d9b-4492-abc1-64247f242f21
+                    name: Brave
+                    status: PASS
+                    reported_at: '2021-05-10T17:20:55Z'
+                    type: automatic-app
+                    last_audit_log: 'Brave 81.1.8.95 is installed and up to date.
+
+                      Kandji is set to enforce a minimum version (81.1.8.95) of Brave.'
+                    log: 'Downloading Brave
+
+                      Completed download in three seconds.
+
+                      Installing Brave
+
+                      Completed package installation in eight seconds.'
+                  - id: 1219
+                    item_id: ba02261d-e482-4e4f-b0ce-c108ba7b35a4
+                    name: Firefox
+                    status: PASS
+                    reported_at: '2021-05-10T17:20:55Z'
+                    type: automatic-app
+                    last_audit_log: 'Firefox 82.0.2 is installed and up to date.
+
+                      Kandji is set to enforce a minimum version (82.0.2) of Firefox.'
+                    log: 'Downloading Firefox
+
+                      Completed download in three seconds.
+
+                      Installing Firefox
+
+                      Completed package installation in seven seconds.'
+                  - id: 1221
+                    item_id: 62189209-7f84-4132-a4f7-89a12cb5a9c3
+                    name: Atom
+                    status: PASS
+                    reported_at: '2021-05-10T17:20:55Z'
+                    type: automatic-app
+                    last_audit_log: 'Atom 1.53.0 is installed and up to date.
+
+                      Kandji is set to enforce a minimum version (1.46.0) of Atom.'
+                    log: 'Downloading Atom
+
+                      Completed download in six seconds.
+
+                      Installing Atom
+
+                      Completed package installation in one minute, one second.
+
+                      Added icon to end of Dock for all users.'
+                  - id: 1225
+                    item_id: ae55bb5f-d1fc-4bab-a2ca-d4f34c703b5f
+                    name: Notion
+                    status: PASS
+                    reported_at: '2021-05-10T17:20:55Z'
+                    type: automatic-app
+                    last_audit_log: 'Notion 2.0.7 is installed and up to date.
+
+                      Kandji is set to enforce a minimum version (2.0.7) of Notion.'
+                    log: 'Downloading Notion
+
+                      Completed download in four seconds.
+
+                      Installing Notion
+
+                      Completed package installation in ten seconds.'
+                  - id: 1223
+                    item_id: 73be2f87-6ea8-4db9-8e42-af8a4dfec36f
+                    name: Chrome
+                    status: PASS
+                    reported_at: '2021-05-10T17:20:55Z'
+                    type: custom-app
+                    last_audit_log: null
+                    log: 'Downloading Chrome
+
+                      Completed download in two seconds.
+
+                      Installing Chrome
+
+                      Completed package installation in twenty-four seconds.'
+                  parameters:
+                  - status: PASS
+                    item_id: 1e4be748-e072-4c1f-b1ff-a98f076b8e8e
+                    name: Disable the "root" user
+                    category: User Accounts & Authentication
+                    subcategory: User Accounts
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    example: Bad Request
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    example: Unauthorized
+        '404':
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    example: Not Found
+      tags:
+      - Devices
+  /api/v1/devices/{device_id}/secrets/bypasscode:
+    get:
+      summary: Get Activation Lock Bypass Code
+      description: This request allows you to retrieve the Activation Lock Bypass code.
+      parameters:
+      - name: device_id
+        in: path
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: success
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  user_based_albc:
+                    type: string
+                    description: The user-based Activation Lock bypass code for when Activation Lock is enabled using a personal Apple ID and Find My
+                    example: A00M6-04XTY-YDMG-JNTE-EMZ3-FTJ5
+                  device_based_albc:
+                    type: string
+                    description: The device-based Activation Lock bypass code for when Activation Lock is enabled by the MDM server
+                    example: A00M6-04XTY-YDMG-JNTE-EMZ3-FTJ5
+                required:
+                - user_based_albc
+                - device_based_albc
+              example:
+                user_based_albc: A00M6-04XTY-YDMG-JNTE-EMZ3-FTJ5
+                device_based_albc: A00M6-04XTY-YDMG-JNTE-EMZ3-FTJ5
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    example: Bad Request
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    example: Unauthorized
+        '404':
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    example: Not Found
+      tags:
+      - Devices
+  /api/v1/devices/{device_id}/secrets/filevaultkey:
+    get:
+      summary: Get FileVault Recovery Key
+      description: This request allows you to retrieve the FileVault Recovery key for a macOS device.
+      parameters:
+      - name: device_id
+        in: path
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: success
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  key: 9A2U-CDK6-P6NH-FAB3-LTUH-2MYP
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    example: Bad Request
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    example: Unauthorized
+        '404':
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    example: Not Found
+      tags:
+      - Devices
+  /api/v1/devices/{device_id}/secrets/unlockpin:
+    get:
+      summary: Get Unlock Pin
+      description: This request allows you to retrieve the device unlock pin for a macOS device.
+      parameters:
+      - name: device_id
+        in: path
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: success
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  pin: '192746'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    example: Bad Request
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    example: Unauthorized
+        '404':
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    example: Not Found
+      tags:
+      - Devices
+  /api/v1/devices/{device_id}/secrets/recoverypassword:
+    get:
+      summary: Get Recovery Lock Password
+      description: This request returns the Recovery Lock password.
+      parameters:
+      - name: device_id
+        in: path
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: success
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  recovery_password: AAAAA-BBBBB-CCCC-1111-2222-3333
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    example: Bad Request
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    example: Unauthorized
+        '404':
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    example: Not Found
+      tags:
+      - Devices
+  /api/v1/devices/{device_id}/action/deleteuser:
+    post:
+      summary: Delete device user
+      description: This endpoint sends an MDM command to delete a local user account on macOS and Shared iPad.
+      parameters:
+      - name: device_id
+        in: path
+        required: true
+        schema:
+          type: string
+        description: The unique identifier of the device.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                DeleteAllUsers:
+                  type: boolean
+                  description: Delete all users on the device
+                ForceDeletion:
+                  type: boolean
+                  description: Force deletion of the user
+                UserName:
+                  type: string
+                  description: Username of the user to delete
+      responses:
+        '200':
+          description: User deletion command sent successfully
+          content:
+            application/json:
+              schema:
+                type: object
+      tags:
+      - Devices
+  /api/v1/devices/{device_id}/action/dailycheckin:
+    post:
+      summary: Daily check-in
+      description: This endpoint sends a daily check-in command to a device.
+      parameters:
+      - name: device_id
+        in: path
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: Daily check-in command sent successfully
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    description: Success message
+      tags:
+      - Devices
+components:
+  securitySchemes:
+    BearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT

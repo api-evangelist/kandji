@@ -1,0 +1,288 @@
+openapi: 3.2.0
+info:
+  title: Iru Endpoint Management Users API
+  description: "# Welcome to the Iru Endpoint Management API Documentation\n\n**Note:** Kandji is in the process of changing to Iru. Many URLs and notes within this documentation will continue to reference Kandji for some time.\n\nYou can find your API URL in Settings > Access. The API URL will follow the below formats.\n\n- US - `https://SubDomain.api.kandji.io`\n    \n- EU - `https://SubDomain.api.eu.kandji.io`\n    \n\nFor information on how to obtain an API token, please refer to the Iru docs.\n\n[https://docs.iru.com/](https://docs.iru.com/)\n\n#### Rate Limit\n\nThe Iru Endpoint Management API currently has an API rate limit of 10,000 requests per hour per customer.\n\n#### Request Methods\n\nHTTP request methods supported by the API.\n\n| Method | Definition |\n| --- | --- |\n| GET | The `GET` method requests a representation of the specified resource. |\n| POST | The `POST` method submits an entity to the specified resource. |\n| PATCH | The `PATCH` method applies partial modifications to a resource. |\n| DELETE | The `DELETE` method deletes the specified resource. |\n\n#### Response codes\n\nNot all response codes apply to every endpoint.\n\n| Code | Response |\n| --- | --- |\n| 200 | OK |\n| 201 | Created |\n| 204 | No content |\n|  | Typical response when sending the DELETE method. |\n| 400 | Bad Request |\n|  | \"Command already running\" - The command may already be running in a _Pending_ state waiting on the device. |\n|  | \"Command is not allowed for current device\" - The command may not be compatible with the target device. |\n|  | \"JSON parse error - Expecting ',' delimiter: line 3 column 2 (char 65)\" |\n| 401 | Unauthorized |\n|  | This error can occur if the token is incorrect, was revoked, or the token has expired. |\n| 403 | Forbidden |\n|  | The request was understood but cannot be authorized. |\n| 404 | Not found |\n|  | Unable to locate the resource in the Iru tenant. |\n| 415 | Unsupported Media Type |\n|  | The request contains a media type which the server or resource does not support. |\n| 500 | Internal server error |\n| 503 | Service unavailable |\n|  | This error can occur if a file upload is still being processed via the custom apps API. |\n\n#### Data structure\n\nThe API returns all structured responses in JSON schema format.\n\n#### Examples\n\nCode examples using the API can be found in the Iru Endpoint Management support [GitHub](https://github.com/kandji-inc/support/tree/main/api-tools)."
+  version: 1.0.0
+servers:
+- url: https://{subdomain}.api.kandji.io
+  description: US Server
+  variables:
+    subdomain:
+      default: your-subdomain
+      description: Your Iru Endpoint Management subdomain
+- url: https://{subdomain}.api.eu.kandji.io
+  description: EU Server
+  variables:
+    subdomain:
+      default: your-subdomain
+      description: Your Iru Endpoint Management subdomain
+security:
+- BearerAuth: []
+tags:
+- name: Users
+paths:
+  /api/v1/users:
+    get:
+      summary: List users
+      description: This endpoint makes a request to retrieve a list of users from user directory integrations.
+      parameters:
+      - name: email
+        in: query
+        required: false
+        description: 'Returns users with email addresses containing the provided string. Example: `test_user_01@accuhive.io`'
+        schema:
+          type: string
+        example: test_user_01@accuhive.io
+      - name: id
+        in: query
+        required: false
+        description: 'Search for a user matching the provided UUID value. Example: `69c009ca-1f78-4bdf-bb93-08d6d39041db`'
+        schema:
+          type: string
+        example: 69c009ca-1f78-4bdf-bb93-08d6d39041db
+      - name: integration_id
+        in: query
+        required: false
+        description: 'Search for an integration matching the provided UUID value. Example: `f7461096-4ef9-43aa-88e9-ca1967ba0b38`'
+        schema:
+          type: string
+        example: f7461096-4ef9-43aa-88e9-ca1967ba0b38
+      - name: archived
+        in: query
+        required: false
+        description: 'Return only users that are either archived (`true`) or not archived (`false`). Archived users are users that appear in the Users module under the Archived tab. Example: `false`'
+        schema:
+          type: boolean
+        example: false
+      - name: cursor
+        in: query
+        required: false
+        description: 'Cursor for the next or previous page of results. Can also store the URL in the `next` and `previous` fields in the response. Example: `eyJpZCI6MTIzNDU2Nzg5fQ==`'
+        schema:
+          type: string
+        example: eyJpZCI6MTIzNDU2Nzg5fQ==
+      responses:
+        '200':
+          description: List of users
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  next:
+                    type:
+                    - string
+                    - 'null'
+                  previous:
+                    type:
+                    - string
+                    - 'null'
+                  results:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        active:
+                          type: boolean
+                        archived:
+                          type: boolean
+                        created_at:
+                          type: string
+                          format: date-time
+                        department:
+                          type:
+                          - string
+                          - 'null'
+                        deprecated_user_id:
+                          type: string
+                        email:
+                          type: string
+                        id:
+                          type: string
+                        integration:
+                          type: object
+                          properties:
+                            id:
+                              type: integer
+                            name:
+                              type: string
+                            uuid:
+                              type: string
+                            type:
+                              type: string
+                        job_title:
+                          type:
+                          - string
+                          - 'null'
+                        name:
+                          type: string
+                        device_count:
+                          type: integer
+                        updated_at:
+                          type: string
+                          format: date-time
+                example:
+                  next: https://accuhive.kandji.io/api/v1/users?cursor=cD0yOTE0Mw%3D%3D
+                  previous: null
+                  results:
+                  - active: true
+                    archived: false
+                    created_at: '2024-09-06T21:00:04.304248Z'
+                    department: null
+                    deprecated_user_id: '29360'
+                    email: test_user_01@accuhive.io
+                    id: 69c009ca-1f78-4bdf-bb93-08d6d39041db
+                    integration:
+                      id: 634
+                      name: accuhive
+                      uuid: f7461096-4ef9-43aa-88e9-ca1967ba0b38
+                      type: office365
+                    job_title: null
+                    name: test_user_01
+                    device_count: 2
+                    updated_at: '2024-09-06T21:00:04.304280Z'
+                  - active: true
+                    archived: false
+                    created_at: '2024-09-06T17:00:04.503800Z'
+                    department: null
+                    deprecated_user_id: '29359'
+                    email: test_user_02@accuhive.io
+                    id: adacf177-fbc2-4485-be26-05d8d965a8a6
+                    integration:
+                      id: 634
+                      name: accuhive
+                      uuid: f7461096-4ef9-43aa-88e9-ca1967ba0b38
+                      type: office365
+                    job_title: null
+                    name: test_user_02
+                    device_count: 0
+                    updated_at: '2024-09-06T17:00:04.503814Z'
+              example:
+                next: https://accuhive.kandji.io/api/v1/users?cursor=cD0yOTE0Mw%3D%3D
+                previous: null
+                results:
+                - active: true
+                  archived: false
+                  created_at: '2024-09-06T21:00:04.304248Z'
+                  department: null
+                  deprecated_user_id: '29360'
+                  email: test_user_01@accuhive.io
+                  id: 69c009ca-1f78-4bdf-bb93-08d6d39041db
+                  integration:
+                    id: 634
+                    name: accuhive
+                    uuid: f7461096-4ef9-43aa-88e9-ca1967ba0b38
+                    type: office365
+                  job_title: null
+                  name: test_user_01
+                  device_count: 2
+                  updated_at: '2024-09-06T21:00:04.304280Z'
+                - active: true
+                  archived: false
+                  created_at: '2024-09-06T17:00:04.503800Z'
+                  department: null
+                  deprecated_user_id: '29359'
+                  email: test_user_02@accuhive.io
+                  id: adacf177-fbc2-4485-be26-05d8d965a8a6
+                  integration:
+                    id: 634
+                    name: accuhive
+                    uuid: f7461096-4ef9-43aa-88e9-ca1967ba0b38
+                    type: office365
+                  job_title: null
+                  name: test_user_02
+                  device_count: 0
+                  updated_at: '2024-09-06T17:00:04.503814Z'
+      tags:
+      - Users
+  /api/v1/users/{user_id}:
+    get:
+      summary: Get user
+      description: This request returns a specific user.
+      parameters:
+      - name: user_id
+        in: path
+        required: true
+        schema:
+          type: string
+        description: The unique identifier of the user directory integration user.
+      responses:
+        '200':
+          description: User details
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  active: true
+                  archived: false
+                  created_at: '2024-09-06T21:00:04.304248Z'
+                  department: null
+                  deprecated_user_id: '29360'
+                  email: test_user_01@accuhive.io
+                  id: 69c009ca-1f78-4bdf-bb93-08d6d39041db
+                  integration:
+                    id: 634
+                    name: accuhive
+                    uuid: f7461096-4ef9-43aa-88e9-ca1967ba0b38
+                    type: office365
+                  job_title: null
+                  name: test_user_01
+                  device_count: 2
+                  updated_at: '2024-09-06T21:00:04.304280Z'
+              example:
+                active: true
+                archived: false
+                created_at: '2024-09-06T21:00:04.304248Z'
+                department: null
+                deprecated_user_id: '29360'
+                email: test_user_01@accuhive.io
+                id: 69c009ca-1f78-4bdf-bb93-08d6d39041db
+                integration:
+                  id: 634
+                  name: accuhive
+                  uuid: f7461096-4ef9-43aa-88e9-ca1967ba0b38
+                  type: office365
+                job_title: null
+                name: test_user_01
+                device_count: 2
+                updated_at: '2024-09-06T21:00:04.304280Z'
+      tags:
+      - Users
+    delete:
+      summary: Delete user
+      description: This request deletes a user directory integration user.
+      parameters:
+      - name: user_id
+        in: path
+        required: true
+        schema:
+          type: string
+        description: The unique identifier of the user directory integration user.
+      responses:
+        '200':
+          description: User deleted successfully
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  detail: User deleted successfully
+        '400':
+          description: User still assigned to one or more devices
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  detail:
+                    type: string
+                    example: User still assigned to one or more devices.
+      tags:
+      - Users
+components:
+  securitySchemes:
+    BearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT

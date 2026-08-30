@@ -1,0 +1,1587 @@
+openapi: 3.2.0
+info:
+  title: Iru Endpoint Management Integrations API
+  description: "# Welcome to the Iru Endpoint Management API Documentation\n\n**Note:** Kandji is in the process of changing to Iru. Many URLs and notes within this documentation will continue to reference Kandji for some time.\n\nYou can find your API URL in Settings > Access. The API URL will follow the below formats.\n\n- US - `https://SubDomain.api.kandji.io`\n    \n- EU - `https://SubDomain.api.eu.kandji.io`\n    \n\nFor information on how to obtain an API token, please refer to the Iru docs.\n\n[https://docs.iru.com/](https://docs.iru.com/)\n\n#### Rate Limit\n\nThe Iru Endpoint Management API currently has an API rate limit of 10,000 requests per hour per customer.\n\n#### Request Methods\n\nHTTP request methods supported by the API.\n\n| Method | Definition |\n| --- | --- |\n| GET | The `GET` method requests a representation of the specified resource. |\n| POST | The `POST` method submits an entity to the specified resource. |\n| PATCH | The `PATCH` method applies partial modifications to a resource. |\n| DELETE | The `DELETE` method deletes the specified resource. |\n\n#### Response codes\n\nNot all response codes apply to every endpoint.\n\n| Code | Response |\n| --- | --- |\n| 200 | OK |\n| 201 | Created |\n| 204 | No content |\n|  | Typical response when sending the DELETE method. |\n| 400 | Bad Request |\n|  | \"Command already running\" - The command may already be running in a _Pending_ state waiting on the device. |\n|  | \"Command is not allowed for current device\" - The command may not be compatible with the target device. |\n|  | \"JSON parse error - Expecting ',' delimiter: line 3 column 2 (char 65)\" |\n| 401 | Unauthorized |\n|  | This error can occur if the token is incorrect, was revoked, or the token has expired. |\n| 403 | Forbidden |\n|  | The request was understood but cannot be authorized. |\n| 404 | Not found |\n|  | Unable to locate the resource in the Iru tenant. |\n| 415 | Unsupported Media Type |\n|  | The request contains a media type which the server or resource does not support. |\n| 500 | Internal server error |\n| 503 | Service unavailable |\n|  | This error can occur if a file upload is still being processed via the custom apps API. |\n\n#### Data structure\n\nThe API returns all structured responses in JSON schema format.\n\n#### Examples\n\nCode examples using the API can be found in the Iru Endpoint Management support [GitHub](https://github.com/kandji-inc/support/tree/main/api-tools)."
+  version: 1.0.0
+servers:
+- url: https://{subdomain}.api.kandji.io
+  description: US Server
+  variables:
+    subdomain:
+      default: your-subdomain
+      description: Your Iru Endpoint Management subdomain
+- url: https://{subdomain}.api.eu.kandji.io
+  description: EU Server
+  variables:
+    subdomain:
+      default: your-subdomain
+      description: Your Iru Endpoint Management subdomain
+security:
+- BearerAuth: []
+tags:
+- name: Integrations
+paths:
+  /api/v1/integrations/apple/ade/public_key/:
+    get:
+      summary: Download ADE public key
+      description: This request returns the public key used to create an MDM server connection in Apple Business or Apple School Manager.
+      parameters: []
+      responses:
+        '200':
+          description: Successful response - returns the public certificate
+          content:
+            application/x-x509-ca-cert:
+              schema:
+                type: string
+                format: binary
+                example: '-----BEGIN CERTIFICATE-----
+
+                  MIIC7TCCAdWgAwIBAgICANIwDQYJKoZIhvcNAQELBQAwLjEQMA4GA1UEAwwHU0NF
+
+                  UC1DQTELMAkGA1UEBhMCRVUxDTALBgNVBAoMBERUTkIwHhcNMjEwMjI2MTk1MTM1
+
+                  WhcNMzEwMjI0MTk1MTM1WjAxMRMwEQYDVQQDDApLQU5ESkktREVQMQswCQYDVQQG
+
+                  EwJFVTENMAsGA1UECgwERFROQjCCASIwDQYJKoZIhvcNAQEBBQADggEPADCCAQoC
+
+                  ggEBANsWli9JUD5Q32Gny5G8nfVACBwoYOd0WymsI96xrnguhMKS/zzrlkn4HUCt
+
+                  ...
+
+                  ...
+
+                  ...
+
+                  CSqGSIb3DQEBCwUAA4IBAQBAq91ds1eQxzxUE/vyRUd1D4Sq4kEHLtyumfbAdhxq
+
+                  oFVeQNCcHh4EAdH+D5kCV1KSbhap0WGm10c6rLidMSfcdCmr0IkIcFKCdtW3sAIB
+
+                  bqsM5pF1LULqnYZM25aDFRcy1d+t9en1jsL2ig2lDuIVCLd9Shj88R5NWELwHrar
+
+                  q0Ix5jA1qhQKrFzROXITAJUZOuf7WbOG7foM9Z12rQrfv1yTgLllr4S4qDCQUpGy
+
+                  3Q12WhkYltkdsG6GeoSbwNPxMUwNiDNE1Z3z51dMfzFud/vtB2wv29AIjRMBT4mW
+
+                  HA2a80rO+vlrUn8GR31yTlpazvalccuSuTpIO9VLxweB
+
+                  -----END CERTIFICATE-----'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    example: Bad Request
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    example: Unauthorized
+        '404':
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    example: Not Found
+      tags:
+      - Integrations
+  /api/v1/integrations/apple/ade/:
+    post:
+      summary: Create ADE integration
+      description: This request will create a new ADE integration.
+      parameters: []
+      requestBody:
+        required: true
+        content:
+          multipart/form-data:
+            schema:
+              type: object
+              properties:
+                blueprint_id:
+                  type: string
+                  description: The default blueprint ID
+                phone:
+                  type: string
+                  description: Phone number
+                email:
+                  type: string
+                  description: Email address
+                file:
+                  type: string
+                  format: binary
+                  description: MDM server token file from Apple Business or Apple School Manager
+      responses:
+        '200':
+          description: Create integration
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  id: 4fbe63a1-6dc3-42e2-80dc-b1b183287463
+                  blueprint:
+                    id: bf21d9cf-17cf-48b3-890d-7bc27c241bb7
+                    name: Default Blueprint
+                    icon: ss-files
+                    color: aqua-800
+                  access_token_expiry: '2023-06-15T00:06:08Z'
+                  server_name: stage 2
+                  server_uuid: 55251a76-0a79-4a58-b96c-68b25f5cae53
+                  admin_id: example@accuhive.io
+                  org_name: Accuhive
+                  org_email: example@accuhive.io
+                  org_phone: +1 (415) 640-4923
+                  org_address: 113 W G St,San Diego CA 92101-6096,USA
+                  org_type: org
+                  stoken_file_name: stage 2_Token_2022-06-15T00-06-08Z_smime.p7m
+                  last_device_sync: null
+                  defaults:
+                    email: example@accuhive.io
+                    phone: '123457890'
+                  days_left: 364
+                  status: SUCCESS
+                  status_reason: null
+                  status_received_at: null
+                  device_counts:
+                    total: 0
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    example: Bad Request
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    example: Unauthorized
+        '404':
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    example: Not Found
+      tags:
+      - Integrations
+  /api/v1/integrations/apple/ade/{ade_token_id}/renew:
+    post:
+      summary: Renew ADE integration
+      description: This request will renew an existing ADE integration.
+      parameters:
+      - name: ade_token_id
+        in: path
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: Renew integration
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  id: 6cd195c1-9421-40ce-af5e-35c16cb69cc9
+                  blueprint:
+                    id: bf21d9cf-17cf-48b3-890d-7bc27c241bb7
+                    name: Default Blueprint
+                    icon: ss-files
+                    color: aqua-800
+                  access_token_expiry: '2023-06-14T23:53:04Z'
+                  server_name: stage
+                  server_uuid: 78e5f9f7-3bfc-46ec-9c67-cbb1f25ceffd
+                  admin_id: example@accuhive.io
+                  org_name: Accuhive
+                  org_email: example@accuhive.io
+                  org_phone: +1 (415) 640-4923
+                  org_address: 113 W G St,San Diego CA 92101-6096,USA
+                  org_type: org
+                  stoken_file_name: stage-kandji.io_Token_2022-06-14T23-53-04Z_smime.p7m
+                  last_device_sync: '2022-06-14T23:51:00.567593Z'
+                  defaults:
+                    email: example@accuhive.io
+                    phone: '123457890'
+                  days_left: 364
+                  status: SUCCESS
+                  status_reason: null
+                  status_received_at: '2022-05-11T18:06:00.461776Z'
+                  device_counts:
+                    total: 0
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    example: Bad Request
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    example: Unauthorized
+        '404':
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    example: Not Found
+      tags:
+      - Integrations
+  /api/v1/integrations/apple/ade/{ade_token_id}:
+    patch:
+      summary: Update ADE integration
+      description: This request will update the default blueprint, phone number, and email address in an existing ADE integration.
+      parameters:
+      - name: ade_token_id
+        in: path
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: Update integration
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  id: 6cd195c1-9421-40ce-af5e-35c16cb69cc9
+                  blueprint:
+                    id: bf21d9cf-17cf-48b3-890d-7bc27c241bb7
+                    name: Default Blueprint
+                    icon: ss-files
+                    color: aqua-800
+                  access_token_expiry: '2023-06-14T23:53:04Z'
+                  server_name: stage
+                  server_uuid: 78e5f9f7-3bfc-46ec-9c67-cbb1f25ceffd
+                  admin_id: example@accuhive.io
+                  org_name: Accuhive
+                  org_email: example@accuhive.io
+                  org_phone: +1 (415) 640-4923
+                  org_address: 113 W G St,San Diego CA 92101-6096,USA
+                  org_type: org
+                  stoken_file_name: stage-kandji.io_Token_2022-06-14T23-53-04Z_smime.p7m
+                  last_device_sync: '2022-06-14T23:51:00.567593Z'
+                  defaults:
+                    email: example@accuhive.io
+                    phone: '123457890'
+                  days_left: 364
+                  status: SUCCESS
+                  status_reason: null
+                  status_received_at: '2022-05-11T18:06:00.461776Z'
+                  device_counts:
+                    total: 0
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    example: Bad Request
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    example: Unauthorized
+        '404':
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    example: Not Found
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              example:
+                blueprint_id: bf21d9cf-17cf-48b3-890d-7bc27c241bb7
+                phone: '1234567890'
+                email: example@accuhive.io
+      tags:
+      - Integrations
+    get:
+      summary: Get ADE integration
+      description: ''
+      parameters:
+      - name: ade_token_id
+        in: path
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: Get integration
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  id: 6aa1b707-57ba-43ed-bed7-3553d77ac3d1
+                  blueprint:
+                    id: bf21d9cf-17cf-48b3-890d-7bc27c241bb7
+                    name: Default Blueprint
+                    icon: ss-files
+                    color: aqua-800
+                  access_token_expiry: '2023-06-15T00:11:57Z'
+                  server_name: stage
+                  server_uuid: 78e5f9f7-3bfc-46ec-9c67-cbb1f25ceffd
+                  admin_id: example@accuhive.io
+                  org_name: Accuhive
+                  org_email: example@accuhive.io
+                  org_phone: +1 (415) 640-4923
+                  org_address: 113 W G St,San Diego CA 92101-6096,USA
+                  org_type: org
+                  stoken_file_name: stage_Token_2022-06-15T00-11-57Z_smime.p7m
+                  last_device_sync: '2022-06-15T00:31:00.581170Z'
+                  defaults:
+                    email: example@accuhive.io
+                    phone: '123457890'
+                  days_left: 364
+                  status: SUCCESS
+                  status_reason: null
+                  status_received_at: null
+                  device_counts:
+                    total: 0
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    example: Bad Request
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    example: Unauthorized
+        '404':
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    example: Not Found
+      tags:
+      - Integrations
+    delete:
+      summary: Delete ADE integration
+      description: ''
+      parameters:
+      - name: ade_token_id
+        in: path
+        required: true
+        schema:
+          type: string
+      responses:
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    example: Bad Request
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    example: Unauthorized
+        '404':
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    example: Not Found
+      tags:
+      - Integrations
+  /api/v1/integrations/apple/ade:
+    get:
+      summary: List ADE integrations
+      description: This request returns a list of configured ADE integrations.
+      parameters: []
+      responses:
+        '200':
+          description: List integrations
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  count: 2
+                  next: null
+                  previous: null
+                  results:
+                  - id: 1411be7d-5e91-439f-8d93-2f5667c60d42
+                    blueprint:
+                      id: 97e4e175-1631-43f6-a02b-33fd1c748ab8
+                      name: accuhive_default
+                      icon: ss-files
+                      color: aqua-800
+                    access_token_expiry: '2023-03-11T04:41:43Z'
+                    server_name: accuhive.kandji.io
+                    server_uuid: e0067508-4df3-4c0a-87c1-bd4ca5934b0b
+                    admin_id: admin@accuhive.io
+                    org_name: accuhive
+                    org_email: admin@accuhive.io
+                    org_phone: +1 (415) 640-4923
+                    org_address: 113 W G St,San Diego CA 92101-6096,USA
+                    org_type: org
+                    stoken_file_name: accuhive.kandji.io_Token_2022-03-11T04-41-43Z_smime.p7m
+                    last_device_sync: '2022-07-18T15:56:34.567587Z'
+                    defaults:
+                      email: admin@accuhive.io
+                      phone: '1234567890'
+                    days_left: 235
+                    status: SUCCESS
+                    status_reason: null
+                    status_received_at: '2022-05-11T18:07:48.349490Z'
+                    device_counts:
+                      Mac: 12
+                      iPad: 1
+                      iPhone: 1
+                      AppleTV: 1
+                      total: 15
+                  - id: bb7ad458-9d51-4652-a988-4b13cf8d61f4
+                    blueprint:
+                      id: 97e4e175-1631-43f6-a02b-33fd1c748ab8
+                      name: accuhive_default
+                      icon: ss-files
+                      color: aqua-800
+                    access_token_expiry: '2023-03-11T19:22:18Z'
+                    server_name: accuhive.kandji.io-2
+                    server_uuid: 0d7fda7f-19a7-4ddf-992b-89dbcd2d9dab
+                    admin_id: admin@accuhive.io
+                    org_name: accuhive
+                    org_email: admin@accuhive.io
+                    org_phone: +1 (415) 640-4923
+                    org_address: 113 W G St,San Diego CA 92101-6096,USA
+                    org_type: org
+                    stoken_file_name: accuhive.kandji.io-2_Token_2022-03-11T19-22-18Z_smime.p7m
+                    last_device_sync: '2022-04-27T18:51:30.560318Z'
+                    defaults:
+                      email: admin@accuhive.io
+                      phone: '1234567890'
+                    days_left: 236
+                    status: BROKEN
+                    status_reason: FORBIDDEN
+                    status_received_at: '2022-07-18T16:01:27.232090Z'
+                    device_counts:
+                      total: 0
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    example: Bad Request
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    example: Unauthorized
+        '404':
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    example: Not Found
+      tags:
+      - Integrations
+  /api/v1/integrations/apple/ade/{ade_token_id}/devices:
+    get:
+      summary: List devices associated to ADE token
+      description: This request returns a list of devices associated with a specified ade_token_id as well as their enrollment status.
+      parameters:
+      - name: ade_token_id
+        in: path
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: List associated devices - null mdm_device
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  count: 498
+                  next: https://accuhive.kandji.io/api/v1/integrations/apple/ade/119a9ad6-d6ee-460f-af11-36595c25ad68/devices/?page=2
+                  previous: null
+                  results:
+                  - blueprint:
+                      id: 70ab3d4e-1298-41a5-a2a7-b04abf804578
+                      name: EMPTY_DONT_ADD_STUFF
+                      icon: ss-attach
+                      color: orange-300
+                    mdm_device: null
+                    user: null
+                    dep_account:
+                      id: 0e5dceab-9389-4b4d-87a2-691de4ca2e73
+                      server_name: API Testing
+                    asset_tag: ''
+                    color: SILVER
+                    description: MBA 13.3 SLV/8C CPU/7C GPU/8GB/256GB-USA
+                    device_assigned_by: example@accuhive.io
+                    device_assigned_date: '2022-06-14T23:58:41Z'
+                    device_family: Mac
+                    model: MacBook Air
+                    os: OSX
+                    profile_assign_time: '2022-06-14T23:23:21Z'
+                    profile_push_time: '2022-06-14T23:58:41Z'
+                    profile_status: pushed
+                    serial_number: FVFXXXB3QXXX
+                    id: 80b43bbc-b283-4c70-aef3-4d34e340293e
+                    last_assignment_status: SUCCESS
+                    failed_assignment_attempts: 0
+                    assignment_status_received_at: '2022-06-14T23:23:21.701712Z'
+                  - blueprint:
+                      id: b38787e4-401c-4c4b-86dc-f1cca2072531
+                      name: auto_app_testing
+                      icon: ss-paintdisabled
+                      color: aqua-500
+                    mdm_device: null
+                    user: null
+                    dep_account:
+                      id: 119a9ad6-d6ee-460f-af11-36595c25ad68
+                      server_name: API Testing
+                    asset_tag: null
+                    color: GOLD
+                    description: MBA 13.3 GLD/8C CPU/7C GPU/8GB/256GB-USA
+                    device_assigned_by: example@accuhive.io
+                    device_assigned_date: '2022-06-30T19:09:51Z'
+                    device_family: Mac
+                    model: MacBook Air
+                    os: OSX
+                    profile_assign_time: '2022-06-30T19:09:56Z'
+                    profile_push_time: null
+                    profile_status: assigned
+                    serial_number: PZ5ZZIR186S8
+                    id: 9a7628c8-59ac-41cf-8596-bf07f589a0c7
+                    last_assignment_status: SUCCESS
+                    failed_assignment_attempts: 0
+                    assignment_status_received_at: '2022-06-30T19:09:58.070000Z'
+                  - blueprint:
+                      id: b38787e4-401c-4c4b-86dc-f1cca2072531
+                      name: auto_app_testing
+                      icon: ss-paintdisabled
+                      color: aqua-500
+                    mdm_device: null
+                    user: null
+                    dep_account:
+                      id: 119a9ad6-d6ee-460f-af11-36595c25ad68
+                      server_name: API Testing
+                    asset_tag: null
+                    color: GOLD
+                    description: MBA 13.3 GLD/8C CPU/7C GPU/8GB/256GB-USA
+                    device_assigned_by: example@accuhive.io
+                    device_assigned_date: '2022-06-30T19:10:51Z'
+                    device_family: Mac
+                    model: MacBook Air
+                    os: OSX
+                    profile_assign_time: '2022-06-30T19:10:56Z'
+                    profile_push_time: null
+                    profile_status: assigned
+                    serial_number: UQJOE6U9I36Q
+                    id: 03dba3c6-624c-4d01-9755-3b4ba9565f3f
+                    last_assignment_status: SUCCESS
+                    failed_assignment_attempts: 0
+                    assignment_status_received_at: '2022-06-30T19:10:58.070000Z'
+                  - blueprint:
+                      id: b38787e4-401c-4c4b-86dc-f1cca2072531
+                      name: auto_app_testing
+                      icon: ss-paintdisabled
+                      color: aqua-500
+                    mdm_device: null
+                    user: null
+                    dep_account:
+                      id: 119a9ad6-d6ee-460f-af11-36595c25ad68
+                      server_name: API Testing
+                    asset_tag: null
+                    color: GOLD
+                    description: MBA 13.3 GLD/8C CPU/7C GPU/8GB/256GB-USA
+                    device_assigned_by: example@accuhive.io
+                    device_assigned_date: '2022-06-30T19:11:51Z'
+                    device_family: Mac
+                    model: MacBook Air
+                    os: OSX
+                    profile_assign_time: '2022-06-30T19:11:56Z'
+                    profile_push_time: null
+                    profile_status: assigned
+                    serial_number: XBKIJXO3X14O
+                    id: 3973b56d-db7d-4771-8289-0602d84f8f11
+                    last_assignment_status: SUCCESS
+                    failed_assignment_attempts: 0
+                    assignment_status_received_at: '2022-06-30T19:11:58.070000Z'
+                  - blueprint:
+                      id: b38787e4-401c-4c4b-86dc-f1cca2072531
+                      name: auto_app_testing
+                      icon: ss-paintdisabled
+                      color: aqua-500
+                    mdm_device: null
+                    user: null
+                    dep_account:
+                      id: 119a9ad6-d6ee-460f-af11-36595c25ad68
+                      server_name: API Testing
+                    asset_tag: null
+                    color: GOLD
+                    description: MBA 13.3 GLD/8C CPU/7C GPU/8GB/256GB-USA
+                    device_assigned_by: example@accuhive.io
+                    device_assigned_date: '2022-06-30T19:12:51Z'
+                    device_family: Mac
+                    model: MacBook Air
+                    os: OSX
+                    profile_assign_time: '2022-06-30T19:12:56Z'
+                    profile_push_time: null
+                    profile_status: assigned
+                    serial_number: TZ2QFWBGKWJM
+                    id: 5f5fc661-ec2a-4ab6-8663-4449eda6dfd4
+                    last_assignment_status: SUCCESS
+                    failed_assignment_attempts: 0
+                    assignment_status_received_at: '2022-06-30T19:12:58.070000Z'
+                  - blueprint:
+                      id: b38787e4-401c-4c4b-86dc-f1cca2072531
+                      name: auto_app_testing
+                      icon: ss-paintdisabled
+                      color: aqua-500
+                    mdm_device: null
+                    user: null
+                    dep_account:
+                      id: 119a9ad6-d6ee-460f-af11-36595c25ad68
+                      server_name: API Testing
+                    asset_tag: null
+                    color: GOLD
+                    description: MBA 13.3 GLD/8C CPU/7C GPU/8GB/256GB-USA
+                    device_assigned_by: example@accuhive.io
+                    device_assigned_date: '2022-06-30T19:09:51Z'
+                    device_family: Mac
+                    model: MacBook Air
+                    os: OSX
+                    profile_assign_time: '2022-06-30T19:09:56Z'
+                    profile_push_time: null
+                    profile_status: assigned
+                    serial_number: B60I6IOYAIKO
+                    id: f17461fd-d428-4194-99ff-c91e476b2c07
+                    last_assignment_status: SUCCESS
+                    failed_assignment_attempts: 0
+                    assignment_status_received_at: '2022-06-30T19:09:58.070000Z'
+                  - blueprint:
+                      id: b38787e4-401c-4c4b-86dc-f1cca2072531
+                      name: auto_app_testing
+                      icon: ss-paintdisabled
+                      color: aqua-500
+                    mdm_device: null
+                    user: null
+                    dep_account:
+                      id: 119a9ad6-d6ee-460f-af11-36595c25ad68
+                      server_name: API Testing
+                    asset_tag: null
+                    color: GOLD
+                    description: MBA 13.3 GLD/8C CPU/7C GPU/8GB/256GB-USA
+                    device_assigned_by: example@accuhive.io
+                    device_assigned_date: '2022-06-30T19:09:51Z'
+                    device_family: Mac
+                    model: MacBook Air
+                    os: OSX
+                    profile_assign_time: '2022-06-30T19:09:56Z'
+                    profile_push_time: null
+                    profile_status: assigned
+                    serial_number: VDVCKYCVYNEV
+                    id: 2920149b-8ea9-4b6f-8cc2-e3f5ac8ff28c
+                    last_assignment_status: SUCCESS
+                    failed_assignment_attempts: 0
+                    assignment_status_received_at: '2022-06-30T19:09:58.070000Z'
+                  - blueprint:
+                      id: b38787e4-401c-4c4b-86dc-f1cca2072531
+                      name: auto_app_testing
+                      icon: ss-paintdisabled
+                      color: aqua-500
+                    mdm_device: null
+                    user: null
+                    dep_account:
+                      id: 119a9ad6-d6ee-460f-af11-36595c25ad68
+                      server_name: API Testing
+                    asset_tag: null
+                    color: GOLD
+                    description: MBA 13.3 GLD/8C CPU/7C GPU/8GB/256GB-USA
+                    device_assigned_by: example@accuhive.io
+                    device_assigned_date: '2022-06-30T19:09:51Z'
+                    device_family: Mac
+                    model: MacBook Air
+                    os: OSX
+                    profile_assign_time: '2022-06-30T19:09:56Z'
+                    profile_push_time: null
+                    profile_status: assigned
+                    serial_number: WSUOWXKBLFQN
+                    id: 063044b4-0c4b-4540-8308-8df7bf5767ce
+                    last_assignment_status: SUCCESS
+                    failed_assignment_attempts: 0
+                    assignment_status_received_at: '2022-06-30T19:09:58.070000Z'
+                  - blueprint:
+                      id: b38787e4-401c-4c4b-86dc-f1cca2072531
+                      name: auto_app_testing
+                      icon: ss-paintdisabled
+                      color: aqua-500
+                    mdm_device: null
+                    user: null
+                    dep_account:
+                      id: 119a9ad6-d6ee-460f-af11-36595c25ad68
+                      server_name: API Testing
+                    asset_tag: null
+                    color: GOLD
+                    description: MBA 13.3 GLD/8C CPU/7C GPU/8GB/256GB-USA
+                    device_assigned_by: example@accuhive.io
+                    device_assigned_date: '2022-06-30T19:09:51Z'
+                    device_family: Mac
+                    model: MacBook Air
+                    os: OSX
+                    profile_assign_time: '2022-06-30T19:09:56Z'
+                    profile_push_time: null
+                    profile_status: assigned
+                    serial_number: 2JNQEICBHZVJ
+                    id: dde9eeaf-2731-4027-a162-a3f23935a277
+                    last_assignment_status: SUCCESS
+                    failed_assignment_attempts: 0
+                    assignment_status_received_at: '2022-06-30T19:09:58.070000Z'
+                  - blueprint:
+                      id: b38787e4-401c-4c4b-86dc-f1cca2072531
+                      name: auto_app_testing
+                      icon: ss-paintdisabled
+                      color: aqua-500
+                    mdm_device: null
+                    user: null
+                    dep_account:
+                      id: 119a9ad6-d6ee-460f-af11-36595c25ad68
+                      server_name: API Testing
+                    asset_tag: null
+                    color: GOLD
+                    description: MBA 13.3 GLD/8C CPU/7C GPU/8GB/256GB-USA
+                    device_assigned_by: example@accuhive.io
+                    device_assigned_date: '2022-06-30T19:09:51Z'
+                    device_family: Mac
+                    model: MacBook Air
+                    os: OSX
+                    profile_assign_time: '2022-06-30T19:09:56Z'
+                    profile_push_time: null
+                    profile_status: assigned
+                    serial_number: OUIJOLT0TFFR
+                    id: 67945772-3ca9-44ea-a4df-fa6f37ff441f
+                    last_assignment_status: SUCCESS
+                    failed_assignment_attempts: 0
+                    assignment_status_received_at: '2022-06-30T19:09:58.070000Z'
+                  - blueprint:
+                      id: b38787e4-401c-4c4b-86dc-f1cca2072531
+                      name: auto_app_testing
+                      icon: ss-paintdisabled
+                      color: aqua-500
+                    mdm_device: null
+                    user: null
+                    dep_account:
+                      id: 119a9ad6-d6ee-460f-af11-36595c25ad68
+                      server_name: API Testing
+                    asset_tag: null
+                    color: GOLD
+                    description: MBA 13.3 GLD/8C CPU/7C GPU/8GB/256GB-USA
+                    device_assigned_by: example@accuhive.io
+                    device_assigned_date: '2022-06-30T19:09:51Z'
+                    device_family: Mac
+                    model: MacBook Air
+                    os: OSX
+                    profile_assign_time: '2022-06-30T19:09:56Z'
+                    profile_push_time: null
+                    profile_status: assigned
+                    serial_number: HWNUHNFQXXJB
+                    id: 3a31562a-2a3e-4873-bef4-9a06e4352ad7
+                    last_assignment_status: SUCCESS
+                    failed_assignment_attempts: 0
+                    assignment_status_received_at: '2022-06-30T19:09:58.070000Z'
+                  - blueprint:
+                      id: b38787e4-401c-4c4b-86dc-f1cca2072531
+                      name: auto_app_testing
+                      icon: ss-paintdisabled
+                      color: aqua-500
+                    mdm_device: null
+                    user: null
+                    dep_account:
+                      id: 119a9ad6-d6ee-460f-af11-36595c25ad68
+                      server_name: API Testing
+                    asset_tag: null
+                    color: GOLD
+                    description: MBA 13.3 GLD/8C CPU/7C GPU/8GB/256GB-USA
+                    device_assigned_by: example@accuhive.io
+                    device_assigned_date: '2022-06-30T19:09:51Z'
+                    device_family: Mac
+                    model: MacBook Air
+                    os: OSX
+                    profile_assign_time: '2022-06-30T19:09:56Z'
+                    profile_push_time: null
+                    profile_status: assigned
+                    serial_number: HGGQOUOLTLG3
+                    id: 650950b9-8be8-4f9e-970c-2bf2a0f88187
+                    last_assignment_status: SUCCESS
+                    failed_assignment_attempts: 0
+                    assignment_status_received_at: '2022-06-30T19:09:58.070000Z'
+                  - blueprint:
+                      id: b38787e4-401c-4c4b-86dc-f1cca2072531
+                      name: auto_app_testing
+                      icon: ss-paintdisabled
+                      color: aqua-500
+                    mdm_device: null
+                    user: null
+                    dep_account:
+                      id: 119a9ad6-d6ee-460f-af11-36595c25ad68
+                      server_name: API Testing
+                    asset_tag: null
+                    color: GOLD
+                    description: MBA 13.3 GLD/8C CPU/7C GPU/8GB/256GB-USA
+                    device_assigned_by: example@accuhive.io
+                    device_assigned_date: '2022-06-30T19:09:51Z'
+                    device_family: Mac
+                    model: MacBook Air
+                    os: OSX
+                    profile_assign_time: '2022-06-30T19:09:56Z'
+                    profile_push_time: null
+                    profile_status: assigned
+                    serial_number: MX3TACOBFZHL
+                    id: 00c09e16-8c50-41d4-bcc2-1811fc72b006
+                    last_assignment_status: SUCCESS
+                    failed_assignment_attempts: 0
+                    assignment_status_received_at: '2022-06-30T19:09:58.070000Z'
+                  - blueprint:
+                      id: b38787e4-401c-4c4b-86dc-f1cca2072531
+                      name: auto_app_testing
+                      icon: ss-paintdisabled
+                      color: aqua-500
+                    mdm_device: null
+                    user: null
+                    dep_account:
+                      id: 119a9ad6-d6ee-460f-af11-36595c25ad68
+                      server_name: API Testing
+                    asset_tag: null
+                    color: GOLD
+                    description: MBA 13.3 GLD/8C CPU/7C GPU/8GB/256GB-USA
+                    device_assigned_by: example@accuhive.io
+                    device_assigned_date: '2022-06-30T19:09:51Z'
+                    device_family: Mac
+                    model: MacBook Air
+                    os: OSX
+                    profile_assign_time: '2022-06-30T19:09:56Z'
+                    profile_push_time: null
+                    profile_status: assigned
+                    serial_number: ROWUPQUAPLZH
+                    id: b53c7e06-ee93-499d-aadf-397662c134ef
+                    last_assignment_status: SUCCESS
+                    failed_assignment_attempts: 0
+                    assignment_status_received_at: '2022-06-30T19:09:58.070000Z'
+                  - blueprint:
+                      id: b38787e4-401c-4c4b-86dc-f1cca2072531
+                      name: auto_app_testing
+                      icon: ss-paintdisabled
+                      color: aqua-500
+                    mdm_device: null
+                    user: null
+                    dep_account:
+                      id: 119a9ad6-d6ee-460f-af11-36595c25ad68
+                      server_name: API Testing
+                    asset_tag: null
+                    color: GOLD
+                    description: MBA 13.3 GLD/8C CPU/7C GPU/8GB/256GB-USA
+                    device_assigned_by: example@accuhive.io
+                    device_assigned_date: '2022-06-30T19:09:51Z'
+                    device_family: Mac
+                    model: MacBook Air
+                    os: OSX
+                    profile_assign_time: '2022-06-30T19:09:56Z'
+                    profile_push_time: null
+                    profile_status: assigned
+                    serial_number: YTOCKCHYDBT6
+                    id: 78eb2368-0639-4a6f-9467-cace292db33d
+                    last_assignment_status: SUCCESS
+                    failed_assignment_attempts: 0
+                    assignment_status_received_at: '2022-06-30T19:09:58.070000Z'
+                  - blueprint:
+                      id: b38787e4-401c-4c4b-86dc-f1cca2072531
+                      name: auto_app_testing
+                      icon: ss-paintdisabled
+                      color: aqua-500
+                    mdm_device: null
+                    user: null
+                    dep_account:
+                      id: 119a9ad6-d6ee-460f-af11-36595c25ad68
+                      server_name: API Testing
+                    asset_tag: null
+                    color: GOLD
+                    description: MBA 13.3 GLD/8C CPU/7C GPU/8GB/256GB-USA
+                    device_assigned_by: example@accuhive.io
+                    device_assigned_date: '2022-06-30T19:09:51Z'
+                    device_family: Mac
+                    model: MacBook Air
+                    os: OSX
+                    profile_assign_time: '2022-06-30T19:09:56Z'
+                    profile_push_time: null
+                    profile_status: assigned
+                    serial_number: JU3VSQS2DMFU
+                    id: c311e247-ca79-4b35-8cb3-e7409c304880
+                    last_assignment_status: SUCCESS
+                    failed_assignment_attempts: 0
+                    assignment_status_received_at: '2022-06-30T19:09:58.070000Z'
+                  - blueprint:
+                      id: b38787e4-401c-4c4b-86dc-f1cca2072531
+                      name: auto_app_testing
+                      icon: ss-paintdisabled
+                      color: aqua-500
+                    mdm_device: null
+                    user: null
+                    dep_account:
+                      id: 119a9ad6-d6ee-460f-af11-36595c25ad68
+                      server_name: API Testing
+                    asset_tag: null
+                    color: GOLD
+                    description: MBA 13.3 GLD/8C CPU/7C GPU/8GB/256GB-USA
+                    device_assigned_by: example@accuhive.io
+                    device_assigned_date: '2022-06-30T19:09:51Z'
+                    device_family: Mac
+                    model: MacBook Air
+                    os: OSX
+                    profile_assign_time: '2022-06-30T19:09:56Z'
+                    profile_push_time: null
+                    profile_status: assigned
+                    serial_number: L4LJYCGSYFP1
+                    id: d70aa1d9-aa52-40de-b45c-20e48611e2d4
+                    last_assignment_status: SUCCESS
+                    failed_assignment_attempts: 0
+                    assignment_status_received_at: '2022-06-30T19:09:58.070000Z'
+                  - blueprint:
+                      id: b38787e4-401c-4c4b-86dc-f1cca2072531
+                      name: auto_app_testing
+                      icon: ss-paintdisabled
+                      color: aqua-500
+                    mdm_device: null
+                    user: null
+                    dep_account:
+                      id: 119a9ad6-d6ee-460f-af11-36595c25ad68
+                      server_name: API Testing
+                    asset_tag: null
+                    color: GOLD
+                    description: MBA 13.3 GLD/8C CPU/7C GPU/8GB/256GB-USA
+                    device_assigned_by: example@accuhive.io
+                    device_assigned_date: '2022-06-30T19:09:51Z'
+                    device_family: Mac
+                    model: MacBook Air
+                    os: OSX
+                    profile_assign_time: '2022-06-30T19:09:56Z'
+                    profile_push_time: null
+                    profile_status: assigned
+                    serial_number: L11R13OS6V12
+                    id: 94c319cf-a056-488d-8681-6f456d87cc41
+                    last_assignment_status: SUCCESS
+                    failed_assignment_attempts: 0
+                    assignment_status_received_at: '2022-06-30T19:09:58.070000Z'
+                  - blueprint:
+                      id: b38787e4-401c-4c4b-86dc-f1cca2072531
+                      name: auto_app_testing
+                      icon: ss-paintdisabled
+                      color: aqua-500
+                    mdm_device: null
+                    user: null
+                    dep_account:
+                      id: 119a9ad6-d6ee-460f-af11-36595c25ad68
+                      server_name: API Testing
+                    asset_tag: null
+                    color: GOLD
+                    description: MBA 13.3 GLD/8C CPU/7C GPU/8GB/256GB-USA
+                    device_assigned_by: example@accuhive.io
+                    device_assigned_date: '2022-06-30T19:09:51Z'
+                    device_family: Mac
+                    model: MacBook Air
+                    os: OSX
+                    profile_assign_time: '2022-06-30T19:09:56Z'
+                    profile_push_time: null
+                    profile_status: assigned
+                    serial_number: MPH7P16FHKNK
+                    id: a6c1676c-46e2-40f7-87bf-5aa1ea02d625
+                    last_assignment_status: SUCCESS
+                    failed_assignment_attempts: 0
+                    assignment_status_received_at: '2022-06-30T19:09:58.070000Z'
+                  - blueprint:
+                      id: b38787e4-401c-4c4b-86dc-f1cca2072531
+                      name: auto_app_testing
+                      icon: ss-paintdisabled
+                      color: aqua-500
+                    mdm_device: null
+                    user: null
+                    dep_account:
+                      id: 119a9ad6-d6ee-460f-af11-36595c25ad68
+                      server_name: API Testing
+                    asset_tag: null
+                    color: GOLD
+                    description: MBA 13.3 GLD/8C CPU/7C GPU/8GB/256GB-USA
+                    device_assigned_by: example@accuhive.io
+                    device_assigned_date: '2022-06-30T19:09:51Z'
+                    device_family: Mac
+                    model: MacBook Air
+                    os: OSX
+                    profile_assign_time: '2022-06-30T19:09:56Z'
+                    profile_push_time: null
+                    profile_status: assigned
+                    serial_number: BZX1AZEUEZJW
+                    id: 8c1cdc33-7695-49c6-bde5-033a595c64c9
+                    last_assignment_status: SUCCESS
+                    failed_assignment_attempts: 0
+                    assignment_status_received_at: '2022-06-30T19:09:58.070000Z'
+                  - blueprint:
+                      id: b38787e4-401c-4c4b-86dc-f1cca2072531
+                      name: auto_app_testing
+                      icon: ss-paintdisabled
+                      color: aqua-500
+                    mdm_device: null
+                    user: null
+                    dep_account:
+                      id: 119a9ad6-d6ee-460f-af11-36595c25ad68
+                      server_name: API Testing
+                    asset_tag: null
+                    color: GOLD
+                    description: MBA 13.3 GLD/8C CPU/7C GPU/8GB/256GB-USA
+                    device_assigned_by: example@accuhive.io
+                    device_assigned_date: '2022-06-30T19:09:51Z'
+                    device_family: Mac
+                    model: MacBook Air
+                    os: OSX
+                    profile_assign_time: '2022-06-30T19:09:56Z'
+                    profile_push_time: null
+                    profile_status: assigned
+                    serial_number: CII977WQ06J8
+                    id: 4c90fcdb-7f9a-4779-b86a-1a7aa14d9c08
+                    last_assignment_status: SUCCESS
+                    failed_assignment_attempts: 0
+                    assignment_status_received_at: '2022-06-30T19:09:58.070000Z'
+                  - blueprint:
+                      id: b38787e4-401c-4c4b-86dc-f1cca2072531
+                      name: auto_app_testing
+                      icon: ss-paintdisabled
+                      color: aqua-500
+                    mdm_device: null
+                    user: null
+                    dep_account:
+                      id: 119a9ad6-d6ee-460f-af11-36595c25ad68
+                      server_name: API Testing
+                    asset_tag: null
+                    color: GOLD
+                    description: MBA 13.3 GLD/8C CPU/7C GPU/8GB/256GB-USA
+                    device_assigned_by: example@accuhive.io
+                    device_assigned_date: '2022-06-30T19:09:51Z'
+                    device_family: Mac
+                    model: MacBook Air
+                    os: OSX
+                    profile_assign_time: '2022-06-30T19:09:56Z'
+                    profile_push_time: null
+                    profile_status: assigned
+                    serial_number: LX8ZTLG0SPZU
+                    id: 1fb8647d-66cd-4881-8283-c33136e220e3
+                    last_assignment_status: SUCCESS
+                    failed_assignment_attempts: 0
+                    assignment_status_received_at: '2022-06-30T19:09:58.070000Z'
+                  - blueprint:
+                      id: b38787e4-401c-4c4b-86dc-f1cca2072531
+                      name: auto_app_testing
+                      icon: ss-paintdisabled
+                      color: aqua-500
+                    mdm_device: null
+                    user: null
+                    dep_account:
+                      id: 119a9ad6-d6ee-460f-af11-36595c25ad68
+                      server_name: API Testing
+                    asset_tag: null
+                    color: GOLD
+                    description: MBA 13.3 GLD/8C CPU/7C GPU/8GB/256GB-USA
+                    device_assigned_by: example@accuhive.io
+                    device_assigned_date: '2022-06-30T19:09:51Z'
+                    device_family: Mac
+                    model: MacBook Air
+                    os: OSX
+                    profile_assign_time: '2022-06-30T19:09:56Z'
+                    profile_push_time: null
+                    profile_status: assigned
+                    serial_number: 3NQZEMKMKZ3T
+                    id: a31d31f5-c911-4272-a7ee-985be29ac353
+                    last_assignment_status: SUCCESS
+                    failed_assignment_attempts: 0
+                    assignment_status_received_at: '2022-06-30T19:09:58.070000Z'
+                  - blueprint:
+                      id: b38787e4-401c-4c4b-86dc-f1cca2072531
+                      name: auto_app_testing
+                      icon: ss-paintdisabled
+                      color: aqua-500
+                    mdm_device: null
+                    user: null
+                    dep_account:
+                      id: 119a9ad6-d6ee-460f-af11-36595c25ad68
+                      server_name: API Testing
+                    asset_tag: null
+                    color: GOLD
+                    description: MBA 13.3 GLD/8C CPU/7C GPU/8GB/256GB-USA
+                    device_assigned_by: example@accuhive.io
+                    device_assigned_date: '2022-06-30T19:09:51Z'
+                    device_family: Mac
+                    model: MacBook Air
+                    os: OSX
+                    profile_assign_time: '2022-06-30T19:09:56Z'
+                    profile_push_time: null
+                    profile_status: assigned
+                    serial_number: 9WTTWLCYXSY0
+                    id: 9d4b4830-a07b-4f9c-b8f6-4956fde6d671
+                    last_assignment_status: SUCCESS
+                    failed_assignment_attempts: 0
+                    assignment_status_received_at: '2022-06-30T19:09:58.070000Z'
+                  - blueprint:
+                      id: b38787e4-401c-4c4b-86dc-f1cca2072531
+                      name: auto_app_testing
+                      icon: ss-paintdisabled
+                      color: aqua-500
+                    mdm_device: null
+                    user: null
+                    dep_account:
+                      id: 119a9ad6-d6ee-460f-af11-36595c25ad68
+                      server_name: API Testing
+                    asset_tag: null
+                    color: GOLD
+                    description: MBA 13.3 GLD/8C CPU/7C GPU/8GB/256GB-USA
+                    device_assigned_by: example@accuhive.io
+                    device_assigned_date: '2022-06-30T19:09:51Z'
+                    device_family: Mac
+                    model: MacBook Air
+                    os: OSX
+                    profile_assign_time: '2022-06-30T19:09:56Z'
+                    profile_push_time: null
+                    profile_status: assigned
+                    serial_number: M6A8ZWAX93MG
+                    id: 9c4c5b72-b466-4e46-850c-d3eff6065fe7
+                    last_assignment_status: SUCCESS
+                    failed_assignment_attempts: 0
+                    assignment_status_received_at: '2022-06-30T19:09:58.070000Z'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    example: Bad Request
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    example: Unauthorized
+        '404':
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    example: Not Found
+      tags:
+      - Integrations
+  /api/v1/integrations/apple/ade/devices:
+    get:
+      summary: List ADE devices
+      description: Get a list of Automated Device Enrollment devices.
+      parameters:
+      - name: blueprint_id
+        in: query
+        required: false
+        description: Return results "containing" the specified blueprint id
+        schema:
+          type: string
+      - name: user_id
+        in: query
+        required: false
+        description: '"exact" match on user ID value (example: 5344c996-8823-4b37-8d6e-8515fc7c3a0a)'
+        schema:
+          type: string
+      - name: dep_account
+        in: query
+        required: false
+        description: The ADE token UUID
+        schema:
+          type: string
+      - name: device_family
+        in: query
+        required: false
+        description: iPad, iPhone, iPod, Mac, AppleTV, or Vision
+        schema:
+          type: string
+      - name: model
+        in: query
+        required: false
+        description: Return model results "containing" the specified model string. - "iPad (8th Generation)", "MacBook Air"
+        schema:
+          type: string
+      - name: os
+        in: query
+        required: false
+        description: iOS, iPadOS, OSX, tvOS, or visionOS
+        schema:
+          type: string
+      - name: profile_status
+        in: query
+        required: false
+        description: The automated device enrollment profile assignment status - assigned, empty, pushed, removed
+        schema:
+          type: string
+      - name: serial_number
+        in: query
+        required: false
+        description: Search for a specific device by Serial Number. If partial serial number is provided in the query, all device containing the partial string will be returned.
+        schema:
+          type: string
+      - name: page
+        in: query
+        required: false
+        description: 'Use the `page` parameter to page through results or to request a specific page. By default, if a page is not specified, page 1 is returned. Note: 300 device records are returned per page of results. Alternatively, the `next` and `previous` key attributes in the response can be used to request the next page of results or return to the previous page.'
+        schema:
+          type: string
+      responses:
+        '200':
+          description: success
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  count: 1
+                  next: null
+                  previous: null
+                  results:
+                  - blueprint_id: c4d2da33-99f0-4ed4-b7a5-731f78b0c1e2
+                    mdm_device:
+                      id: 782f4054-b971-4bec-850b-7bf13ce806fe
+                      enrolled_at: '2023-09-20T14:44:45.258155Z'
+                      name: testuser’s MacBook Air
+                      enrollment_status: 4
+                      deferred_install: false
+                      is_missing: false
+                      is_removed: false
+                    user_id: 5344c996-8823-4b37-8d6e-8515fc7c3a0a
+                    dep_account:
+                      id: 821b216b-8a8d-4089-b4d9-c66dc83f92f2
+                      server_name: accuhive
+                    asset_tag: sending_to_now
+                    color: GOLD
+                    description: MBA 13.3 GLD/8C CPU/7C GPU/8GB/256GB-USA
+                    device_assigned_by: accuhive@accuhive.io
+                    device_assigned_date: '2023-08-22T16:56:48Z'
+                    device_family: Mac
+                    model: MacBook Air
+                    os: OSX
+                    profile_assign_time: '2023-09-21T22:02:45Z'
+                    profile_push_time: '2023-09-20T14:43:45Z'
+                    profile_status: assigned
+                    serial_number: C02FL5YXQ6LC
+                    id: aca3e9f7-48d9-44a5-9007-25bc0b1d451f
+                    last_assignment_status: SUCCESS
+                    failed_assignment_attempts: 0
+                    assignment_status_received_at: '2023-09-21T22:02:45.609328Z'
+                    blueprint: c4d2da33-99f0-4ed4-b7a5-731f78b0c1e2
+                    user: 5344c996-8823-4b37-8d6e-8515fc7c3a0a
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    example: Bad Request
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    example: Unauthorized
+        '404':
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    example: Not Found
+      tags:
+      - Integrations
+  /api/v1/integrations/apple/ade/devices/{device_id}:
+    get:
+      summary: Get ADE device
+      description: Get information about a specific Automated Device Enrollment device.
+      parameters:
+      - name: device_id
+        in: path
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: success
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  blueprint_id: c4d2da33-99f0-4ed4-b7a5-731f78b0c1e2
+                  mdm_device:
+                    id: 782f4054-b971-4bec-850b-7bf13ce806fe
+                    enrolled_at: '2023-09-20T14:44:45.258155Z'
+                    name: testuser’s MacBook Air
+                    enrollment_status: 4
+                    deferred_install: false
+                    is_missing: false
+                    is_removed: false
+                  user_id: 5344c996-8823-4b37-8d6e-8515fc7c3a0a
+                  dep_account:
+                    id: 821b216b-8a8d-4089-b4d9-c66dc83f92f2
+                    server_name: accuhive
+                  asset_tag: sending_to_now
+                  color: GOLD
+                  description: MBA 13.3 GLD/8C CPU/7C GPU/8GB/256GB-USA
+                  device_assigned_by: accuhive@accuhive.io
+                  device_assigned_date: '2023-08-22T16:56:48Z'
+                  device_family: Mac
+                  model: MacBook Air
+                  os: OSX
+                  profile_assign_time: '2023-09-21T22:02:45Z'
+                  profile_push_time: '2023-09-20T14:43:45Z'
+                  profile_status: assigned
+                  serial_number: C02FL5YXQ6LC
+                  id: aca3e9f7-48d9-44a5-9007-25bc0b1d451f
+                  last_assignment_status: SUCCESS
+                  failed_assignment_attempts: 0
+                  assignment_status_received_at: '2023-09-21T22:02:45.609328Z'
+                  blueprint: c4d2da33-99f0-4ed4-b7a5-731f78b0c1e2
+                  user: 5344c996-8823-4b37-8d6e-8515fc7c3a0a
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    example: Bad Request
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    example: Unauthorized
+        '404':
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    example: Not Found
+      tags:
+      - Integrations
+    patch:
+      summary: Update ADE device
+      description: Update a specific Automated Device Enrollment device's blueprint assignment, user assignment, and asset tag.
+      parameters:
+      - name: device_id
+        in: path
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: Update user assignment
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  blueprint_id: b38787e4-401c-4c4b-86dc-f1cca2072531
+                  mdm_device:
+                    id: 782f4054-b971-4bec-850b-7bf13ce806fe
+                    enrolled_at: '2023-09-20T14:44:45.258155Z'
+                    name: testuser’s MacBook Air
+                    enrollment_status: 4
+                    deferred_install: false
+                    is_missing: false
+                    is_removed: false
+                  user_id: 5344c996-8823-4b37-8d6e-8515fc7c3a0a
+                  dep_account:
+                    id: 821b216b-8a8d-4089-b4d9-c66dc83f92f2
+                    server_name: accuhive
+                  asset_tag: sending_to_now
+                  color: GOLD
+                  description: MBA 13.3 GLD/8C CPU/7C GPU/8GB/256GB-USA
+                  device_assigned_by: accuhive@accuhive.io
+                  device_assigned_date: '2023-08-22T16:56:48Z'
+                  device_family: Mac
+                  model: MacBook Air
+                  os: OSX
+                  profile_assign_time: '2023-09-21T22:02:45Z'
+                  profile_push_time: '2023-09-20T14:43:45Z'
+                  profile_status: assigned
+                  serial_number: C02FL5YXQ6LC
+                  id: aca3e9f7-48d9-44a5-9007-25bc0b1d451f
+                  last_assignment_status: SUCCESS
+                  failed_assignment_attempts: 0
+                  assignment_status_received_at: '2023-09-21T22:02:45.609328Z'
+                  blueprint: b38787e4-401c-4c4b-86dc-f1cca2072531
+                  user: 5344c996-8823-4b37-8d6e-8515fc7c3a0a
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    example: Bad Request
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    example: Unauthorized
+        '404':
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    example: Not Found
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              example:
+                blueprint_id: 3013eb7c-d0c1-4689-852a-50776a92036b
+                asset_tag: '123456'
+                user_id: 5344c996-8823-4b37-8d6e-8515fc7c3a0a
+      tags:
+      - Integrations
+components:
+  securitySchemes:
+    BearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
