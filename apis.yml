@@ -45,15 +45,15 @@ created: '2026-08-01'
 modified: '2026-08-01'
 tags:
 - Company
-- Device Management
-- Mobile Device Management
+- device-management
+- mobile-device-management
 - apple-management
-- Endpoint Security
+- endpoint-security
 - endpoint-detection-response
-- Vulnerability Management
-- Compliance Automation
-- Workforce Identity
-- IT Operations
+- vulnerability-management
+- compliance-automation
+- workforce-identity
+- it-operations
 - MCP
 - agent-native
 tags_raw:
@@ -82,8 +82,8 @@ apis:
   tags:
   - MCP
   - agent-native
-  - Device Management
-  - Endpoint Security
+  - device-management
+  - endpoint-security
   tags_raw:
   - mcp
   - agent-native
@@ -214,6 +214,8 @@ apis:
   humanURL: https://api-docs.kandji.io/
   baseURL: https://your-subdomain.api.kandji.io
   tags:
+  - Integration
+  tags_raw:
   - Integrations
   properties:
   - type: OpenAPI
@@ -298,6 +300,8 @@ apis:
   humanURL: https://api-docs.kandji.io/
   baseURL: https://your-subdomain.api.kandji.io
   tags:
+  - Self-Service
+  tags_raw:
   - Self Service
   properties:
   - type: OpenAPI
@@ -438,6 +442,8 @@ apis:
   humanURL: https://api-docs.kandji.io/
   baseURL: https://your-subdomain.api.kandji.io
   tags:
+  - User
+  tags_raw:
   - Users
   properties:
   - type: OpenAPI
