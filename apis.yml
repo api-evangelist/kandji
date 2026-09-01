@@ -45,15 +45,15 @@ created: '2026-08-01'
 modified: '2026-08-01'
 tags:
 - Company
-- device-management
-- mobile-device-management
+- Device Management
+- Mobile Device Management
 - apple-management
-- endpoint-security
+- Endpoint Security
 - endpoint-detection-response
-- vulnerability-management
-- compliance-automation
-- workforce-identity
-- it-operations
+- Vulnerability Management
+- Compliance Automation
+- Workforce Identity
+- IT Operations
 - MCP
 - agent-native
 tags_raw:
@@ -82,8 +82,8 @@ apis:
   tags:
   - MCP
   - agent-native
-  - device-management
-  - endpoint-security
+  - Device Management
+  - Endpoint Security
   tags_raw:
   - mcp
   - agent-native
