@@ -1,7 +1,10 @@
 openapi: 3.2.0
 info:
   title: Iru Endpoint Management Prism API
-  description: "# Welcome to the Iru Endpoint Management API Documentation\n\n**Note:** Kandji is in the process of changing to Iru. Many URLs and notes within this documentation will continue to reference Kandji for some time.\n\nYou can find your API URL in Settings > Access. The API URL will follow the below formats.\n\n- US - `https://SubDomain.api.kandji.io`\n    \n- EU - `https://SubDomain.api.eu.kandji.io`\n    \n\nFor information on how to obtain an API token, please refer to the Iru docs.\n\n[https://docs.iru.com/](https://docs.iru.com/)\n\n#### Rate Limit\n\nThe Iru Endpoint Management API currently has an API rate limit of 10,000 requests per hour per customer.\n\n#### Request Methods\n\nHTTP request methods supported by the API.\n\n| Method | Definition |\n| --- | --- |\n| GET | The `GET` method requests a representation of the specified resource. |\n| POST | The `POST` method submits an entity to the specified resource. |\n| PATCH | The `PATCH` method applies partial modifications to a resource. |\n| DELETE | The `DELETE` method deletes the specified resource. |\n\n#### Response codes\n\nNot all response codes apply to every endpoint.\n\n| Code | Response |\n| --- | --- |\n| 200 | OK |\n| 201 | Created |\n| 204 | No content |\n|  | Typical response when sending the DELETE method. |\n| 400 | Bad Request |\n|  | \"Command already running\" - The command may already be running in a _Pending_ state waiting on the device. |\n|  | \"Command is not allowed for current device\" - The command may not be compatible with the target device. |\n|  | \"JSON parse error - Expecting ',' delimiter: line 3 column 2 (char 65)\" |\n| 401 | Unauthorized |\n|  | This error can occur if the token is incorrect, was revoked, or the token has expired. |\n| 403 | Forbidden |\n|  | The request was understood but cannot be authorized. |\n| 404 | Not found |\n|  | Unable to locate the resource in the Iru tenant. |\n| 415 | Unsupported Media Type |\n|  | The request contains a media type which the server or resource does not support. |\n| 500 | Internal server error |\n| 503 | Service unavailable |\n|  | This error can occur if a file upload is still being processed via the custom apps API. |\n\n#### Data structure\n\nThe API returns all structured responses in JSON schema format.\n\n#### Examples\n\nCode examples using the API can be found in the Iru Endpoint Management support [GitHub](https://github.com/kandji-inc/support/tree/main/api-tools)."
+  description: '# Welcome to the Iru Endpoint Management API Documentation
+
+
+    **Note:** Kandji is in the process of changing to Iru.'
   version: 1.0.0
 servers:
 - url: https://{subdomain}.api.kandji.io
@@ -152,6 +155,8 @@ paths:
                     example: Not Found
       tags:
       - Prism
+      operationId: getApiV1PrismActivationLock
+      x-operation-id-source: derived
   /api/v1/prism/apps:
     get:
       summary: Applications
@@ -354,6 +359,8 @@ paths:
                     example: Not Found
       tags:
       - Prism
+      operationId: getApiV1PrismApps
+      x-operation-id-source: derived
   /api/v1/prism/application_firewall:
     get:
       summary: Application firewall
@@ -467,6 +474,8 @@ paths:
                     example: Not Found
       tags:
       - Prism
+      operationId: getApiV1PrismApplicationFirewall
+      x-operation-id-source: derived
   /api/v1/prism/cellular:
     get:
       summary: Cellular
@@ -608,6 +617,8 @@ paths:
                     example: Not Found
       tags:
       - Prism
+      operationId: getApiV1PrismCellular
+      x-operation-id-source: derived
   /api/v1/prism/certificates:
     get:
       summary: Certificates
@@ -753,6 +764,8 @@ paths:
                     example: Not Found
       tags:
       - Prism
+      operationId: getApiV1PrismCertificates
+      x-operation-id-source: derived
   /api/v1/prism/desktop_and_screensaver:
     get:
       summary: Desktop and Screensaver
@@ -884,6 +897,8 @@ paths:
                     example: Not Found
       tags:
       - Prism
+      operationId: getApiV1PrismDesktopAndScreensaver
+      x-operation-id-source: derived
   /api/v1/prism/device_information:
     get:
       summary: Device information
@@ -1017,6 +1032,8 @@ paths:
                     example: Not Found
       tags:
       - Prism
+      operationId: getApiV1PrismDeviceInformation
+      x-operation-id-source: derived
   /api/v1/prism/filevault:
     get:
       summary: FileVault
@@ -1127,6 +1144,8 @@ paths:
                     example: Not Found
       tags:
       - Prism
+      operationId: getApiV1PrismFilevault
+      x-operation-id-source: derived
   /api/v1/prism/gatekeeper_and_xprotect:
     get:
       summary: Gatekeeper and XProtect
@@ -1238,6 +1257,8 @@ paths:
                     example: Not Found
       tags:
       - Prism
+      operationId: getApiV1PrismGatekeeperAndXprotect
+      x-operation-id-source: derived
   /api/v1/prism/installed_profiles:
     get:
       summary: Installed profiles
@@ -1360,6 +1381,8 @@ paths:
                     example: Not Found
       tags:
       - Prism
+      operationId: getApiV1PrismInstalledProfiles
+      x-operation-id-source: derived
   /api/v1/prism/kernel_extensions:
     get:
       summary: Kernel Extensions
@@ -1448,6 +1471,8 @@ paths:
                     example: Not Found
       tags:
       - Prism
+      operationId: getApiV1PrismKernelExtensions
+      x-operation-id-source: derived
   /api/v1/prism/launch_agents_and_daemons:
     get:
       summary: Launch Agents and Daemons
@@ -1584,6 +1609,8 @@ paths:
                     example: Not Found
       tags:
       - Prism
+      operationId: getApiV1PrismLaunchAgentsAndDaemons
+      x-operation-id-source: derived
   /api/v1/prism/local_users:
     get:
       summary: Local users
@@ -1709,6 +1736,8 @@ paths:
                     example: Not Found
       tags:
       - Prism
+      operationId: getApiV1PrismLocalUsers
+      x-operation-id-source: derived
   /api/v1/prism/startup_settings:
     get:
       summary: Startup settings
@@ -1825,6 +1854,8 @@ paths:
                     example: Not Found
       tags:
       - Prism
+      operationId: getApiV1PrismStartupSettings
+      x-operation-id-source: derived
   /api/v1/prism/system_extensions:
     get:
       summary: System Extensions
@@ -1940,6 +1971,8 @@ paths:
                     example: Not Found
       tags:
       - Prism
+      operationId: getApiV1PrismSystemExtensions
+      x-operation-id-source: derived
   /api/v1/prism/transparency_database:
     get:
       summary: Transparency database
@@ -2052,6 +2085,8 @@ paths:
                     example: Not Found
       tags:
       - Prism
+      operationId: getApiV1PrismTransparencyDatabase
+      x-operation-id-source: derived
   /api/v1/prism/export:
     post:
       summary: Request category export
@@ -2155,6 +2190,8 @@ paths:
               - category
       tags:
       - Prism
+      operationId: postApiV1PrismExport
+      x-operation-id-source: derived
   /api/v1/prism/export/{export_id}:
     get:
       summary: Get category export
@@ -2219,6 +2256,8 @@ paths:
                     example: Not Found
       tags:
       - Prism
+      operationId: getApiV1PrismExportByExportId
+      x-operation-id-source: derived
   /api/v1/prism/count:
     get:
       summary: Count
@@ -2273,6 +2312,8 @@ paths:
                     example: Not Found
       tags:
       - Prism
+      operationId: getApiV1PrismCount
+      x-operation-id-source: derived
 components:
   securitySchemes:
     BearerAuth:

@@ -1,7 +1,10 @@
 openapi: 3.2.0
 info:
   title: Iru Endpoint Management Devices API
-  description: "# Welcome to the Iru Endpoint Management API Documentation\n\n**Note:** Kandji is in the process of changing to Iru. Many URLs and notes within this documentation will continue to reference Kandji for some time.\n\nYou can find your API URL in Settings > Access. The API URL will follow the below formats.\n\n- US - `https://SubDomain.api.kandji.io`\n    \n- EU - `https://SubDomain.api.eu.kandji.io`\n    \n\nFor information on how to obtain an API token, please refer to the Iru docs.\n\n[https://docs.iru.com/](https://docs.iru.com/)\n\n#### Rate Limit\n\nThe Iru Endpoint Management API currently has an API rate limit of 10,000 requests per hour per customer.\n\n#### Request Methods\n\nHTTP request methods supported by the API.\n\n| Method | Definition |\n| --- | --- |\n| GET | The `GET` method requests a representation of the specified resource. |\n| POST | The `POST` method submits an entity to the specified resource. |\n| PATCH | The `PATCH` method applies partial modifications to a resource. |\n| DELETE | The `DELETE` method deletes the specified resource. |\n\n#### Response codes\n\nNot all response codes apply to every endpoint.\n\n| Code | Response |\n| --- | --- |\n| 200 | OK |\n| 201 | Created |\n| 204 | No content |\n|  | Typical response when sending the DELETE method. |\n| 400 | Bad Request |\n|  | \"Command already running\" - The command may already be running in a _Pending_ state waiting on the device. |\n|  | \"Command is not allowed for current device\" - The command may not be compatible with the target device. |\n|  | \"JSON parse error - Expecting ',' delimiter: line 3 column 2 (char 65)\" |\n| 401 | Unauthorized |\n|  | This error can occur if the token is incorrect, was revoked, or the token has expired. |\n| 403 | Forbidden |\n|  | The request was understood but cannot be authorized. |\n| 404 | Not found |\n|  | Unable to locate the resource in the Iru tenant. |\n| 415 | Unsupported Media Type |\n|  | The request contains a media type which the server or resource does not support. |\n| 500 | Internal server error |\n| 503 | Service unavailable |\n|  | This error can occur if a file upload is still being processed via the custom apps API. |\n\n#### Data structure\n\nThe API returns all structured responses in JSON schema format.\n\n#### Examples\n\nCode examples using the API can be found in the Iru Endpoint Management support [GitHub](https://github.com/kandji-inc/support/tree/main/api-tools)."
+  description: '# Welcome to the Iru Endpoint Management API Documentation
+
+
+    **Note:** Kandji is in the process of changing to Iru.'
   version: 1.0.0
 servers:
 - url: https://{subdomain}.api.kandji.io
@@ -91,6 +94,8 @@ paths:
                     example: Not Found
       tags:
       - Devices
+      operationId: postApiV1DevicesByDeviceIdActionEnablelostmode
+      x-operation-id-source: derived
   /api/v1/devices/{device_id}/action/disablelostmode:
     post:
       summary: Disable Lost Mode
@@ -140,6 +145,8 @@ paths:
                     example: Not Found
       tags:
       - Devices
+      operationId: postApiV1DevicesByDeviceIdActionDisablelostmode
+      x-operation-id-source: derived
   /api/v1/devices/{device_id}/action/playlostmodesound:
     post:
       summary: Play Lost Mode Sound
@@ -189,6 +196,8 @@ paths:
                     example: Not Found
       tags:
       - Devices
+      operationId: postApiV1DevicesByDeviceIdActionPlaylostmodesound
+      x-operation-id-source: derived
   /api/v1/devices/{device_id}/action/updatelocation:
     post:
       summary: Update Location
@@ -238,6 +247,8 @@ paths:
                     example: Not Found
       tags:
       - Devices
+      operationId: postApiV1DevicesByDeviceIdActionUpdatelocation
+      x-operation-id-source: derived
   /api/v1/devices/{device_id}/action/clearpasscode:
     post:
       summary: Clear Passcode
@@ -281,6 +292,8 @@ paths:
                     example: Not Found
       tags:
       - Devices
+      operationId: postApiV1DevicesByDeviceIdActionClearpasscode
+      x-operation-id-source: derived
   /api/v1/devices/{device_id}:
     get:
       summary: Get Device
@@ -324,9 +337,11 @@ paths:
                     example: Not Found
       tags:
       - Devices
+      operationId: getApiV1DevicesByDeviceId
+      x-operation-id-source: derived
     patch:
       summary: Update Device
-      description: 'This request allows you to update device information, such as the assigned blueprint, user, Asset Tag, '
+      description: This request allows you to update device information, such as the assigned blueprint, user, Asset Tag,
       parameters:
       - name: device_id
         in: path
@@ -435,6 +450,8 @@ paths:
                     example: Not Found
       tags:
       - Devices
+      operationId: patchApiV1DevicesByDeviceId
+      x-operation-id-source: derived
     delete:
       summary: Delete device
       description: This endpoint deletes a specific device.
@@ -449,6 +466,8 @@ paths:
           description: Device deleted successfully
       tags:
       - Devices
+      operationId: deleteApiV1DevicesByDeviceId
+      x-operation-id-source: derived
   /api/v1/devices/{device_id}/action/erase:
     post:
       summary: Erase Device
@@ -527,6 +546,8 @@ paths:
                     example: Not Found
       tags:
       - Devices
+      operationId: postApiV1DevicesByDeviceIdActionErase
+      x-operation-id-source: derived
   /api/v1/devices/{device_id}/commands:
     get:
       summary: Get Device Commands
@@ -608,6 +629,8 @@ paths:
                     example: Not Found
       tags:
       - Devices
+      operationId: getApiV1DevicesByDeviceIdCommands
+      x-operation-id-source: derived
   /api/v1/devices/{device_id}/action/lock:
     post:
       summary: Lock Device
@@ -675,6 +698,8 @@ paths:
                     example: Not Found
       tags:
       - Devices
+      operationId: postApiV1DevicesByDeviceIdActionLock
+      x-operation-id-source: derived
   /api/v1/devices/{device_id}/action/reinstallagent:
     post:
       summary: Reinstall Agent
@@ -718,6 +743,8 @@ paths:
                     example: Not Found
       tags:
       - Devices
+      operationId: postApiV1DevicesByDeviceIdActionReinstallagent
+      x-operation-id-source: derived
   /api/v1/devices/{device_id}/action/remotedesktop:
     post:
       summary: Remote Desktop
@@ -775,6 +802,8 @@ paths:
                     example: Not Found
       tags:
       - Devices
+      operationId: postApiV1DevicesByDeviceIdActionRemotedesktop
+      x-operation-id-source: derived
   /api/v1/devices/{device_id}/action/renewmdmprofile:
     post:
       summary: Renew MDM Profile
@@ -824,6 +853,8 @@ paths:
                     example: Not Found
       tags:
       - Devices
+      operationId: postApiV1DevicesByDeviceIdActionRenewmdmprofile
+      x-operation-id-source: derived
   /api/v1/devices/{device_id}/action/restart:
     post:
       summary: Restart Device
@@ -883,6 +914,8 @@ paths:
                     example: Not Found
       tags:
       - Devices
+      operationId: postApiV1DevicesByDeviceIdActionRestart
+      x-operation-id-source: derived
   /api/v1/devices/{device_id}/action/blankpush:
     post:
       summary: Send Blankpush
@@ -926,6 +959,8 @@ paths:
                     example: Not Found
       tags:
       - Devices
+      operationId: postApiV1DevicesByDeviceIdActionBlankpush
+      x-operation-id-source: derived
   /api/v1/devices/{device_id}/action/setname:
     post:
       summary: Set Name
@@ -983,6 +1018,8 @@ paths:
                     example: Not Found
       tags:
       - Devices
+      operationId: postApiV1DevicesByDeviceIdActionSetname
+      x-operation-id-source: derived
   /api/v1/devices/{device_id}/action/shutdown:
     post:
       summary: Shutdown
@@ -1026,6 +1063,8 @@ paths:
                     example: Not Found
       tags:
       - Devices
+      operationId: postApiV1DevicesByDeviceIdActionShutdown
+      x-operation-id-source: derived
   /api/v1/devices/{device_id}/action/updateinventory:
     post:
       summary: Update Inventory
@@ -1069,6 +1108,8 @@ paths:
                     example: Not Found
       tags:
       - Devices
+      operationId: postApiV1DevicesByDeviceIdActionUpdateinventory
+      x-operation-id-source: derived
   /api/v1/devices/{device_id}/action/unlockaccount:
     post:
       summary: Unlock Account
@@ -1119,6 +1160,8 @@ paths:
                 UserName: LocalUserToUnlock
       tags:
       - Devices
+      operationId: postApiV1DevicesByDeviceIdActionUnlockaccount
+      x-operation-id-source: derived
   /api/v1/devices/{device_id}/notes:
     get:
       summary: Get Device Notes
@@ -1174,6 +1217,8 @@ paths:
                     example: Not Found
       tags:
       - Devices
+      operationId: getApiV1DevicesByDeviceIdNotes
+      x-operation-id-source: derived
     post:
       summary: Create Device Note
       description: This request creates a note for the specified device ID.
@@ -1240,6 +1285,8 @@ paths:
                     example: Not Found
       tags:
       - Devices
+      operationId: postApiV1DevicesByDeviceIdNotes
+      x-operation-id-source: derived
   /api/v1/devices/{device_id}/notes/{note_id}:
     get:
       summary: Retrieve Device Note
@@ -1300,6 +1347,8 @@ paths:
                     example: Not Found
       tags:
       - Devices
+      operationId: getApiV1DevicesByDeviceIdNotesByNoteId
+      x-operation-id-source: derived
     patch:
       summary: Update Device Note
       description: This request patches a specified note (Note ID) for the specified Device ID.
@@ -1371,6 +1420,8 @@ paths:
                     example: Not Found
       tags:
       - Devices
+      operationId: patchApiV1DevicesByDeviceIdNotesByNoteId
+      x-operation-id-source: derived
     delete:
       summary: Delete Device Note
       description: This request deletes a specified note (Note ID) for the specified Device ID.
@@ -1427,6 +1478,8 @@ paths:
                     example: Not Found
       tags:
       - Devices
+      operationId: deleteApiV1DevicesByDeviceIdNotesByNoteId
+      x-operation-id-source: derived
   /api/v1/devices:
     get:
       summary: List Devices
@@ -1597,6 +1650,8 @@ paths:
                     example: Not Found
       tags:
       - Devices
+      operationId: getApiV1Devices
+      x-operation-id-source: derived
   /api/v1/devices/{device_id}/details:
     get:
       summary: Get Device Details
@@ -1640,6 +1695,8 @@ paths:
                     example: Not Found
       tags:
       - Devices
+      operationId: getApiV1DevicesByDeviceIdDetails
+      x-operation-id-source: derived
   /api/v1/devices/{device_id}/details/lostmode:
     get:
       summary: Get device lost mode details
@@ -1751,6 +1808,8 @@ paths:
                   sound_status_at: '2022-12-13T20:21:38.992261Z'
       tags:
       - Devices
+      operationId: getApiV1DevicesByDeviceIdDetailsLostmode
+      x-operation-id-source: derived
     delete:
       summary: Cancel Lost Mode
       description: This endpoint can be used to send a cancelation request if Lost Mode is in an error state for a given iOS or iPadOS device.
@@ -1773,6 +1832,8 @@ paths:
                     description: Success message
       tags:
       - Devices
+      operationId: deleteApiV1DevicesByDeviceIdDetailsLostmode
+      x-operation-id-source: derived
   /api/v1/devices/{device_id}/activity:
     get:
       summary: Get Device Activity
@@ -1828,6 +1889,8 @@ paths:
                     example: Not Found
       tags:
       - Devices
+      operationId: getApiV1DevicesByDeviceIdActivity
+      x-operation-id-source: derived
   /api/v1/devices/{device_id}/apps:
     get:
       summary: Get Device Apps
@@ -1871,6 +1934,8 @@ paths:
                     example: Not Found
       tags:
       - Devices
+      operationId: getApiV1DevicesByDeviceIdApps
+      x-operation-id-source: derived
   /api/v1/devices/{device_id}/library-items:
     get:
       summary: Get Device Library Items
@@ -1950,6 +2015,8 @@ paths:
                     example: Not Found
       tags:
       - Devices
+      operationId: getApiV1DevicesByDeviceIdLibraryItems
+      x-operation-id-source: derived
   /api/v1/devices/{device_id}/parameters:
     get:
       summary: Get Device Parameters
@@ -2007,6 +2074,8 @@ paths:
                     example: Not Found
       tags:
       - Devices
+      operationId: getApiV1DevicesByDeviceIdParameters
+      x-operation-id-source: derived
   /api/v1/devices/{device_id}/status:
     get:
       summary: Get Device Status
@@ -2193,6 +2262,8 @@ paths:
                     example: Not Found
       tags:
       - Devices
+      operationId: getApiV1DevicesByDeviceIdStatus
+      x-operation-id-source: derived
   /api/v1/devices/{device_id}/secrets/bypasscode:
     get:
       summary: Get Activation Lock Bypass Code
@@ -2257,6 +2328,8 @@ paths:
                     example: Not Found
       tags:
       - Devices
+      operationId: getApiV1DevicesByDeviceIdSecretsBypasscode
+      x-operation-id-source: derived
   /api/v1/devices/{device_id}/secrets/filevaultkey:
     get:
       summary: Get FileVault Recovery Key
@@ -2308,6 +2381,8 @@ paths:
                     example: Not Found
       tags:
       - Devices
+      operationId: getApiV1DevicesByDeviceIdSecretsFilevaultkey
+      x-operation-id-source: derived
   /api/v1/devices/{device_id}/secrets/unlockpin:
     get:
       summary: Get Unlock Pin
@@ -2359,6 +2434,8 @@ paths:
                     example: Not Found
       tags:
       - Devices
+      operationId: getApiV1DevicesByDeviceIdSecretsUnlockpin
+      x-operation-id-source: derived
   /api/v1/devices/{device_id}/secrets/recoverypassword:
     get:
       summary: Get Recovery Lock Password
@@ -2410,6 +2487,8 @@ paths:
                     example: Not Found
       tags:
       - Devices
+      operationId: getApiV1DevicesByDeviceIdSecretsRecoverypassword
+      x-operation-id-source: derived
   /api/v1/devices/{device_id}/action/deleteuser:
     post:
       summary: Delete device user
@@ -2446,6 +2525,8 @@ paths:
                 type: object
       tags:
       - Devices
+      operationId: postApiV1DevicesByDeviceIdActionDeleteuser
+      x-operation-id-source: derived
   /api/v1/devices/{device_id}/action/dailycheckin:
     post:
       summary: Daily check-in
@@ -2469,6 +2550,8 @@ paths:
                     description: Success message
       tags:
       - Devices
+      operationId: postApiV1DevicesByDeviceIdActionDailycheckin
+      x-operation-id-source: derived
 components:
   securitySchemes:
     BearerAuth:

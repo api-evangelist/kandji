@@ -78,3 +78,5 @@ paths:
           description: Internal server error
       tags:
       - Upload To S3
+      operationId: postByPostUrl
+      x-operation-id-source: derived

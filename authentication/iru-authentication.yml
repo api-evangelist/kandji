@@ -1,0 +1,39 @@
+generated: '2026-07-19'
+method: searched
+source: https://docs.iru.com/en/endpoint/api/iru-api-overview.md
+docs: https://support.kandji.io/kb/kandji-api
+summary:
+  types: [http]
+  scheme: bearer
+  api_key_in: [header]
+  oauth2_flows: []
+schemes:
+  - name: bearerAuth
+    type: http
+    scheme: bearer
+    in: header
+    header: Authorization
+    format: "Bearer <token>"
+    description: >-
+      Iru Endpoint uses tenant-level bearer tokens to control access to the API.
+      Tokens are created in the Access area (Account Menu > Access > API tokens
+      tab). Each token has a Name and Description and is shown exactly once at
+      creation ("You will not be able to see the token or the MCP configuration
+      again"). Tokens can optionally be MCP-enabled for use with MCP clients.
+    sources:
+      - https://docs.iru.com/en/endpoint/api/iru-api-overview.md
+permissions:
+  model: per-token scoped permissions (not OAuth scopes)
+  description: >-
+    Each API token carries a configurable set of permissions, grouped into
+    sections (for example "Blueprints Management"). Checking or unchecking a
+    section header toggles every permission in that section. Permissions are
+    edited on the token detail view (Configure / Edit) after creation and can be
+    revoked at any time. This is a permission-grant model over a bearer token,
+    not an OAuth2 scope surface, so no scopes/ artifact is emitted.
+token_host:
+  form: <subdomain>.api.kandji.io
+  example: accuhive.api.kandji.io
+  note: >-
+    The tenant-specific API URL is displayed on the API tokens page after the
+    first token is created.

@@ -1,0 +1,29 @@
+# Front Door AI Index — kandji — 2026-09-17
+# AI vocabulary counted on the provider's root page. Generated; do not edit.
+# `score` is null unless ownership is `own` — see front_door_ai.py.
+front_door_ai:
+  slug: kandji
+  lexicon_version: '1.0'
+  probed_at: '2026-09-17'
+  host: www.iru.com
+  final_host: www.iru.com
+  ownership: own
+  owner: kandji
+  shares_host_with: null
+  inherited_from: null
+  verdict: scored
+  score: 13
+  host_score: 13
+  density: 12.45
+  words: 1044
+  tiers:
+    agentic: 4
+    core: 9
+    model: 0
+  ambiguous: 10
+  top_terms:
+    AI: 9
+    automation: 5
+    MCP: 4
+    agent: 4
+    intelligence: 1

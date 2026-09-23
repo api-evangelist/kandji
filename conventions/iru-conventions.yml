@@ -1,0 +1,59 @@
+generated: '2026-07-19'
+method: searched
+source: https://docs.iru.com/en/endpoint/api/iru-api-overview.md
+api_style: REST/JSON
+authentication:
+  style: bearer-token
+  detail: >-
+    Tenant-level bearer token in the Authorization header. See
+    authentication/iru-authentication.yml.
+regions:
+  - id: us
+    host: <subdomain>.api.kandji.io
+  - id: eu
+    host: <subdomain>.api.eu.kandji.io
+versioning:
+  style: uri-path
+  current: v1
+methods:
+  - GET
+  - POST
+  - PATCH
+  - DELETE
+pagination:
+  style: limit-offset
+  params:
+    - limit
+    - offset
+  notes: >-
+    List endpoints in the Iru Endpoint Management API page results with limit
+    and offset query parameters (default and maximum limit vary by resource).
+idempotency:
+  supported: false
+  notes: >-
+    Iru does not document an Idempotency-Key header or idempotent-retry
+    contract for the Endpoint Management API as of this pass; no Idempotency
+    pointer is emitted.
+rate_limit_signaling:
+  quota: 10000 requests/hour/tenant
+  detail: >-
+    Single tenant-wide hourly quota shared by REST and MCP calls. See
+    rate-limits/iru-rate-limits.yml.
+error_envelope:
+  format: json
+  notes: >-
+    Errors are returned as JSON with standard HTTP status codes; a formal
+    RFC 9457 problem+json media type was not confirmed in the docs.
+resources:
+  - devices
+  - device actions
+  - apps
+  - Library items
+  - Library uploads
+  - Blueprints
+  - tenant activity
+  - Automated Device Enrollment (ADE) tokens
+cross_links:
+  authentication: authentication/iru-authentication.yml
+  lifecycle: lifecycle/iru-lifecycle.yml
+  rate_limits: rate-limits/iru-rate-limits.yml

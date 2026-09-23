@@ -1,0 +1,16 @@
+generated: '2026-07-19'
+method: searched
+source: https://support.kandji.io/kb/kandji-api
+scope: tenant
+limits:
+  - name: Endpoint Management API
+    limit_count: 10000
+    window: hour
+    per: tenant
+    description: >-
+      The Iru Endpoint Management API enforces a rate limit of 10,000 requests
+      per hour per customer/tenant. MCP tool calls made through the hosted Iru
+      MCP server count toward the same tenant hourly limit.
+notes: >-
+  A single tenant-wide hourly quota governs both direct REST API calls and MCP
+  tool calls. Iru documents no separate per-endpoint or per-token sub-limits.
