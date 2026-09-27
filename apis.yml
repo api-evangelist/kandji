@@ -67,7 +67,7 @@ tags:
 - Workforce Identity
 - IT Operations
 - MCP
-- agent-native
+- Agent-Native
 tags_raw:
 - Company
 - device-management
@@ -92,7 +92,7 @@ apis:
   baseURL: https://your-tenant.connect.iru.com/mcp-server/connector/kandji/tools
   tags:
   - MCP
-  - agent-native
+  - Agent-Native
   - Device Management
   - Endpoint Security
   tags_raw:
