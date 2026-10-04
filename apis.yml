@@ -55,6 +55,10 @@ x-name-discrepancy: 'The harvest backlog recorded this company as "Iru" against 
 specificationVersion: '0.23'
 created: '2026-08-01'
 modified: '2026-09-16'
+x-docs-platform: mintlify
+x-docs-platform-confidence: medium
+x-docs-platform-checked: 2026-10-03
+x-docs-hosting: vercel
 tags:
 - Company
 - Device Management
@@ -530,6 +534,9 @@ apis:
   - type: Postman
     url: https://docs.iru.com/en/endpoint/api/how-to-set-up-the-iru-endpoint-api-in-postman.md
 common:
+- type: CapabilityMap
+  url: capabilities/kandji-capability-edges.yml
+  name: Iru Business Capability Map
 - type: AgenticAccess
   url: agentic-access/kandji-agentic-access.yml
 - type: TrustCenter
