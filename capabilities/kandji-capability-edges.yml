@@ -1,0 +1,52 @@
+slug: kandji
+provider: Iru
+generated_by: planning/capability-mapping/scripts/classify_capabilities.py
+model: claude-opus-5
+frame:
+- Software & Technology
+min_confidence: 0.7
+capability_model:
+  source: https://github.com/vincentmakes/turbo-ea-capabilities
+  license: CC-BY-4.0
+  attribution: Turbo EA Capabilities by Vincent Verdet — Turbo EA, https://github.com/vincentmakes/turbo-ea-capabilities,
+    CC BY 4.0
+  notice: NOTICE
+edge_count: 4
+edges:
+- tag: Vulnerability Management
+  spec_file: kandji-vulnerability-management-api-openapi.yml
+  capability_id: BC-620.40
+  capability_id_l1: BC-620
+  capability_name: Vulnerability Management
+  confidence: 0.95
+  evidence: GET /api/v1/vulnerability-management/vulnerabilities/{cve_id}/devices  List Affected Devices
+  reason: Operations enumerate CVEs, detections and affected devices/software — unambiguously vulnerability
+    scanning and remediation tracking.
+- tag: Threat Details
+  spec_file: kandji-threat-details-api-openapi.yml
+  capability_id: BC-620.30
+  capability_id_l1: BC-620
+  capability_name: Threat Detection & Response Management
+  confidence: 0.85
+  evidence: GET /api/v1/threat-details  Get Threat Details
+  reason: Vendor provides 'endpoint detection and response'; this endpoint exposes detected threat details,
+    i.e. threat detection and response operations.
+- tag: Behavioral Detections
+  spec_file: kandji-behavioral-detections-api-openapi.yml
+  capability_id: BC-620.30
+  capability_id_l1: BC-620
+  capability_name: Threat Detection & Response Management
+  confidence: 0.82
+  evidence: GET /api/v1/behavioral-detections  "Get Behavioral Detections" on a vendor providing "endpoint
+    detection and response"
+  reason: Behavioral detections are EDR threat detections surfaced for response, matching threat detection
+    & response management.
+- tag: Devices
+  spec_file: kandji-devices-api-openapi.yml
+  capability_id: BC-600.40
+  capability_id_l1: BC-600
+  capability_name: IT Operations Management
+  confidence: 0.7
+  evidence: '"Enable Lost Mode", "Erase Device", "Lock Device", "Get Device Commands", "Reinstall Agent"'
+  reason: Remote endpoint administration commands — classic IT operations management of managed devices;
+    not an industry-specific capability.
