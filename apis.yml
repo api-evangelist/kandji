@@ -54,7 +54,7 @@ x-name-discrepancy: 'The harvest backlog recorded this company as "Iru" against 
   catalog continuity.'
 specificationVersion: '0.23'
 created: '2026-08-01'
-modified: '2026-09-16'
+modified: '2026-10-06'
 x-docs-platform: mintlify
 x-docs-platform-confidence: medium
 x-docs-platform-checked: 2026-10-03
@@ -534,6 +534,8 @@ apis:
   - type: Postman
     url: https://docs.iru.com/en/endpoint/api/how-to-set-up-the-iru-endpoint-api-in-postman.md
 common:
+- url: https://www.iru.com/blog/rss.xml
+  type: BlogRSS
 - type: CapabilityMap
   url: capabilities/kandji-capability-edges.yml
   name: Iru Business Capability Map
