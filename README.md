@@ -1,4 +1,4 @@
-# Iru (formerly Kandji)
+# Iru
 
 <!-- API-EVANGELIST-PROVENANCE:BEGIN -->
 > ### About this repository
@@ -64,64 +64,150 @@
 > Full detail: **[Where this data comes from](https://apievangelist.com/about/where-our-data-comes-from)**
 <!-- API-EVANGELIST-PROVENANCE:END -->
 
-Iru, Inc. — San Francisco — is an AI-powered IT and security platform unifying workforce identity
-and access, cross-platform endpoint management (macOS, iOS, iPadOS, tvOS, visionOS, Windows,
-Android), endpoint detection and response, vulnerability management, compliance automation and a
-customer-facing trust center behind a single agent.
+Iru (formerly Kandji) is a San Francisco based endpoint management and security company whose AI-powered platform unifies workforce identity and access, cross-platform endpoint management for macOS, iOS, iPadOS, tvOS, visionOS, Windows and Android, endpoint detection and response, vulnerability management, compliance automation and a customer-facing trust center behind a single agent. The company rebranded from Kandji to Iru on 22 October 2025; the product surface, the developer documentation and the API hostnames still carry the kandji.io domain. The Iru Endpoint Management API is a tenant-scoped REST API published as OpenAPI 3.0.0 and as a public Postman collection, covering devices and device actions, Blueprints, Library Items, Prism inventory reporting, Automated Device Enrollment, tags, users, threats and vulnerabilities, and it also backs a hosted, tenant-scoped Model Context Protocol server for AI assistants.
 
-- Website: https://www.iru.com/
-- API reference: https://api-docs.kandji.io/
-- Docs: https://docs.iru.com/
-- Status: https://status.kandji.io
-- GitHub: https://github.com/kandji-inc
-- Secondary-market listing: https://forgeglobal.com/kandji_stock/
+**Areas:** Company · Device Management · Mobile Device Management · apple-management · Endpoint Security · Endpoint Detection and Response · Vulnerability Management · Compliance Automation · Workforce Identity · IT Operations · MCP · Agent-Native
 
-## Name note — Kandji vs Iru
+## Iru on APIs.io
 
-The harvest backlog listed this company as **Iru** under the slug **kandji**. Both are correct at
-different points in time:
+Everything profiled for Iru is published on APIs.io rather than in this repository. Start at the provider page — **[apis.io/providers/kandji/](https://apis.io/providers/kandji/)** — or go straight to one of the APIs or properties below.
 
-- **Iru** is the authoritative current company and brand name. Kandji rebranded to Iru on
-  **22 October 2025**, and the live site, the Platform Services Agreement and the legal entity all
-  read "Iru, Inc.".
-- **Kandji** survives everywhere the plumbing lives: the API hostnames `{subdomain}.api.kandji.io` /
-  `{subdomain}.api.eu.kandji.io`, the API reference at `api-docs.kandji.io`, the status page at
-  `status.kandji.io`, the support site at `support.kandji.io`, the `kandji-inc` GitHub organization,
-  the `io.kandji.*` macOS unified-logging subsystems, and even the MCP connector path
-  (`/mcp-server/connector/kandji/tools`). The docs say so themselves: "Kandji is now Iru, but many
-  URLs and notes within this documentation will continue to reference Kandji for some time."
-- `kandji.com` does **not** redirect to `iru.com` (HTTP 405 to a HEAD probe on 2026-08-01).
-- The Forge Global listing is still filed under the Kandji name and returned HTTP 403 to automated
-  fetches.
+### APIs (16)
 
-The slug stays `kandji` for catalog continuity; `name:` in `apis.yml` is `Iru`, with
-`x-former-name: Kandji`.
+- [Iru MCP Server](https://apis.io/apis/kandji/iru-mcp-server/) — Hosted, tenant-scoped Model Context Protocol server that exposes the Iru Enterprise API surface as MCP tools for Claude Desktop, Cursor, OpenAI Codex and…
+- [Iru Audit API](https://apis.io/apis/kandji/kandji-audit-api/) — The Audit API from Iru — 1 operation(s) for audit.
+- [Iru Behavioral Detections API](https://apis.io/apis/kandji/kandji-behavioral-detections-api/) — The Behavioral Detections API from Iru — 1 operation(s) for behavioral detections.
+- [Iru Blueprints API](https://apis.io/apis/kandji/kandji-blueprints-api/) — The Blueprints API from Iru — 6 operation(s) for blueprints.
+- [Iru Devices API](https://apis.io/apis/kandji/kandji-devices-api/) — The Devices API from Iru — 34 operation(s) for devices.
+- [Iru Integrations API](https://apis.io/apis/kandji/kandji-integrations-api/) — The Integrations API from Iru — 8 operation(s) for integrations.
+- [Iru Library API](https://apis.io/apis/kandji/kandji-library-api/) — The Library API from Iru — 13 operation(s) for library.
+- [Iru Prism API](https://apis.io/apis/kandji/kandji-prism-api/) — The Prism API from Iru — 19 operation(s) for prism.
+- [Iru Self Service API](https://apis.io/apis/kandji/kandji-self-service-api/) — The Self Service API from Iru — 1 operation(s) for self service.
+- [Iru Settings API](https://apis.io/apis/kandji/kandji-settings-api/) — The Settings API from Iru — 1 operation(s) for settings.
+- [Iru Tags API](https://apis.io/apis/kandji/kandji-tags-api/) — The Tags API from Iru — 2 operation(s) for tags.
+- [Iru Threat Details API](https://apis.io/apis/kandji/kandji-threat-details-api/) — The Threat Details API from Iru — 1 operation(s) for threat details.
+- [Iru Upload To S3 API](https://apis.io/apis/kandji/kandji-upload-to-s3-api/) — The Upload To S3 API from Iru — 1 operation(s) for upload to s3.
+- [Iru Users API](https://apis.io/apis/kandji/kandji-users-api/) — The Users API from Iru — 2 operation(s) for users.
+- [Iru Vulnerability Management API](https://apis.io/apis/kandji/kandji-vulnerability-management-api/) — The Vulnerability Management API from Iru — 5 operation(s) for vulnerability management.
+- [Iru Endpoint Management API](https://apis.io/apis/kandji/iru-endpoint-management-api/) — REST/JSON API for the Iru (formerly Kandji) endpoint management platform: read fleet data and run device actions, manage apps, Library items, Library…
 
-## APIs
+### Published properties
 
-| API | Surface |
+Each property below is a page on APIs.io carrying the machine-readable artifact and what it says.
+
+#### MCP servers (1)
+
+Model Context Protocol servers that expose the API to agents.
+
+- [iru](https://apis.io/servers/kandji/iru/)
+
+#### Agentic access (1)
+
+Which operations an agent can call, which act, and which need a human in the loop.
+
+- [Kandji Agentic Access](https://apis.io/agentic-access/kandji/kandji-agentic-access/)
+
+#### Collections (2)
+
+Postman and Open Collection request collections.
+
+- [Iru Endpoint Management API](https://apis.io/collections/kandji/open-kandji-endpoint-management/)
+- [Upload to S3](https://apis.io/collections/kandji/open-kandji-upload-to-s3/)
+
+#### Overlays (1)
+
+OpenAPI overlays, including conversational phrasing for each operation.
+
+- [Kandji Endpoint Management Overlay](https://apis.io/overlays/kandji/kandji-endpoint-management-overlay/)
+
+#### Security (5)
+
+Authentication, trust centre, and vulnerability disclosure.
+
+- [Iru Authentication](https://apis.io/security/kandji/iru-authentication/)
+- [Kandji Authentication](https://apis.io/security/kandji/kandji-authentication/)
+- [Kandji Domain Security](https://apis.io/security/kandji/kandji-domain-security/)
+- [Kandji Trust Center](https://apis.io/security/kandji/kandji-trust-center/)
+- [Kandji Vulnerability Disclosure](https://apis.io/security/kandji/kandji-vulnerability-disclosure/)
+
+#### Rate limits (2)
+
+Published request limits.
+
+- [Iru Rate Limits](https://apis.io/rate-limits/kandji/iru-rate-limits/)
+- [Kandji Rate Limits](https://apis.io/rate-limits/kandji/kandji-rate-limits/)
+
+## Where to find this API
+
+Links to the company's own pages. This repository publishes no copy of their specifications — the canonical document is theirs and lives at the URLs below.
+
+- [Website](https://www.iru.com/)
+- [Documentation](https://docs.iru.com/en/endpoint/api/iru-api-overview)
+- [Getting started](https://docs.iru.com/en/endpoint/getting-started/getting-started)
+- [API reference](https://api-docs.kandji.io/)
+- [Pricing](https://www.iru.com/pricing)
+- [Sign up](https://www.iru.com/request-demo)
+- [Support](https://support.kandji.io/)
+- [Changelog](https://www.iru.com/updates/)
+- [Blog](https://www.iru.com/blog)
+- [Security](https://www.iru.com/security/responsible-disclosure-policy)
+- [Compliance](https://www.iru.com/security)
+- [Terms of service](https://www.iru.com/legal/terms)
+- [Privacy policy](https://www.iru.com/legal/privacy)
+- [GitHub](https://github.com/kandji-inc)
+- [Status](https://status.kandji.io)
+
+## API Evangelist rating
+
+**Kin Score 59.6** — strong · rubric 0.25.0 · scored 2026-10-23
+
+| Facet | Score |
 |---|---|
-| Iru Endpoint Management API | REST, OpenAPI 3.0.0, 94 paths / 121 operations, tenant-scoped bearer token |
-| Iru Library Item Upload API | Single pre-signed S3 upload contract, its own OpenAPI document |
-| Iru MCP Server | First-party hosted MCP, tenant-scoped URL, `X-API-Key` + `X-MCP-Profile` |
+| Discoverability | 73.2 |
+| Contract quality | 51.8 |
+| Contract governance | 18.2 |
+| Operational transparency | 65.8 |
+| Developer ergonomics | 70.8 |
+| Access clarity | 60.5 |
 
-## Artifacts in this repo
+**Agent readiness 37.2** — agent-ready
 
-`openapi/` `collections/` `overlays/` `mcp/` `skills/` `agentic-access/` `authentication/`
-`conventions/` `errors/` `data-model/` `lifecycle/` `changelog/` `rate-limits/` `conformance/`
-`packages/` `cli/` `llms/` `well-known/` `security/`
+| Agent-readiness dimension | Result |
+|---|---|
+| Spec Presence | yes |
+| Agentic Access | yes |
+| Reversibility Documented | documented (partial credit) |
+| MCP Server | — |
+| Auth Clarity | bearer (partial credit) |
+| Idempotency | — |
+| Error Semantics | derived (partial credit) |
+| OpenAPI Examples | verified |
+| Rate Limit Signal | documented (partial credit) |
+| Event Surface Described | — |
+| Agent Skills | derived (partial credit) |
+| Well Known Catalog | — |
+| Consent Identity | — |
+| Agent Card | — |
+| Dry Run Mode | — |
+| Delegated Identity | — |
+| Protected Resource Metadata | — |
+| Dynamic Client Registration | — |
+| Agentic Commerce | — |
+| Pagination Ratio | paginated |
+| Operation Distinctiveness | distinct |
 
-Notable finds:
+**Regulatory alignment 35.3** — Horizontal (data, software, accessibility, platform)
 
-- The OpenAPI is real and complete but was **not** at any conventional location — it is linked only
-  from the `## OpenAPI Specs` section at the bottom of `https://docs.iru.com/llms.txt`
-  (`https://docs.iru.com/openapi/iru-endpoint-openapi.json`). `api-docs.kandji.io` is a Postman
-  documenter, and every `/openapi.json`-style probe on the API and docs hosts 404s.
-- The spec declares **no `operationId` and no `tags`** on any of its 121 operations. Both are added
-  as a non-destructive OpenAPI Overlay in `overlays/`, tagged using the provider's own Postman
-  folder grouping.
-- There is **no idempotency contract** on an API whose write surface includes `erase`, `lock` and
-  `shutdown`. See `conventions/` and the safety rules in `skills/`.
-- Errors are a one-field `{"error": "..."}` envelope — not RFC 9457 — and no `403`, `429` or `5xx`
-  is declared anywhere, despite a documented 10,000 req/hour tenant limit.
-- No `/.well-known/` document of any kind, and no A2A agent card.
+The rubric is published at [github.com/api-evangelist/kin-score](https://github.com/api-evangelist/kin-score). The per-check breakdown behind these numbers — which checks were earned, partial or missed — along with score history and how this provider compares to its peers, is available at [apis.io/providers/kandji/](https://apis.io/providers/kandji/).
+
+## How this profile is made
+
+API Evangelist profiles a company's public API surface the way a developer would find it: the website, developer portal and documentation, the specifications it publishes, its public repositories, and its pricing, status and changelog pages. From that it derives the properties above — contracts split per API, workflows, schemas, collections, governance rules, plans and rate limits — and scores them against the published [Kin Score rubric](https://github.com/api-evangelist/kin-score).
+
+The artifacts are published on [APIs.io](https://apis.io), not in this repository. This repository is the public record for Iru: the place to say something is wrong, missing or out of date, and to ask for a re-score or a removal.
+
+## Open an issue
+
+- **Something about this listing** — a wrong description, a missing API, a stale artifact or a question about the rating: [open an issue on this repository](https://github.com/api-evangelist/kandji/issues/new).
+- **A new API, or one that is not in the catalog yet** — [submit it on APIs.io](https://apis.io/add/).
+- **Anything else** — [the APIs.io inbox](https://github.com/api-search/inbox/issues/new) or [info@apievangelist.com](mailto:info@apievangelist.com).
